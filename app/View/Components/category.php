@@ -6,16 +6,14 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class navbar extends Component
+class category extends Component
 {
-    public $activeRoute;
-
     /**
      * Create a new component instance.
      */
-    public function __construct($activeRoute = null)
+    public function __construct()
     {
-        $this->activeRoute = $activeRoute;
+        //
     }
 
     /**
@@ -23,6 +21,6 @@ class navbar extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.navbar');
+        return view('components.category');
     }
 }

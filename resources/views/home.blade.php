@@ -80,7 +80,7 @@
     <div class="header flex items-center justify-between p-4 bg-white shadow-md">
         <span class="iconify" data-icon="fe:bar" data-width="38" data-height="38" class="cursor-pointer"></span>
         <div class="relative flex-1 max-w-md mx-4">
-            <input type="text" placeholder="Search for fresh seafood..."
+            <input type="text" placeholder="Cari produk segar disini..."
                 class="w-full px-4 py-2 pl-10 pr-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
             <span class="iconify absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                 data-icon="mdi:magnify" data-width="20" data-height="20"></span>
@@ -128,64 +128,11 @@
     </div>
     <div class="flex justify-between m-5">
         <h1 class="font-bold text-neutral-400">Pilihan Kategori</h1>
-        <p class="text-indigo-500 cursor-pointer">Lihat Semua</p>
+        <a href="{{ route('category') }}" class="text-indigo-500 cursor-pointer">Lihat Semua</a>
     </div>
 
     <!-- Categories Carousel -->
-    <div class="categories-carousel relative overflow-hidden mx-5">
-        <div class="categories-inner flex transition-transform duration-500 ease-in-out" id="categories-slides">
-            <div class="category-slide flex-shrink-0 w-32 mx-2">
-                <div
-                    class="bg-white rounded-lg shadow-md p-4 text-center hover:shadow-lg transition-shadow duration-300">
-                    <span class="iconify block mx-auto mb-2 text-blue-500" data-icon="tabler:fish" data-width="48"
-                        data-height="48"></span>
-                    <h3 class="text-sm font-semibold text-gray-700">Fish</h3>
-                </div>
-            </div>
-            <div class="category-slide flex-shrink-0 w-32 mx-2">
-                <div
-                    class="bg-white rounded-lg shadow-md p-4 text-center hover:shadow-lg transition-shadow duration-300">
-                    <span class="iconify block mx-auto mb-2 text-red-500" data-icon="lucide-lab:crab" data-width="48"
-                        data-height="48"></span>
-                    <h3 class="text-sm font-semibold text-gray-700">Crab</h3>
-                </div>
-            </div>
-            <div class="category-slide flex-shrink-0 w-32 mx-2">
-                <div
-                    class="bg-white rounded-lg shadow-md p-4 text-center hover:shadow-lg transition-shadow duration-300">
-                    <span class="iconify block mx-auto mb-2 text-purple-500" data-icon="hugeicons:octopus"
-                        data-width="48" data-height="48"></span>
-                    <h3 class="text-sm font-semibold text-gray-700">Squid</h3>
-                </div>
-            </div>
-            <div class="category-slide flex-shrink-0 w-32 mx-2">
-                <div
-                    class="bg-white rounded-lg shadow-md p-4 text-center hover:shadow-lg transition-shadow duration-300">
-                    <span class="iconify block mx-auto mb-2 text-orange-500" data-icon="lucide:shrimp" data-width="48"
-                        data-height="48"></span>
-                    <h3 class="text-sm font-semibold text-gray-700">Shrimp</h3>
-                </div>
-            </div>
-            <div class="category-slide flex-shrink-0 w-32 mx-2">
-                <div
-                    class="bg-white rounded-lg shadow-md p-4 text-center hover:shadow-lg transition-shadow duration-300">
-                    <span class="iconify block mx-auto mb-2 text-green-500" data-icon="hugeicons:shellfish"
-                        data-width="48" data-height="48"></span>
-                    <h3 class="text-sm font-semibold text-gray-700">Shell</h3>
-                </div>
-            </div>
-        </div>
-        <button
-            class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-75 hover:bg-opacity-100 rounded-full p-2 shadow-md"
-            id="categories-prev-btn">
-            <span class="iconify" data-icon="mdi:chevron-left" data-width="20" data-height="20"></span>
-        </button>
-        <button
-            class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-75 hover:bg-opacity-100 rounded-full p-2 shadow-md"
-            id="categories-next-btn">
-            <span class="iconify" data-icon="mdi:chevron-right" data-width="20" data-height="20"></span>
-        </button>
-    </div>
+    <x-category :cart-count="5" />
 
     <div class="m-5">
         <div class="flex justify-between">
@@ -208,11 +155,7 @@
                     style="font-family: 'Caveat', cursive;">
                     The Best<br>Dinner
                 </h1>
-                <a href="{{ route('home') }}">
-                    <button class="bg-amber-500 hover:bg-amber-600 text-black font-bold p-1 rounded transition">
-                        Belanja Sekarang
-                    </button>
-                </a>
+                /
             </div>
 
             <!--  Card Produk -->
@@ -320,8 +263,7 @@
 
 
     <!-- Bottom Navigation Bar -->
-
-    <x-navbar :cart-count="5" />
+    <x-navbar :cart-count="5" :active-route="'home'" />
 </body>
 
 </html>

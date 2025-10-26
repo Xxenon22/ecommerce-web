@@ -1,0 +1,2 @@
+-   [x] Add HTML structure for product carousel with multiple cards
+-   [x] Add JS for product carousel sliding functionality

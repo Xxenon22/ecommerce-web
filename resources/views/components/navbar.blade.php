@@ -2,13 +2,15 @@
     class="fixed bottom-0 left-0 right-0 bg-white shadow-inner border-t border-gray-200 flex justify-around items-center h-16 z-50">
 
     <!-- Beranda -->
-    <a href="#" class="flex flex-col items-center text-blue-600">
+    <a href="{{ route('home') }}"
+        class="flex flex-col items-center {{ $activeRoute === 'home' ? 'text-blue-600' : 'text-gray-500' }}">
         <span class="iconify" data-icon="mdi:home-outline" data-width="26" data-height="26"></span>
         <span class="text-xs font-medium mt-1">Beranda</span>
     </a>
 
     <!-- Kategori -->
-    <a href="#" class="flex flex-col items-center text-gray-500">
+    <a href="{{ route('category') }}"
+        class="flex flex-col items-center {{ $activeRoute === 'category' ? 'text-blue-600' : 'text-gray-500' }}">
         <span class="iconify" data-icon="mdi:shape-outline" data-width="26" data-height="26"></span>
         <span class="text-xs font-medium mt-1">Kategori</span>
     </a>
