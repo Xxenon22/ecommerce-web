@@ -11,10 +11,10 @@
 
 </head>
 
-<body class="backdrop-brightness-50" style="background-image: url({{ asset('assets/bg-pasar-ikan2.jpg') }}); background-size: cover;
+<body class="backdrop-brightness-30" style="background-image: url({{ asset('assets/bg-pasar-ikan2.jpg') }}); background-size: cover;
          background-repeat: no-repeat;
          background-position: center;
-         background-attachment: fixed; ">
+         background-attachment: fixed;">
     <div class="">
         <div class="absolute m-3 z-10">
             <a href="{{ route('home') }}">
