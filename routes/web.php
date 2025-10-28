@@ -1,14 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
     return view('startedPage');
 })->name('started');
-
-Route::get('/home', function () {
-    return view('home');
-})->name('home');
 
 Route::get('/category/{category?}', function ($category = null) {
     $products = [
@@ -39,10 +36,15 @@ Route::get('/account', function () {
     return view('account');
 })->name('account');
 
-Route::get('/login', function () {
-    return view('login');
-})->name('login');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::get('/registration', [AuthController::class, 'showRegistrationForm'])->name('registration');
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::get('regis', function () {
-    return view('regis');
-})->name('regis');
+Route::post('/registration', [AuthController::class, 'register']);
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', function () {
+        return view('home');
+    })->name('home');
+});
