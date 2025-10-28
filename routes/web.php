@@ -36,10 +36,10 @@ Route::get('/account', function () {
     return view('account');
 })->name('account');
 
+// Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::get('/registration', [AuthController::class, 'showRegistrationForm'])->name('registration');
 Route::post('/login', [AuthController::class, 'login']);
-
+Route::get('/registration', [AuthController::class, 'showRegistrationForm'])->name('registration');
 Route::post('/registration', [AuthController::class, 'register']);
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 

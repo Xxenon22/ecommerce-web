@@ -28,9 +28,15 @@
                 <h1 class="text-3xl font-bold text-center text-white">Halo, Selamat Datang di <span
                         class="text-cyan-600">AquaTech Fresh</span> </h1>
             </div>
-            <form action="/regis" method="POST"
+            <form action="/registration" method="POST"
                 class="flex flex-col justify-center items-center space-y-8 m-3 w-full max-w-xs">
                 @csrf
+                @if ($errors->any())
+                    <div class="bg-red-100 text-red-600 p-1 mb-2 rounded text-sm w-full relative flex items-center justify-between">
+                        <span>{{ $errors->first() }}</span>
+                        <span class="iconify cursor-pointer" data-icon="mdi:close" data-width="18" data-height="18" onclick="this.parentElement.remove()"></span>
+                    </div>
+                @endif
                 <div class="flex flex-col justify-center items-center space-y-2 w-full">
                     <input type="text" placeholder="Nama" name="name" class=" rounded p-2 w-full bg-white">
                     <input type="text" placeholder="Email" name="email" class=" rounded p-2 w-full bg-white">
