@@ -33,3 +33,16 @@ Route::get('/category/{category?}', function ($category = null) {
     ];
     return view('category', compact('products', 'category'));
 })->name('category');
+
+
+Route::get('/account', function () {
+    return view('account');
+})->name('account');
+
+Route::get('/login', function () {
+    return view('login');
+})->name('login');
+
+Route::get('regis', function () {
+    return view('regis');
+})->name('regis');

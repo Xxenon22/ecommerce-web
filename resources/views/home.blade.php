@@ -87,8 +87,6 @@
                 <span class="iconify absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                     data-icon="mdi:magnify" data-width="20" data-height="20"></span>
             </div>
-            <span class="iconify" data-icon="mynaui:envelope" data-width="32" data-height="32"
-                class="cursor-pointer"></span>
         </header>
 
         <!-- Carousel -->

@@ -30,7 +30,8 @@
     </a>
 
     <!-- Akun -->
-    <a href="#" class="flex flex-col items-center text-gray-500">
+    <a href="{{ route('account') }}"
+        class="flex flex-col items-center {{ $activeRoute === 'account' ? 'text-blue-600' : 'text-gray-500' }}">
         <span class="iconify" data-icon="mdi:account-outline" data-width="26" data-height="26"></span>
         <span class="text-xs font-medium mt-1">Akun</span>
     </a>

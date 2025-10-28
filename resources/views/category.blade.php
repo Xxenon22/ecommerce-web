@@ -75,8 +75,6 @@
             <span class="iconify absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                 data-icon="mdi:magnify" data-width="20" data-height="20"></span>
         </div>
-        <span class="iconify text-cyan-600" data-icon="lucide:briefcase" data-width="38" data-height="38"
-            class="cursor-pointer"></span>
     </div>
 
 
