@@ -72,23 +72,118 @@
                 });
             }
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const openBtn = document.getElementById('open-sidebar');
+            const closeBtn = document.getElementById('close-sidebar');
+            const overlay = document.getElementById('overlay');
+
+            function openSidebar() {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden'); // biar tidak bisa scroll
+            }
+
+            function closeSidebar() {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            }
+
+            openBtn.addEventListener('click', openSidebar);
+            closeBtn.addEventListener('click', closeSidebar);
+            overlay.addEventListener('click', closeSidebar);
+        });
     </script>
 </head>
 
-<body class="bg-gray-100 min-h-screen">
-    <div class="max-w-7xl mx-auto">
+<body class="bg-gray-100 min-h-screen relative">
 
-        <!-- Header -->
-        <header class="flex items-center justify-between p-4 bg-white shadow-md sticky top-0 z-20">
-            <span class="iconify" data-icon="fe:bar" data-width="32" data-height="32" class="cursor-pointer"></span>
-            <div class="relative flex-1 max-w-md mx-4">
-                <input type="text" placeholder="Cari produk segar disini..."
-                    class="w-full px-4 py-2 pl-10 pr-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                <span class="iconify absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                    data-icon="mdi:magnify" data-width="20" data-height="20"></span>
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed inset-0 bg-[#0A2540] text-white transform -translate-x-full transition-transform duration-300 z-50 flex
+    flex-col justify-between">
+        <div class="p-6 relative h-full flex flex-col justify-between">
+            <!-- Header -->
+            <div>
+                <div class="flex items-center justify-between mb-8">
+                    <div class="flex flex-col items-center space-x-3">
+                        @if(Auth::user()->photo)
+                            <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User"
+                                class="w-14 h-14 rounded-full border-2 border-white">
+                        @else
+                            <span class="iconify w-14 h-14 rounded-full border-2 border-white"
+                                data-icon="mdi:account-circle" data-width="56" data-height="56"></span>
+                        @endif
+                        <div>
+                            <p class="text-sm text-gray-300">Welcome-!!</p>
+                            <h2 class="text-lg font-semibold">{{ Auth::user()->name ?? 'Username' }}</h2>
+                        </div>
+                    </div>
+                    <button id="close-sidebar" class="absolute top-6 right-6">
+                        <span class="iconify" data-icon="mdi:close" data-width="28"></span>
+                    </button>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="space-y-10 text-sm">
+                    <a href="{{ route('home') }}" class="flex items-center space-x-3 hover:text-cyan-400">
+                        <span class="iconify" data-icon="mdi:home-outline" data-width="22"></span>
+                        <span>Home</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 hover:text-cyan-400">
+                        <span class="iconify" data-icon="mdi:history" data-width="22"></span>
+                        <span>History</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 hover:text-cyan-400">
+                        <span class="iconify" data-icon="mdi:bell-outline" data-width="22"></span>
+                        <span>Notification</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 hover:text-cyan-400">
+                        <span class="iconify" data-icon="mdi:star-outline" data-width="22"></span>
+                        <span>Rate Us</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 hover:text-cyan-400">
+                        <span class="iconify" data-icon="mdi:ticket-percent-outline" data-width="22"></span>
+                        <span>Coupon</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 hover:text-cyan-400">
+                        <span class="iconify" data-icon="mdi:help-circle-outline" data-width="22"></span>
+                        <span>Help Center</span>
+                    </a>
+
+                    <hr class="my-4 border-gray-600">
+
+                    <form id="logout-form" method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="w-full text-left flex items-center space-x-3 hover:text-red-400">
+                            <span class="iconify" data-icon="mdi:logout" data-width="22"></span>
+                            <span>Log Out</span>
+                        </button>
+                    </form>
+                </nav>
             </div>
-        </header>
+        </div>
+    </div>
 
+    <!-- Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 transition-opacity duration-300"></div>
+
+    <!-- Header -->
+    <header class="flex items-center justify-between p-4 bg-white shadow-md sticky top-0 z-20">
+        <button id="open-sidebar">
+            <span class="iconify" data-icon="mdi:menu" data-width="32" data-height="32"></span>
+        </button>
+
+        <div class="relative flex-1 max-w-md mx-4">
+            <input type="text" placeholder="Cari produk segar disini..."
+                class="w-full px-4 py-2 pl-10 pr-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            <span class="iconify absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                data-icon="mdi:magnify" data-width="20" data-height="20"></span>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto">
         <!-- Carousel -->
         <section class="carousel relative overflow-hidden rounded-2xl mt-4 shadow-md">
             <div class="carousel-inner flex transition-transform duration-500 ease-in-out" id="carousel-slides">
@@ -270,10 +365,8 @@
             </div>
         </section>
 
-        <!-- Bottom Navigation -->
-        <x-navbar :cart-count="5" :active-route="'home'" class="block md:hidden" />
-
-    </div>
+    </main>
+    <x-navbar :cart-count="5" :active-route="'home'" class="block md:hidden" />
 </body>
 
 </html>
