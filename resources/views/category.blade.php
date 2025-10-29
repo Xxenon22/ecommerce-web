@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kategori - AquaTech Fresh</title>
+    <title>Kategori - Fishery Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
@@ -75,6 +75,14 @@
             <span class="iconify absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                 data-icon="mdi:magnify" data-width="20" data-height="20"></span>
         </div>
+        <!-- Cart icon -->
+        <a href="#" class="relative">
+            <span class="iconify cursor-pointer" data-icon="mdi:cart-outline" data-width="32" data-height="32"></span>
+            <!-- Optional badge if you want to show cart count -->
+            <span
+                class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">5</span>
+        </a>
+    </div>
     </div>
 
 
