@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - AquaTech Fresh</title>
+    <title>Home - Fishery Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
@@ -151,7 +151,7 @@
                 <h1 class="font-extrabold text-xl md:text-2xl">Spesial Hari Ini</h1>
                 <p class="text-indigo-500 font-medium cursor-pointer">Lihat Semua</p>
             </div>
-            <p class="font-bold text-neutral-400 mb-4">Promo menarik dari AquaTech Fresh untuk kamu</p>
+            <p class="font-bold text-neutral-400 mb-4">Promo menarik dari Fishery Hub untuk kamu</p>
 
             <div class="relative w-full h-96 md:h-[450px] overflow-hidden shadow-lg rounded-2xl bg-white">
                 <img src="{{ asset('assets/bg-pasar-ikan.jpg') }}" alt="Banner Ikan"

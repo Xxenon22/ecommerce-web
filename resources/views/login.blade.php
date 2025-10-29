@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masuk - AquaTech Fresh</title>
+    <title>Masuk - Fishery Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
@@ -25,7 +25,7 @@
         <div class="flex flex-col justify-center items-center min-h-screen relative z-0">
             <div class="m-5 items-center">
                 <h1 class="text-3xl font-bold text-center text-white">Selamat Datang kembali di <span
-                        class="text-cyan-600">AquaTech Fresh</span> </h1>
+                        class="text-cyan-600">Fishery Hub</span> </h1>
             </div>
             <form action="" class="flex flex-col justify-center items-center space-y-8 m-3 w-full max-w-xs">
                 <div class="flex flex-col justify-center items-center space-y-2 w-full">
