@@ -10,7 +10,7 @@
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const carouselSlides = document.getElementById('carousel-slides');
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
@@ -31,17 +31,17 @@
                 }, 100);
             }
 
-            prevBtn.addEventListener('click', function () {
+            prevBtn.addEventListener('click', function() {
                 currentIndex = (currentIndex > 0) ? currentIndex - 1 : totalSlides - 1;
                 updateCarousel();
             });
 
-            nextBtn.addEventListener('click', function () {
+            nextBtn.addEventListener('click', function() {
                 currentIndex = (currentIndex < totalSlides - 1) ? currentIndex + 1 : 0;
                 updateCarousel();
             });
 
-            setInterval(function () {
+            setInterval(function() {
                 currentIndex = (currentIndex < totalSlides - 1) ? currentIndex + 1 : 0;
                 updateCarousel();
             }, 5000);
@@ -57,15 +57,16 @@
                 function updateCategoriesCarousel() {
                     const maxIndex = categoriesTotalSlides - categoriesVisibleSlides;
                     categoriesCurrentIndex = Math.max(0, Math.min(categoriesCurrentIndex, maxIndex));
-                    categoriesSlides.style.transform = `translateX(-${categoriesCurrentIndex * (100 / categoriesVisibleSlides)}%)`;
+                    categoriesSlides.style.transform =
+                        `translateX(-${categoriesCurrentIndex * (100 / categoriesVisibleSlides)}%)`;
                 }
 
-                categoriesPrevBtn.addEventListener('click', function () {
+                categoriesPrevBtn.addEventListener('click', function() {
                     categoriesCurrentIndex = Math.max(0, categoriesCurrentIndex - 1);
                     updateCategoriesCarousel();
                 });
 
-                categoriesNextBtn.addEventListener('click', function () {
+                categoriesNextBtn.addEventListener('click', function() {
                     const maxIndex = categoriesTotalSlides - categoriesVisibleSlides;
                     categoriesCurrentIndex = Math.min(maxIndex, categoriesCurrentIndex + 1);
                     updateCategoriesCarousel();
@@ -73,7 +74,7 @@
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const sidebar = document.getElementById('sidebar');
             const openBtn = document.getElementById('open-sidebar');
             const closeBtn = document.getElementById('close-sidebar');
@@ -101,14 +102,15 @@
 <body class="bg-gray-100 min-h-screen relative">
 
     <!-- Sidebar -->
-    <div id="sidebar" class="fixed inset-0 bg-[#0A2540] text-white transform -translate-x-full transition-transform duration-300 z-50 flex
+    <div id="sidebar"
+        class="fixed inset-0 bg-[#0A2540] text-white transform -translate-x-full transition-transform duration-300 z-50 flex
     flex-col justify-between">
         <div class="p-6 relative h-full flex flex-col justify-between">
             <!-- Header -->
             <div>
                 <div class="flex items-center justify-between mb-8">
                     <div class="flex flex-col items-center space-x-3">
-                        @if(Auth::user()->photo)
+                        @if (Auth::user()->photo)
                             <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User"
                                 class="w-14 h-14 rounded-full border-2 border-white">
                         @else
@@ -303,7 +305,8 @@
                         <div>
                             <h2 class="font-semibold text-gray-900 text-base md:text-lg">Cara menangkap ikan yang benar
                             </h2>
-                            <p class="text-gray-500 text-sm leading-tight">Gimana sih caranya? sesuai peraturan yang ada
+                            <p class="text-gray-500 text-sm leading-tight">Gimana sih caranya? sesuai peraturan yang
+                                ada
                             </p>
                         </div>
                         <button
@@ -336,6 +339,9 @@
 
         <!-- Rekomendasi Resto -->
         <section class="px-6 my-10">
+            <button id="pay-button"
+                class="my-5 mb-10 bg-cyan-600 text-white font-semibold px-6 py-2 rounded-full shadow-md transition hover:bg-cyan-700">Bayar
+                Sekarang</button>
             <h1 class="font-extrabold text-lg md:text-xl mb-4">Rekomendasi Resto</h1>
             <div class="grid md:grid-cols-2 gap-4">
                 <!-- Resto 1 -->
@@ -363,10 +369,19 @@
                     </div>
                 </div>
             </div>
+
         </section>
 
     </main>
+    
     <x-navbar :cart-count="5" :active-route="'home'" class="block md:hidden" />
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('midtrans.client_key') }}"></script>
+    <script>
+        document.getElementById('pay-button').onclick = function() {
+        };
+    </script>
+
 </body>
 
 </html>
