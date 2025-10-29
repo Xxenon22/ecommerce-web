@@ -7,7 +7,11 @@ Route::get('/', function () {
     return view('startedPage');
 })->name('started');
 
-Route::get('/category/{category?}', function ($category = null) {
+Route::get('/beranda', function () {
+    return view('home');
+})->name('beranda');
+
+Route::get('/kategori/{kategori?}', function ($kategori = null) {
     $products = [
         'Ikan segar' => [
             ['name' => 'Tuna Steak', 'price' => 'Rp25.000', 'image' => 'assets/cumi-krispy.jpg'],
@@ -28,23 +32,101 @@ Route::get('/category/{category?}', function ($category = null) {
             ['name' => 'Clam Shell', 'price' => 'Rp12.000', 'image' => 'assets/cumi-krispy.jpg'],
         ],
     ];
-    return view('category', compact('products', 'category'));
-})->name('category');
+    return view('category', compact('products', 'kategori'));
+})->name('kategori');
 
 
-Route::get('/account', function () {
+Route::get('/akun', function () {
     return view('account');
-})->name('account');
+})->name('akun');
 
-// Authentication Routes
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
-Route::get('/registration', [AuthController::class, 'showRegistrationForm'])->name('registration');
-Route::post('/registration', [AuthController::class, 'register']);
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/masuk', function () {
+    return view('login');
+})->name('masuk');
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/home', function () {
-        return view('home');
-    })->name('home');
-});
+Route::get('/daftar', function () {
+    return view('regis');
+})->name('daftar');
+
+Route::get('/pesanan', function () {
+    // Sample orders data - replace with actual order logic later
+    $orders = [
+        [
+            'id' => 'ORD001',
+            'date' => '15 Desember 2024, 14:30',
+            'status' => 'Diproses',
+            'total' => 'Rp98.000',
+            'items' => [
+                [
+                    'name' => 'Tuna Steak',
+                    'image' => 'assets/cumi-krispy.jpg',
+                    'price' => 'Rp50.000',
+                    'quantity' => 2
+                ],
+                [
+                    'name' => 'Salmon Fillet',
+                    'image' => 'assets/cumi-krispy.jpg',
+                    'price' => 'Rp30.000',
+                    'quantity' => 1
+                ]
+            ]
+        ],
+        [
+            'id' => 'ORD002',
+            'date' => '10 Desember 2024, 09:15',
+            'status' => 'Selesai',
+            'total' => 'Rp45.000',
+            'items' => [
+                [
+                    'name' => 'Cumi Krispy',
+                    'image' => 'assets/cumi-krispy.jpg',
+                    'price' => 'Rp15.000',
+                    'quantity' => 3
+                ]
+            ]
+        ]
+    ];
+    return view('order', compact('orders'));
+})->name('pesanan');
+
+Route::get('keranjang', function () {
+    // Sample cart data - replace with actual cart logic later
+    $cart = [
+        [
+            'name' => 'Tuna Steak',
+            'image' => 'assets/cumi-krispy.jpg',
+            'price' => 'Rp25.000',
+            'quantity' => 2,
+            'description' => 'Fresh tuna steak from the best catch'
+        ],
+        [
+            'name' => 'Salmon Fillet',
+            'image' => 'assets/cumi-krispy.jpg',
+            'price' => 'Rp30.000',
+            'quantity' => 1,
+            'description' => 'Premium salmon fillet'
+        ]
+    ];
+    return view('keranjang', compact('cart'));
+})->name('keranjang');
+
+Route::get('/checkout', function () {
+    // Sample cart data for checkout - same as keranjang for now
+    $cart = [
+        [
+            'name' => 'Tuna Steak',
+            'image' => 'assets/cumi-krispy.jpg',
+            'price' => 'Rp25.000',
+            'quantity' => 2,
+            'description' => 'Fresh tuna steak from the best catch'
+        ],
+        [
+            'name' => 'Salmon Fillet',
+            'image' => 'assets/cumi-krispy.jpg',
+            'price' => 'Rp30.000',
+            'quantity' => 1,
+            'description' => 'Premium salmon fillet'
+        ]
+    ];
+    return view('checkout', compact('cart'));
+})->name('checkout');
