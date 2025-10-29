@@ -17,7 +17,7 @@
          background-attachment: fixed;">
     <div class="">
         <div class="absolute m-3 z-10">
-            <a href="{{ route('home') }}">
+            <a href="{{ route('beranda') }}">
                 <span class="iconify cursor-pointer text-white" data-icon="weui:back-outlined" data-width="38"
                     data-height="38" class="cursor-pointer"></span>
             </a>
@@ -35,7 +35,7 @@
                 <Button type="submit" class="bg-cyan-600 p-1 w-full rounded text-white cursor-pointer">
                     Masuk
                 </Button>
-                <p class="text-white font-bold">Belum Punya Akun? <a href="{{ route('regis') }}"
+                <p class="text-white font-bold">Belum Punya Akun? <a href="{{ route('daftar') }}"
                         class="underline text-cyan-500">Daftar dulu ya
                         disini!</a></p>
             </form>

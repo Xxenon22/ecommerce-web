@@ -11,9 +11,10 @@
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Handle category filtering from URL parameter
-            const urlParams = new URLSearchParams(window.location.search);
-            const selectedCategory = urlParams.get('category');
+            // Handle category filtering from URL path parameter
+            const pathSegments = window.location.pathname.split('/');
+            const kategoriIndex = pathSegments.indexOf('kategori');
+            const selectedCategory = kategoriIndex !== -1 && pathSegments[kategoriIndex + 1] ? decodeURIComponent(pathSegments[kategoriIndex + 1]) : null;
             if (selectedCategory) {
                 showCategorySection(selectedCategory);
             }
@@ -47,12 +48,12 @@
             });
         });
 
-        function showCategorySection(category) {
+        function showCategorySection(kategori) {
             const productSections = document.querySelectorAll('.product-section');
             productSections.forEach(section => {
-                if (category === 'Semua') {
+                if (kategori === 'Semua') {
                     section.style.display = 'block';
-                } else if (section.getAttribute('data-category') === category) {
+                } else if (section.getAttribute('data-category') === kategori) {
                     section.style.display = 'block';
                 } else {
                     section.style.display = 'none';
@@ -64,10 +65,9 @@
 </head>
 
 <body class="bg-gray-200">
-    <div class="header flex items-center justify-between p-4 ">
-        <a href="{{ route('home') }}">
-            <span class="iconify cursor-pointer" data-icon="weui:back-outlined" data-width="38" data-height="38"
-                class="cursor-pointer"></span>
+    <div class="header flex items-center justify-between p-4">
+        <a href="{{ route('beranda') }}">
+            <span class="iconify cursor-pointer" data-icon="weui:back-outlined" data-width="38" data-height="38"></span>
         </a>
         <div class="relative flex-1 max-w-md mx-4">
             <input type="text" placeholder="Cari produk segar disini..."
@@ -75,27 +75,19 @@
             <span class="iconify absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                 data-icon="mdi:magnify" data-width="20" data-height="20"></span>
         </div>
-        <!-- Cart icon -->
-        <a href="#" class="relative">
-            <span class="iconify cursor-pointer" data-icon="mdi:cart-outline" data-width="32" data-height="32"></span>
-            <!-- Optional badge if you want to show cart count -->
-            <span
-                class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">5</span>
-        </a>
-    </div>
     </div>
 
 
-    <x-navbar :cart-count="5" :active-route="'category'" />
+    <x-navbar :cart-count="5" :active-route="'kategori'" />
     <x-category :cart-count="5" />
 
     <div id="product-sections">
-        @foreach($products as $category => $categoryProducts)
-            <!-- Filter Card untuk {{ $category }} -->
-            <div class="bg-white p-1 mt-5 product-section" data-category="{{ $category }}" style="display: block">
+        @foreach($products as $kategori => $categoryProducts)
+            <!-- Filter Card untuk {{ $kategori }} -->
+            <div class="bg-white p-1 mt-5 product-section" data-category="{{ $kategori }}" style="display: block">
                 <div class="mt-3">
                     <div class="flex justify-between m-2">
-                        <h1 class="text-neutral-300 font-bold">{{ $category }}</h1>
+                        <h1 class="text-neutral-300 font-bold">{{ $kategori }}</h1>
                         <a href="#" class="text-cyan-600 lihat-semua-link">Lihat Semua</a>
                     </div>
 

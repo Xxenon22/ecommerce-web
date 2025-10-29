@@ -25,11 +25,11 @@
         </div>
 
         <div class="flex items-center justify-between">
-            <a href="{{ route('regis') }}" class="">
+            <a href="{{ route('daftar') }}" class="">
                 <Button class="bg-white text-cyan-600 p-2 px-10 rounded">Daftar</Button>
             </a>
 
-            <a href="{{ route('login') }}">
+            <a href="{{ route('masuk') }}">
                 <Button class="bg-cyan-600 text-white p-2 px-10 rounded">Masuk</Button>
             </a>
         </div>

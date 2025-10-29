@@ -32,16 +32,16 @@
             categoryItems.forEach(item => {
                 item.addEventListener('click', function () {
                     const categoryName = this.querySelector('h3').textContent;
-                    // Redirect to category page with query parameter
-                    window.location.href = `/category?category=${encodeURIComponent(categoryName)}`;
+                    // Redirect to category page with path parameter
+                    window.location.href = `/kategori/${encodeURIComponent(categoryName)}`;
                 });
             });
 
-            function showCategorySection(category) {
+            function showCategorySection(kategori) {
                 productSections.forEach(section => {
-                    if (category === 'Semua') {
+                    if (kategori === 'Semua') {
                         section.style.display = 'block';
-                    } else if (section.getAttribute('data-category') === category) {
+                    } else if (section.getAttribute('data-category') === kategori) {
                         section.style.display = 'block';
                     } else {
                         section.style.display = 'none';
