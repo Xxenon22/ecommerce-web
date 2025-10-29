@@ -7,15 +7,11 @@ Route::get('/', function () {
     return view('startedPage');
 })->name('started');
 
-<<<<<<< HEAD
-Route::get('/category/{category?}', function ($category = null) {
-=======
 Route::get('/beranda', function () {
     return view('home');
 })->name('beranda');
 
 Route::get('/kategori/{kategori?}', function ($kategori = null) {
->>>>>>> style
     $products = [
         'Ikan segar' => [
             ['name' => 'Tuna Steak', 'price' => 'Rp25.000', 'image' => 'assets/cumi-krispy.jpg'],
@@ -44,20 +40,6 @@ Route::get('/akun', function () {
     return view('account');
 })->name('akun');
 
-<<<<<<< HEAD
-// Authentication Routes
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
-Route::get('/registration', [AuthController::class, 'showRegistrationForm'])->name('registration');
-Route::post('/registration', [AuthController::class, 'register']);
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/home', function () {
-        return view('home');
-    })->name('home');
-});
-=======
 Route::get('/masuk', function () {
     return view('login');
 })->name('masuk');
@@ -148,4 +130,3 @@ Route::get('/checkout', function () {
     ];
     return view('checkout', compact('cart'));
 })->name('checkout');
->>>>>>> style

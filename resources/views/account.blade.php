@@ -24,40 +24,6 @@
             <p class="text-white">Produk segar dari nelayan lokal, langsung ke tempat anda</p>
         </div>
 
-<<<<<<< HEAD
-        {{-- Jika BELUM login --}}
-        @guest
-            <div class="flex items-center justify-between">
-                <a href="{{ route('registration') }}">
-                    <button class="bg-white text-cyan-600 p-2 px-10 rounded">Daftar</button>
-                </a>
-
-                <a href="{{ route('login') }}">
-                    <button class="bg-cyan-600 text-white p-2 px-10 rounded">Masuk</button>
-                </a>
-            </div>
-        @endguest
-
-        {{-- Jika SUDAH login --}}
-        @auth
-            <div class="flex flex-col items-center gap-5 text-white">
-                <div class="bg-white/20 backdrop-blur-sm p-6 rounded-2xl w-full max-w-md text-center">
-                    <h2 class="text-xl font-semibold mb-3">Halo, {{ Auth::user()->name }} 👋</h2>
-                    <p class="text-gray-200">Email: {{ Auth::user()->email }}</p>
-
-                    <div class="mt-5">
-                        <a href="{{ route('logout') }}"
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <button class="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600">Keluar</button>
-                        </a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
-                            @csrf
-                        </form>
-                    </div>
-                </div>
-            </div>
-        @endauth
-=======
         <div class="flex items-center justify-between">
             <a href="{{ route('daftar') }}" class="">
                 <Button class="bg-white text-cyan-600 p-2 px-10 rounded">Daftar</Button>
@@ -67,7 +33,6 @@
                 <Button class="bg-cyan-600 text-white p-2 px-10 rounded">Masuk</Button>
             </a>
         </div>
->>>>>>> style
     </div>
 
     {{-- Navbar bawah --}}
