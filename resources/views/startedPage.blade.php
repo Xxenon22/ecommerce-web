@@ -20,7 +20,7 @@
         </div>
 
         <div class="btn">
-            <a href="{{ route('home') }}" class="rounded bg-blue-400 p-3 flex justify-center no-underline">
+            <a href="{{ route('beranda') }}" class="rounded bg-blue-400 p-3 flex justify-center no-underline">
                 <h1 class="font-bold text-white text-xl">Get Started</h1>
             </a>
         </div>

@@ -163,8 +163,12 @@
                     </form>
                 </nav>
             </div>
+<<<<<<< HEAD
         </div>
     </div>
+=======
+        </header>
+>>>>>>> style
 
     <!-- Overlay -->
     <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 transition-opacity duration-300"></div>
@@ -228,7 +232,7 @@
         <section class="mt-10 px-6">
             <div class="flex justify-between items-center mb-4">
                 <h1 class="font-bold text-gray-500">Pilihan Kategori</h1>
-                <a href="{{ route('category') }}" class="text-indigo-500 font-semibold">Lihat Semua</a>
+                <a href="{{ route('kategori') }}" class="text-indigo-500 font-semibold">Lihat Semua</a>
             </div>
             <x-category :cart-count="5" />
         </section>
