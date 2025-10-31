@@ -99,7 +99,12 @@
     </script>
 </head>
 
+<<<<<<< HEAD
 <body class="bg-gray-100 min-h-screen relative">
+=======
+<body class="bg-gray-100 min-h-screen pb-20">
+    <div class="max-w-7xl mx-auto">
+>>>>>>> style
 
     <!-- Sidebar -->
     <div id="sidebar"
@@ -250,7 +255,8 @@
                     </div>
 
                     <div class="flex space-x-6">
-                        <div class="bg-white rounded-xl shadow-md overflow-hidden w-40 md:w-60">
+                        <a href="{{ route('produk', 'Cumi Krispy') }}"
+                            class="bg-white rounded-xl shadow-md overflow-hidden w-40 md:w-60 hover:shadow-lg transition">
                             <img src="{{ asset('assets/cumi-krispy.jpg') }}" alt="Cumi Krispy"
                                 class="w-full h-28 md:h-40 object-cover">
                             <div class="p-4">
@@ -261,7 +267,7 @@
                                     Tambah
                                 </button>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -294,7 +300,8 @@
 
             <div class="grid md:grid-cols-2 gap-4">
                 <!-- Card 1 -->
-                <div class="flex bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
+                <a href="{{ route('edukasi') }}"
+                    class="flex bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
                     <img src="{{ asset('assets/edukasi-ikan.jpg') }}" alt="Cara Menangkap Ikan"
                         class="w-32 h-24 md:w-40 md:h-28 rounded-md object-cover mr-4">
                     <div class="flex flex-col justify-between">
@@ -311,10 +318,11 @@
                             Klik Disini
                         </button>
                     </div>
-                </div>
+                </a>
 
                 <!-- Card 2 -->
-                <div class="flex bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
+                <a href="{{ route('edukasi') }}"
+                    class="flex bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
                     <img src="{{ asset('assets/edukasi-gizi.jpg') }}" alt="Gizi Makanan Laut"
                         class="w-32 h-24 md:w-40 md:h-28 rounded-md object-cover mr-4">
                     <div class="flex flex-col justify-between">
@@ -331,7 +339,7 @@
                             Klik Disini
                         </button>
                     </div>
-                </div>
+                </a>
             </div>
         </section>
 
@@ -343,29 +351,23 @@
             <h1 class="font-extrabold text-lg md:text-xl mb-4">Rekomendasi Resto</h1>
             <div class="grid md:grid-cols-2 gap-4">
                 <!-- Resto 1 -->
-                <div class="flex bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
+                <a href="{{ route('restaurant', 'Layar Seafood 99') }}"
+                    class="flex bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
                     <img src="{{ asset('assets/resto1.jpg') }}" alt="Layar Seafood 99"
                         class="w-32 h-24 md:w-40 md:h-28 rounded-md object-cover mr-4">
-                    <div>
+                    <div class="flex-1">
                         <h2 class="font-semibold text-gray-900 text-base md:text-lg">Layar Seafood 99</h2>
                         <p class="text-gray-500 text-sm leading-snug">
                             Jalan Pesanggrahan Raya No.80,<br>
                             Meruya Utara, West Jakarta 11620
                         </p>
-                    </div>
-                </div>
 
-                <!-- Resto 2 -->
-                <div class="flex bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
-                    <img src="{{ asset('assets/resto2.jpg') }}" alt="Tepian Rasa"
-                        class="w-32 h-24 md:w-40 md:h-28 rounded-md object-cover mr-4">
-                    <div>
-                        <h2 class="font-semibold text-gray-900 text-base md:text-lg">Tepian Rasa</h2>
-                        <p class="text-gray-500 text-sm leading-snug">
-                            Jalan Lombok Nomor 45, Bandung
-                        </p>
+                        <button
+                            class="bg-cyan-600 text-white text-sm font-medium px-4 py-2 rounded-md w-full mt-3 hover:bg-cyan-700">
+                            Kunjungi Restorant
+                        </button>
                     </div>
-                </div>
+                </a>
             </div>
 
         </section>

@@ -65,7 +65,7 @@
     </script>
 </head>
 
-<body class="bg-gray-100 min-h-screen">
+<body class="bg-gray-100 min-h-screen pb-20">
     <div class="header flex items-center justify-between p-4 bg-white shadow-md">
         <div class="flex items-center space-x-2">
             <a href="{{ route('beranda') }}">
