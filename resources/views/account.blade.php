@@ -25,8 +25,8 @@
         </div>
 
         <div class="flex items-center justify-between">
-            <a href="{{ route('daftar') }}" class="">
-                <Button class="bg-white text-cyan-600 p-2 px-10 rounded">Daftar</Button>
+            <a href="{{ route('registration') }}" class="">
+                <Button class="bg-white text-cyan-600 p-2 px-10 rounded">registration</Button>
             </a>
 
             <a href="{{ route('masuk') }}">

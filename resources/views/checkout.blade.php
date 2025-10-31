@@ -54,9 +54,9 @@
 
                 if (isValid) {
                     // Show success message
-                    alert('Pesanan berhasil dibuat! Terima kasih telah berbelanja.');
+                    alert('order berhasil dibuat! Terima kasih telah berbelanja.');
                     // Redirect to order page or home
-                    window.location.href = '{{ route("pesanan") }}';
+                    window.location.href = '{{ route("order") }}';
                 }
             });
         });
@@ -66,7 +66,7 @@
 <body class="bg-gray-100 min-h-screen">
     <div class="header flex items-center justify-between p-4 bg-white shadow-md">
         <div class="flex items-center space-x-2">
-            <a href="{{ route('keranjang') }}">
+            <a href="{{ route('cart') }}">
                 <span class="iconify cursor-pointer" data-icon="weui:back-outlined" data-width="38"
                     data-height="38"></span>
             </a>
@@ -78,7 +78,7 @@
         <form id="checkout-form">
             <!-- Order Summary -->
             <div class="bg-white rounded-lg shadow-md p-4 mb-4">
-                <h2 class="text-lg font-semibold mb-4">Ringkasan Pesanan</h2>
+                <h2 class="text-lg font-semibold mb-4">Ringkasan order</h2>
                 @if(isset($cart) && count($cart) > 0)
                     @foreach($cart as $item)
                         <div class="flex items-center justify-between py-2 border-b border-gray-200 last:border-b-0">
@@ -219,7 +219,7 @@
             <!-- Place Order Button -->
             <button type="submit"
                 class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-4 px-4 rounded-lg transition duration-300 text-lg">
-                Buat Pesanan
+                Buat order
             </button>
         </form>
     </main>

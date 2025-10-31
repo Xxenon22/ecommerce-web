@@ -1,11 +1,11 @@
 <nav
     class="fixed bottom-0 left-0 right-0 bg-white shadow-inner border-t border-gray-200 flex justify-around items-center h-16 z-50">
 
-    <!-- Beranda -->
+    <!-- home -->
     <a href="{{ route('home') }}"
         class="flex flex-col items-center {{ $activeRoute === 'home' ? 'text-blue-600' : 'text-gray-500' }}">
         <span class="iconify" data-icon="mdi:home-outline" data-width="26" data-height="26"></span>
-        <span class="text-xs font-medium mt-1">Beranda</span>
+        <span class="text-xs font-medium mt-1">home</span>
     </a>
 
     <!-- Kategori -->
@@ -15,7 +15,7 @@
         <span class="text-xs font-medium mt-1">Kategori</span>
     </a>
 
-    <!-- Tombol Keranjang Tengah -->
+    <!-- Tombol cart Tengah -->
     <div class="relative flex justify-center items-center w-0">
         <a href="{{ route('cart') }}"
             class="absolute -top-15 bg-blue-600 hover:bg-blue-700 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg transition">
@@ -23,10 +23,10 @@
         </a>
     </div>
 
-    <!-- Pesanan -->
+    <!-- order -->
     <a href="{{ route('order') }}" class="flex flex-col items-center text-gray-500">
         <span class="iconify" data-icon="mdi:clipboard-text-outline" data-width="26" data-height="26"></span>
-        <span class="text-xs font-medium mt-1">Pesanan</span>
+        <span class="text-xs font-medium mt-1">order</span>
     </a>
 
     <!-- Akun -->

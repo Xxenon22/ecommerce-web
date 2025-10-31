@@ -111,7 +111,7 @@ Route::get('cart', function () {
 })->name('cart');
 
 Route::get('/checkout', function () {
-    // Sample cart data for checkout - same as keranjang for now
+    // Sample cart data for checkout - same as cart for now
     $cart = [
         [
             'name' => 'Tuna Steak',

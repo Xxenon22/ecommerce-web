@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pesanan - Fishery Hub</title>
+    <title>order - Fishery Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
@@ -44,8 +44,8 @@
 
                     switch (action) {
                         case 'cancel':
-                            if (confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')) {
-                                alert('Pesanan berhasil dibatalkan');
+                            if (confirm('Apakah Anda yakin ingin membatalkan order ini?')) {
+                                alert('order berhasil dibatalkan');
                                 this.closest('.order-card').remove();
                             }
                             break;
@@ -56,7 +56,7 @@
                             alert('Fitur ulasan sedang dalam pengembangan');
                             break;
                         case 'reorder':
-                            alert('Pesanan akan ditambahkan ke keranjang');
+                            alert('order akan ditambahkan ke cart');
                             break;
                     }
                 });
@@ -68,11 +68,11 @@
 <body class="bg-gray-100 min-h-screen pb-20">
     <div class="header flex items-center justify-between p-4 bg-white shadow-md">
         <div class="flex items-center space-x-2">
-            <a href="{{ route('beranda') }}">
+            <a href="{{ route('home') }}">
                 <span class="iconify cursor-pointer" data-icon="weui:back-outlined" data-width="38"
                     data-height="38"></span>
             </a>
-            <h1 class="font-bold text-xl text-gray-700">Pesanan Saya</h1>
+            <h1 class="font-bold text-xl text-gray-700">order Saya</h1>
         </div>
     </div>
 
@@ -110,7 +110,7 @@
                     <div class="order-card bg-white rounded-lg shadow-md p-4 mb-4" data-order-id="{{ $order['id'] }}">
                         <div class="flex justify-between items-start mb-4">
                             <div>
-                                <h3 class="font-semibold text-gray-800">Pesanan #{{ $order['id'] }}</h3>
+                                <h3 class="font-semibold text-gray-800">order #{{ $order['id'] }}</h3>
                                 <p class="text-sm text-gray-500">{{ $order['date'] }}</p>
                             </div>
                             <span class="px-3 py-1 rounded-full text-xs font-medium
@@ -182,9 +182,9 @@
                 <div class="bg-white rounded-lg shadow-md p-8 text-center">
                     <span class="iconify block mx-auto mb-4 text-gray-400" data-icon="mdi:clipboard-text-outline"
                         data-width="64" data-height="64"></span>
-                    <h2 class="text-xl font-semibold text-gray-700 mb-2">Belum Ada Pesanan</h2>
-                    <p class="text-gray-500 mb-4">Anda belum memiliki pesanan. Mulai berbelanja sekarang!</p>
-                    <a href="{{ route('beranda') }}"
+                    <h2 class="text-xl font-semibold text-gray-700 mb-2">Belum Ada order</h2>
+                    <p class="text-gray-500 mb-4">Anda belum memiliki order. Mulai berbelanja sekarang!</p>
+                    <a href="{{ route('home') }}"
                         class="bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2 px-4 rounded-lg inline-block transition duration-300">
                         Mulai Belanja
                     </a>
@@ -197,8 +197,8 @@
             <div class="bg-white rounded-lg shadow-md p-8 text-center">
                 <span class="iconify block mx-auto mb-4 text-yellow-400" data-icon="mdi:cog-outline" data-width="64"
                     data-height="64"></span>
-                <h2 class="text-xl font-semibold text-gray-700 mb-2">Pesanan Diproses</h2>
-                <p class="text-gray-500">Tidak ada pesanan yang sedang diproses</p>
+                <h2 class="text-xl font-semibold text-gray-700 mb-2">order Diproses</h2>
+                <p class="text-gray-500">Tidak ada order yang sedang diproses</p>
             </div>
         </div>
 
@@ -206,8 +206,8 @@
             <div class="bg-white rounded-lg shadow-md p-8 text-center">
                 <span class="iconify block mx-auto mb-4 text-blue-400" data-icon="mdi:truck-outline" data-width="64"
                     data-height="64"></span>
-                <h2 class="text-xl font-semibold text-gray-700 mb-2">Pesanan Dikirim</h2>
-                <p class="text-gray-500">Tidak ada pesanan yang sedang dikirim</p>
+                <h2 class="text-xl font-semibold text-gray-700 mb-2">order Dikirim</h2>
+                <p class="text-gray-500">Tidak ada order yang sedang dikirim</p>
             </div>
         </div>
 
@@ -215,13 +215,13 @@
             <div class="bg-white rounded-lg shadow-md p-8 text-center">
                 <span class="iconify block mx-auto mb-4 text-green-400" data-icon="mdi:check-circle-outline"
                     data-width="64" data-height="64"></span>
-                <h2 class="text-xl font-semibold text-gray-700 mb-2">Pesanan Selesai</h2>
-                <p class="text-gray-500">Tidak ada pesanan yang sudah selesai</p>
+                <h2 class="text-xl font-semibold text-gray-700 mb-2">order Selesai</h2>
+                <p class="text-gray-500">Tidak ada order yang sudah selesai</p>
             </div>
         </div>
     </main>
 
-    <x-navbar :cart-count="0" :active-route="'pesanan'" />
+    <x-navbar :cart-count="0" :active-route="'order'" />
 </body>
 
 </html>

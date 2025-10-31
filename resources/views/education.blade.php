@@ -15,7 +15,7 @@
 
         <!-- Header -->
         <header class="flex items-center justify-between p-4 bg-white shadow-md sticky top-0 z-20">
-            <a href="{{ route('beranda') }}">
+            <a href="{{ route('home') }}">
                 <span class="iconify cursor-pointer" data-icon="weui:back-outlined" data-width="32"
                     data-height="32"></span>
             </a>

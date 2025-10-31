@@ -66,7 +66,7 @@
 
 <body class="bg-gray-200 pb-20">
     <div class="header flex items-center justify-between p-4">
-        <a href="{{ route('beranda') }}">
+        <a href="{{ route('home') }}">
             <span class="iconify cursor-pointer" data-icon="weui:back-outlined" data-width="38" data-height="38"></span>
         </a>
         <div class="relative flex-1 max-w-md mx-4">

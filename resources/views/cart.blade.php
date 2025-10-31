@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keranjang - Fishery Hub</title>
+    <title>cart - Fishery Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
@@ -68,11 +68,11 @@
 <body class="bg-gray-100 min-h-screen pb-20">
     <div class="header flex items-center justify-between p-4 bg-white shadow-md">
         <div class="flex items-center space-x-2">
-            <a href="{{ route('beranda') }}">
+            <a href="{{ route('home') }}">
                 <span class="iconify cursor-pointer" data-icon="weui:back-outlined" data-width="38"
                     data-height="38"></span>
             </a>
-            <h1 class="font-bold text-xl text-gray-700">Keranjang Belanja</h1>
+            <h1 class="font-bold text-xl text-gray-700">cart Belanja</h1>
         </div>
     </div>
 
@@ -132,9 +132,9 @@
             <div class="bg-white rounded-lg shadow-md p-8 text-center">
                 <span class="iconify block mx-auto mb-4 text-gray-400" data-icon="mdi:cart-outline" data-width="64"
                     data-height="64"></span>
-                <h2 class="text-xl font-semibold text-gray-700 mb-2">Keranjang Kosong</h2>
-                <p class="text-gray-500 mb-4">Belum ada produk di keranjang Anda.</p>
-                <a href="{{ route('beranda') }}"
+                <h2 class="text-xl font-semibold text-gray-700 mb-2">cart Kosong</h2>
+                <p class="text-gray-500 mb-4">Belum ada produk di cart Anda.</p>
+                <a href="{{ route('home') }}"
                     class="bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2 px-4 rounded-lg inline-block transition duration-300">
                     Mulai Belanja
                 </a>
@@ -142,7 +142,7 @@
         @endif
     </main>
 
-    <x-navbar :cart-count="2" :active-route="'keranjang'" />
+    <x-navbar :cart-count="2" :active-route="'cart'" />
 </body>
 
 </html>
