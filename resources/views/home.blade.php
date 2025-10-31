@@ -154,13 +154,7 @@
 
                     <hr class="my-4 border-gray-600">
 
-                    <!-- <form id="logout-form" method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="w-full text-left flex items-center space-x-3 hover:text-red-400">
-                            <span class="iconify" data-icon="mdi:logout" data-width="22"></span>
-                            <span>Log Out</span>
-                        </button>
-                    </form> -->
+
                 </nav>
             </div>
         </div>
