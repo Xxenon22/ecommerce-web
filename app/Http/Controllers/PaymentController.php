@@ -18,7 +18,7 @@ class PaymentController extends Controller
 
     public function createTransaction(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         // Konfigurasi Midtrans
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');

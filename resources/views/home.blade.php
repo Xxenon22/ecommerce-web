@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Fishery Hub</title>
+    <title>Home - AquaTech Fresh</title>
     <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
@@ -129,7 +129,7 @@
 
                 <!-- Navigation -->
                 <nav class="space-y-10 text-sm">
-                    <a href="{{ route('beranda') }}" class="flex items-center space-x-3 hover:text-cyan-400">
+                    <a href="{{ route('home') }}" class="flex items-center space-x-3 hover:text-cyan-400">
                         <span class="iconify" data-icon="mdi:home-outline" data-width="22"></span>
                         <span>Home</span>
                     </a>
@@ -156,22 +156,20 @@
 
                     <hr class="my-4 border-gray-600">
 
-                    <!-- <form id="logout-form" method="POST" action="{{ route('logout') }}">
+                    <form id="logout-form" method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="w-full text-left flex items-center space-x-3 hover:text-red-400">
                             <span class="iconify" data-icon="mdi:logout" data-width="22"></span>
                             <span>Log Out</span>
                         </button>
-                    </form> -->
+                    </form>
                 </nav>
             </div>
         </div>
     </div>
-    </header>
 
     <!-- Overlay -->
-    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 transition-opacity duration-300">
-    </div>
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 transition-opacity duration-300"></div>
 
     <!-- Header -->
     <header class="flex items-center justify-between p-4 bg-white shadow-md sticky top-0 z-20">
@@ -232,7 +230,7 @@
         <section class="mt-10 px-6">
             <div class="flex justify-between items-center mb-4">
                 <h1 class="font-bold text-gray-500">Pilihan Kategori</h1>
-                <a href="{{ route('kategori') }}" class="text-indigo-500 font-semibold">Lihat Semua</a>
+                <a href="{{ route('category') }}" class="text-indigo-500 font-semibold">Lihat Semua</a>
             </div>
             <x-category :cart-count="5" />
         </section>
@@ -243,7 +241,7 @@
                 <h1 class="font-extrabold text-xl md:text-2xl">Spesial Hari Ini</h1>
                 <p class="text-indigo-500 font-medium cursor-pointer">Lihat Semua</p>
             </div>
-            <p class="font-bold text-neutral-400 mb-4">Promo menarik dari Fishery Hub untuk kamu</p>
+            <p class="font-bold text-neutral-400 mb-4">Promo menarik dari AquaTech Fresh untuk kamu</p>
 
             <div class="relative w-full h-96 md:h-[450px] overflow-hidden shadow-lg rounded-2xl bg-white">
                 <img src="{{ asset('assets/bg-pasar-ikan.jpg') }}" alt="Banner Ikan"
@@ -305,8 +303,7 @@
                         class="w-32 h-24 md:w-40 md:h-28 rounded-md object-cover mr-4">
                     <div class="flex flex-col justify-between">
                         <div>
-                            <h2 class="font-semibold text-gray-900 text-base md:text-lg">Cara menangkap ikan yang
-                                benar
+                            <h2 class="font-semibold text-gray-900 text-base md:text-lg">Cara menangkap ikan yang benar
                             </h2>
                             <p class="text-gray-500 text-sm leading-tight">Gimana sih caranya? sesuai peraturan yang
                                 ada
@@ -328,8 +325,7 @@
                             <h2 class="font-semibold text-gray-900 text-base md:text-lg">
                                 Pentingnya Gizi Makanan Laut seperti....
                             </h2>
-                            <p class="text-gray-500 text-sm leading-tight">Apa saja sih kelebihannya mengonsumsi
-                                nya?
+                            <p class="text-gray-500 text-sm leading-tight">Apa saja sih kelebihannya mengonsumsi nya?
                             </p>
                         </div>
                         <button
@@ -377,13 +373,42 @@
         </section>
 
     </main>
-    
     <x-navbar :cart-count="5" :active-route="'home'" class="block md:hidden" />
     <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
         data-client-key="{{ config('midtrans.client_key') }}"></script>
+
     <script>
-        document.getElementById('pay-button').onclick = function() {
-        };
+        document.getElementById('pay-button').addEventListener('click', async function() {
+            const response = await fetch('/api/midtrans/transaction', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    amount: 50000,
+                    name: 'Veria Raja',
+                    email: 'veria@example.com',
+                    phone: '08123456789',
+                })
+            });
+
+            const data = await response.json();
+            snap.pay(data.snap_token, {
+                onSuccess: function(result) {
+                    console.log(result);
+                },
+                onPending: function(result) {
+                    console.log(result);
+                },
+                onError: function(result) {
+                    console.log(result);
+                },
+                onClose: function() {
+                    alert('Transaksi dibatalkan.');
+                }
+            });
+        });
     </script>
 
 </body>

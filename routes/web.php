@@ -7,11 +7,11 @@ Route::get('/', function () {
     return view('startedPage');
 })->name('started');
 
-Route::get('/beranda', function () {
+Route::get('/home', function () {
     return view('home');
-})->name('beranda');
+})->name('home');
 
-Route::get('/kategori/{kategori?}', function ($kategori = null) {
+Route::get('/category/{category?}', function ($category = null) {
     $products = [
         'Ikan segar' => [
             ['name' => 'Tuna Steak', 'price' => 'Rp25.000', 'image' => 'assets/cumi-krispy.jpg'],
@@ -32,23 +32,23 @@ Route::get('/kategori/{kategori?}', function ($kategori = null) {
             ['name' => 'Clam Shell', 'price' => 'Rp12.000', 'image' => 'assets/cumi-krispy.jpg'],
         ],
     ];
-    return view('category', compact('products', 'kategori'));
-})->name('kategori');
+    return view('category', compact('products', 'category'));
+})->name('category');
 
 
-Route::get('/akun', function () {
+Route::get('/account', function () {
     return view('account');
-})->name('akun');
+})->name('account');
 
-Route::get('/masuk', function () {
+Route::get('/login', function () {
     return view('login');
-})->name('masuk');
+})->name('login');
 
-Route::get('/daftar', function () {
-    return view('regis');
-})->name('daftar');
+Route::get('/registration', function () {
+    return view('registration');
+})->name('registration');
 
-Route::get('/pesanan', function () {
+Route::get('/order', function () {
     // Sample orders data - replace with actual order logic later
     $orders = [
         [
@@ -87,9 +87,9 @@ Route::get('/pesanan', function () {
         ]
     ];
     return view('order', compact('orders'));
-})->name('pesanan');
+})->name('order');
 
-Route::get('keranjang', function () {
+Route::get('cart', function () {
     // Sample cart data - replace with actual cart logic later
     $cart = [
         [
@@ -107,8 +107,8 @@ Route::get('keranjang', function () {
             'description' => 'Premium salmon fillet'
         ]
     ];
-    return view('keranjang', compact('cart'));
-})->name('keranjang');
+    return view('cart', compact('cart'));
+})->name('cart');
 
 Route::get('/checkout', function () {
     // Sample cart data for checkout - same as keranjang for now
@@ -130,3 +130,16 @@ Route::get('/checkout', function () {
     ];
     return view('checkout', compact('cart'));
 })->name('checkout');
+
+// Authentication Routes
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/registration', [AuthController::class, 'showRegistrationForm'])->name('registration');
+Route::post('/registration', [AuthController::class, 'register']);
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', function () {
+        return view('home');
+    })->name('home');
+});
