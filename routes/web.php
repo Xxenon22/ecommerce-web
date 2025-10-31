@@ -129,3 +129,90 @@ Route::get('/checkout', function () {
     ];
     return view('checkout', compact('cart'));
 })->name('checkout');
+
+Route::get('/produk/{name}', function ($name) {
+    // Sample product data - replace with actual product logic later
+    $products = [
+        'Cumi Krispy' => [
+            'name' => 'Cumi Krispy',
+            'price' => 'Rp15.000',
+            'image' => 'assets/cumi-krispy.jpg',
+            'description' => 'Cumi yang digoreng crispy dengan bumbu rahasia, cocok untuk camilan atau lauk.',
+            'restaurant' => [
+                'name' => 'Layar Seafood 99',
+                'image' => 'assets/resto1.jpg',
+                'address' => 'Jalan Pesanggrahan Raya No.80, Meruya Utara, West Jakarta 11620'
+            ]
+        ],
+        'Salmon Fillet' => [
+            'name' => 'Salmon Fillet',
+            'price' => 'Rp30.000',
+            'image' => 'assets/cumi-krispy.jpg',
+            'description' => 'Premium salmon fillet, segar dan berkualitas tinggi.',
+            'restaurant' => [
+                'name' => 'Tepian Rasa',
+                'image' => 'assets/resto2.jpg',
+                'address' => 'Jalan Lombok Nomor 45, Bandung'
+            ]
+        ],
+        // Add more products as needed
+    ];
+
+    $product = $products[$name] ?? null;
+    if (!$product) {
+        abort(404);
+    }
+
+    return view('product', compact('product'));
+})->name('produk');
+
+Route::get('/edukasi/cara-menangkap-ikan', function () {
+    return view('edukasi');
+})->name('edukasi');
+
+Route::get('/restaurant/{name}', function ($name) {
+    // Sample restaurant data - replace with actual restaurant logic later
+    $restaurants = [
+        'Layar Seafood 99' => [
+            'name' => 'Layar Seafood 99',
+            'image' => 'assets/resto1.jpg',
+            'address' => 'Jalan Pesanggrahan Raya No.80, Meruya Utara, West Jakarta 11620',
+            'products' => [
+                [
+                    'name' => 'Cumi Krispy',
+                    'price' => 'Rp15.000',
+                    'image' => 'assets/cumi-krispy.jpg'
+                ],
+                [
+                    'name' => 'Tuna Steak',
+                    'price' => 'Rp25.000',
+                    'image' => 'assets/cumi-krispy.jpg'
+                ]
+            ]
+        ],
+        'Tepian Rasa' => [
+            'name' => 'Tepian Rasa',
+            'image' => 'assets/resto2.jpg',
+            'address' => 'Jalan Lombok Nomor 45, Bandung',
+            'products' => [
+                [
+                    'name' => 'Salmon Fillet',
+                    'price' => 'Rp30.000',
+                    'image' => 'assets/cumi-krispy.jpg'
+                ],
+                [
+                    'name' => 'Blue Crab',
+                    'price' => 'Rp35.000',
+                    'image' => 'assets/cumi-krispy.jpg'
+                ]
+            ]
+        ]
+    ];
+
+    $restaurant = $restaurants[$name] ?? null;
+    if (!$restaurant) {
+        abort(404);
+    }
+
+    return view('restaurant', compact('restaurant'));
+})->name('restaurant');

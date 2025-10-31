@@ -65,7 +65,7 @@
     </script>
 </head>
 
-<body class="bg-gray-100 min-h-screen">
+<body class="bg-gray-100 min-h-screen pb-20">
     <div class="header flex items-center justify-between p-4 bg-white shadow-md">
         <div class="flex items-center space-x-2">
             <a href="{{ route('beranda') }}">
@@ -114,10 +114,10 @@
                                 <p class="text-sm text-gray-500">{{ $order['date'] }}</p>
                             </div>
                             <span class="px-3 py-1 rounded-full text-xs font-medium
-                                        @if($order['status'] == 'Diproses') bg-yellow-100 text-yellow-800
-                                        @elseif($order['status'] == 'Dikirim') bg-blue-100 text-blue-800
-                                        @elseif($order['status'] == 'Selesai') bg-green-100 text-green-800
-                                        @else bg-gray-100 text-gray-800 @endif">
+                                                @if($order['status'] == 'Diproses') bg-yellow-100 text-yellow-800
+                                                @elseif($order['status'] == 'Dikirim') bg-blue-100 text-blue-800
+                                                @elseif($order['status'] == 'Selesai') bg-green-100 text-green-800
+                                                @else bg-gray-100 text-gray-800 @endif">
                                 {{ $order['status'] }}
                             </span>
                         </div>
