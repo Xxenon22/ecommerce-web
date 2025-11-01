@@ -343,9 +343,6 @@
 
         <!-- Rekomendasi Resto -->
         <section class="px-6 my-10">
-            <button id="pay-button"
-                class="my-5 mb-10 bg-cyan-600 text-white font-semibold px-6 py-2 rounded-full shadow-md transition hover:bg-cyan-700">Bayar
-                Sekarang</button>
             <h1 class="font-extrabold text-lg md:text-xl mb-4">Rekomendasi Resto</h1>
             <div class="grid md:grid-cols-2 gap-4">
                 <!-- Resto 1 -->
@@ -372,42 +369,7 @@
 
     </main>
     <x-navbar :cart-count="5" :active-route="'home'" class="block md:hidden" />
-    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
-        data-client-key="{{ config('midtrans.client_key') }}"></script>
-
-    <script>
-        document.getElementById('pay-button').addEventListener('click', async function() {
-            const response = await fetch('/api/midtrans/transaction', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({
-                    amount: 50000,
-                    name: 'Veria Raja',
-                    email: 'veria@example.com',
-                    phone: '08123456789',
-                })
-            });
-
-            const data = await response.json();
-            snap.pay(data.snap_token, {
-                onSuccess: function(result) {
-                    console.log(result);
-                },
-                onPending: function(result) {
-                    console.log(result);
-                },
-                onError: function(result) {
-                    console.log(result);
-                },
-                onClose: function() {
-                    alert('Transaksi dibatalkan.');
-                }
-            });
-        });
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 </body>
 

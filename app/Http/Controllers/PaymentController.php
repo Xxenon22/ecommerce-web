@@ -24,7 +24,11 @@ class PaymentController extends Controller
         Config::$isProduction = config('midtrans.is_production');
         Config::$isSanitized = config('midtrans.is_sanitized');
         Config::$is3ds = config('midtrans.is_3ds');
-
+        Config::$curlOptions = array(
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_HTTPHEADER => [],
+        );
         // Data transaksi
         $orderId = 'ORDER-' . time();
 
@@ -35,8 +39,8 @@ class PaymentController extends Controller
             ],
             'customer_details' => [
                 'first_name' => $request->name,
-                'email' => $request->email,
-                'phone' => $request->phone,
+                // 'email' => $request->email,
+                // 'phone' => $request->phone,
             ],
         ];
 

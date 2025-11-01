@@ -9,11 +9,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Payment method selection
             const paymentMethods = document.querySelectorAll('input[name="payment_method"]');
             paymentMethods.forEach(method => {
-                method.addEventListener('change', function () {
+                method.addEventListener('change', function() {
                     // Hide all payment details
                     document.querySelectorAll('.payment-details').forEach(detail => {
                         detail.classList.add('hidden');
@@ -29,7 +29,7 @@
 
             // Form validation
             const checkoutForm = document.getElementById('checkout-form');
-            checkoutForm.addEventListener('submit', function (e) {
+            checkoutForm.addEventListener('submit', function(e) {
                 e.preventDefault();
 
                 // Basic validation
@@ -56,7 +56,7 @@
                     // Show success message
                     alert('order berhasil dibuat! Terima kasih telah berbelanja.');
                     // Redirect to order page or home
-                    window.location.href = '{{ route("order") }}';
+                    window.location.href = '{{ route('order') }}';
                 }
             });
         });
@@ -79,8 +79,8 @@
             <!-- Order Summary -->
             <div class="bg-white rounded-lg shadow-md p-4 mb-4">
                 <h2 class="text-lg font-semibold mb-4">Ringkasan order</h2>
-                @if(isset($cart) && count($cart) > 0)
-                    @foreach($cart as $item)
+                @if (isset($cart) && count($cart) > 0)
+                    @foreach ($cart as $item)
                         <div class="flex items-center justify-between py-2 border-b border-gray-200 last:border-b-0">
                             <div class="flex items-center space-x-3">
                                 <img src="{{ asset($item['image']) }}" alt="{{ $item['name'] }}"
@@ -111,6 +111,7 @@
                         <div class="flex justify-between items-center">
                             <span class="text-lg font-bold">Total</span>
                             <span class="text-lg font-bold text-red-500">Rp98.000</span>
+                            <input type="hidden" name="total" value="98000" id="total">
                         </div>
                     </div>
                 @endif
@@ -136,11 +137,11 @@
                     </div>
 
                     <div>
-                        <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap</label>
+                        <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Alamat
+                            Lengkap</label>
                         <textarea id="address" name="address" rows="3"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Masukkan alamat lengkap pengiriman"
-                            required>{{ Auth::user()->address ?? '' }}</textarea>
+                            placeholder="Masukkan alamat lengkap pengiriman" required>{{ Auth::user()->address ?? '' }}</textarea>
                     </div>
 
                     <div>
@@ -154,7 +155,7 @@
             </div>
 
             <!-- Payment Method -->
-            <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+            {{-- <div class="bg-white rounded-lg shadow-md p-4 mb-4">
                 <h2 class="text-lg font-semibold mb-4">Metode Pembayaran</h2>
 
                 <div class="space-y-3">
@@ -214,15 +215,48 @@
                 <div id="cod-details" class="payment-details hidden mt-4 p-4 bg-gray-50 rounded-md">
                     <p class="text-sm text-gray-600">Pembayaran dilakukan saat barang diterima di alamat tujuan.</p>
                 </div>
-            </div>
+            </div> --}}
 
             <!-- Place Order Button -->
             <button type="submit"
-                class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-4 px-4 rounded-lg transition duration-300 text-lg">
+                class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-4 px-4 rounded-lg transition duration-300 text-lg" id="pay-button">
                 Buat order
             </button>
         </form>
     </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('midtrans.client_key') }}"></script>
+
+    <script>
+        $('#pay-button').click(function(event) {
+            event.preventDefault();
+
+            $.post("{{ route('mid.pay') }}", {
+                _method: 'POST',
+                _token: '{{ csrf_token() }}',
+                name: $('#name').val(),
+                phone: $('#phone').val(),
+                address: $('#address').val(),
+                notes: $('#notes').val(),
+                amount: $('#total').val(),
+            }, function(data, status) {
+                snap.pay(data.snap_token, {
+                    onSuccess: function(result) {
+                        location.reload();
+                    },
+                    onPending: function(result) {
+                        location.reload();
+                    },
+                    onError: function(result) {
+                        location.reload();
+                    },
+                });
+                return false;
+            });
+        });
+    </script>
 </body>
 
 </html>
