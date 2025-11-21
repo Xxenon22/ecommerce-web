@@ -19,7 +19,7 @@
         <div class="relative flex-1 max-w-md mx-4">
             <input type="text" placeholder="Cari produk segar disini..."
                 class="w-full px-4 py-2 pl-10 pr-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            <span class="iconify absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            <span class="ico=nify absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                 data-icon="mdi:magnify" data-width="20" data-height="20"></span>
         </div>
 
