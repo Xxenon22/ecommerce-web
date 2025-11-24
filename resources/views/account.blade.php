@@ -29,8 +29,8 @@
                 <Button class="bg-white text-cyan-600 p-2 px-10 rounded">registration</Button>
             </a>
 
-            <a href="{{ route('masuk') }}">
-                <Button class="bg-cyan-600 text-white p-2 px-10 rounded">Masuk</Button>
+            <a href="{{ route('login') }}">
+                <Button class="bg-cyan-600 text-white p-2 px-10 rounded">login</Button>
             </a>
         </div>
     </div>

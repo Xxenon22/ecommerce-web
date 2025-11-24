@@ -141,7 +141,7 @@
                             Lengkap</label>
                         <textarea id="address" name="address" rows="3"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Masukkan alamat lengkap pengiriman" required>{{ Auth::user()->address ?? '' }}</textarea>
+                            placeholder="loginkan alamat lengkap pengiriman" required>{{ Auth::user()->address ?? '' }}</textarea>
                     </div>
 
                     <div>

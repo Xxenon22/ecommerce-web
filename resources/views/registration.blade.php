@@ -51,7 +51,7 @@
                     registration
                 </Button>
                 <p class="text-white font-bold">Sudah Punya Akun? <a href="{{ route('login') }}"
-                        class="underline text-cyan-500">Masuk kesini ya!</a></p>
+                        class="underline text-cyan-500">login kesini ya!</a></p>
             </form>
 
         </div>

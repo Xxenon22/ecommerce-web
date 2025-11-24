@@ -39,7 +39,7 @@
 
                     <h2 class="text-xl font-semibold text-gray-900 mb-2">1. Pahami Peraturan Lokal</h2>
                     <p class="text-gray-600 mb-4">Sebelum memulai, pastikan Anda mengetahui peraturan penangkapan ikan
-                        di daerah tersebut. Ini termasuk batas ukuran ikan yang boleh ditangkap, musim penangkapan, dan
+                        di daerah tersebut. Ini terlogin batas ukuran ikan yang boleh ditangkap, musim penangkapan, dan
                         jenis alat yang diperbolehkan.</p>
 
                     <h2 class="text-xl font-semibold text-gray-900 mb-2">2. Gunakan Alat yang Tepat</h2>

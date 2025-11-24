@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Admin\CategoryProductController;
 
 Route::get('/', function () {
     return view('startedPage');
@@ -142,7 +144,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', function () {
         return view('home');
     })->name('home');
+
+    Route::prefix('admin')->group(function () {
+        Route::get('/category', [CategoryController::class, 'index'])->name('admin.category.index');
+    });
 });
+
 Route::get('/produk/{name}', function ($name) {
     // Sample product data - replace with actual product logic later
     $products = [

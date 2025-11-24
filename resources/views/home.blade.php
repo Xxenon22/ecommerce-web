@@ -103,9 +103,7 @@
     <div class="max-w-7xl mx-auto">
 
     <!-- Sidebar -->
-    <div id="sidebar"
-        class="fixed inset-0 bg-[#0A2540] text-white transform -translate-x-full transition-transform duration-300 z-50 flex
-    flex-col justify-between">
+    <div id="sidebar" class="fixed inset-0 bg-[#0A2540] text-white transform -translate-x-full transition-transform duration-300 z-50 flex flex-col justify-between">
         <div class="p-6 relative h-full flex flex-col justify-between">
             <!-- Header -->
             <div>
@@ -134,6 +132,13 @@
                         <span class="iconify" data-icon="mdi:home-outline" data-width="22"></span>
                         <span>Home</span>
                     </a>
+
+                    {{-- Admin Page --}}
+                    <a href="{{ route('admin.category.index') }}" class="flex items-center space-x-3 hover:text-cyan-400">
+                        <span class="iconify" data-icon="mdi:folder-multiple-outline" data-width="22"></span>
+                        <span>Category Product</span>
+                    </a>
+
                     <a href="#" class="flex items-center space-x-3 hover:text-cyan-400">
                         <span class="iconify" data-icon="mdi:history" data-width="22"></span>
                         <span>History</span>
