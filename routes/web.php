@@ -38,9 +38,8 @@ Route::get('/category/{category?}', function ($category = null) {
 })->name('category');
 
 
-Route::get('/account', function () {
-    return view('account');
-})->name('account');
+Route::get('/account', [AuthController::class, 'showProfile'])->name('account');
+Route::post('/account', [AuthController::class, 'updateProfile'])->name('account.update');
 
 Route::get('/login', function () {
     return view('login');
@@ -49,6 +48,12 @@ Route::get('/login', function () {
 Route::get('/registration', function () {
     return view('registration');
 })->name('registration');
+
+Route::get('/register-restaurant', [AuthController::class, 'showRestaurantRegistrationForm'])->name('register.restaurant');
+Route::post('/register-restaurant', [AuthController::class, 'registerRestaurant'])->name('register.restaurant.store');
+
+Route::get('/login-restaurant', [AuthController::class, 'showRestaurantLoginForm'])->name('login.restaurant');
+Route::post('/login-restaurant', [AuthController::class, 'login'])->name('login.restaurant.store');
 
 Route::get('/order', function () {
     // Sample orders data - replace with actual order logic later
@@ -236,3 +241,24 @@ Route::get('/restaurant/{name}', function ($name) {
 
     return view('restaurant', compact('restaurant'));
 })->name('restaurant');
+
+use App\Http\Controllers\ProductController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home-resto', [ProductController::class, 'index'])->name('home-resto');
+    Route::get('/tambah-menu', [ProductController::class, 'create'])->name('tambah-menu');
+    Route::post('/tambah-menu', [ProductController::class, 'store'])->name('tambah-menu.store');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profil-resto', [AuthController::class, 'showRestaurantProfile'])->name('profileResto');
+    Route::post('/profil-resto', [AuthController::class, 'updateRestaurantProfile'])->name('profileResto.update');
+});
+
+Route::get('/login-resto', function () {
+    return view('loginResto');
+})->name('loginResto');
+
+Route::get('/regis-resto', function () {
+    return view('regisResto');
+})->name('regisResto');
