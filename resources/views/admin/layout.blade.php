@@ -134,7 +134,7 @@
                         </a>
 
                         {{-- Admin Page --}}
-                        <a href="{{ route('admin.category.index') }}"
+                        <a href="/admin/category"
                             class="flex items-center space-x-3 hover:text-cyan-400">
                             <span class="iconify" data-icon="mdi:folder-multiple-outline" data-width="22"></span>
                             <span>Category Product</span>

@@ -8,13 +8,21 @@
         <div class="mt-6 flex gap-6 items-start">
             <!-- Form Input 25% -->
             <div class="w-1/4 bg-white rounded-xl shadow-md p-6 space-y-4">
-                <form action="#" method="POST">
+                <form action="/admin/category" method="POST">
                     @csrf
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Category Name</label>
                         <input type="text" id="name" name="name" placeholder="Enter category name"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A2540] focus:border-transparent transition"
                             required />
+                    </div>
+                    <div>
+                        <label for="icon" class="block text-sm font-medium text-gray-700 mb-1">Icon</label>
+                        <input type="text" id="icon" name="icon" placeholder="Enter icon tag (MDI)"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A2540] focus:border-transparent transition"
+                            required />
+                        <small class="text-xs text-gray-500">e.g. mdi:home or <a href="https://icon-sets.iconify.design/"
+                                target="_blank">https://icon-sets.iconify.design/</a></small>
                     </div>
                     <button type="submit"
                         class="w-full bg-[#0A2540] text-white py-2 my-2 px-4 rounded-lg hover:bg-opacity-90 transition duration-200 font-medium">
@@ -39,33 +47,102 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Category Name</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Icon</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Actions</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse($categories as $category)
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $loop->iteration + ($categories->currentPage() - 1) * $categories->perPage() }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $category->name }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm space-x-2">
-                                <button class="text-indigo-600 hover:text-indigo-900">Edit</button>
-                                <button class="text-red-600 hover:text-red-900">Delete</button>
-                            </td>
-                        </tr>
+                            <tr class="show" data-id="{{ $category->id }}">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    {{ $loop->iteration }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $category->name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    <span class="iconify" data-icon="{{ $category->icon }}" data-width="22"></span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm space-x-2">
+                                    <a href="#"
+                                        class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded cursor-pointer btn-edit">Edit</a>
+                                    <form action="{{ url('/admin/category', $category->id) }}" method="POST"
+                                        class="inline"
+                                        onsubmit="return confirm('Are you sure you want to delete this category?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded cursor-pointer">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr class="edit" style="display: none;" data-id="{{ $category->id }}">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    {{ $loop->iteration }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    <input type="text" name="name" value="{{ $category->name }}"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A2540] focus:border-transparent transition" />
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    <input type="text" name="icon" value="{{ $category->icon }}"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A2540] focus:border-transparent transition" />
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm space-x-2">
+                                    <button
+                                        class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded cursor-pointer btn-update">Update</button>
+                                </td>
+                            </tr>
                         @empty
-                        <tr>
-                            <td colspan="3" class="px-6 py-4 text-center text-sm text-gray-500">No categories found.</td>
-                        </tr>
+                            <tr>
+                                <td colspan="3" class="px-6 py-4 text-center text-sm text-gray-500">No categories found.
+                                </td>
+                            </tr>
                         @endforelse
                     </tbody>
                 </table>
 
                 <!-- Pagination links -->
                 <div class="px-6 py-4 border-t border-gray-200">
-                    {{ $categories->links() }}
+                    {{-- {{ $categories->links() }} --}}
                 </div>
             </div>
 
+            <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+                integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+            <script>
+                $(document).ready(function() {
+                    $('.btn-edit').click(function() {
+                        $(this).closest('tr.show').hide();
+                        $(this).closest('tr.show').next('tr.edit').show();
+                    });
+                    $('.btn-update').click(function() {
+                        const editRow = $(this).closest('tr.edit');
+                        const id = editRow.data('id');
+                        const name = editRow.find('input[name="name"]').val();
+                        const icon = editRow.find('input[name="icon"]').val();
+
+                        $.ajax({
+                            url: `/admin/category/${id}`,
+                            method: 'PUT',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                name: name,
+                                icon: icon
+                            },
+                            success: function() {
+                                // Update the display row with new values
+                                const showRow = editRow.prev('tr.show');
+                                showRow.find('td:eq(1)').text(name);
+                                showRow.find('td:eq(2) .iconify').attr('data-icon', icon);
+                                // Toggle visibility
+                                editRow.hide();
+                                showRow.show();
+                            },
+                            error: function() {
+                                alert('Update failed');
+                            }
+                        });
+                    });
+                });
+            </script>
             <!-- Simple client-side search script -->
             <script>
                 document.getElementById('searchCategory').addEventListener('input', function() {

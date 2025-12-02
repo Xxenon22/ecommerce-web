@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\CategoryProduct;
 use Illuminate\Http\Request;
 
 class CategoryProductController extends Controller
@@ -12,7 +13,8 @@ class CategoryProductController extends Controller
      */
     public function index()
     {
-        //
+        $categories = CategoryProduct::all();
+        return view('admin.category.index', compact('categories'));
     }
 
     /**
@@ -28,7 +30,14 @@ class CategoryProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'icon' => 'required|string|max:255',
+        ]);
+
+        CategoryProduct::create($request->all());
+
+        return redirect('/admin/category')->with('success', 'Category created successfully.');
     }
 
     /**
@@ -60,6 +69,18 @@ class CategoryProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $category = CategoryProduct::findOrFail($id);
+        $category->delete();
+
+        return redirect('/admin/category')->with('success', 'Category deleted successfully.');
+    }
+
+    public function inlineUpdate(Request $request, $id)
+    {
+        $category = CategoryProduct::findOrFail($id);
+        $category->{$request->field} = $request->value;
+        $category->save();
+
+        return response()->json(['success' => true]);
     }
 }

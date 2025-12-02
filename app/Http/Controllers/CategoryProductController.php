@@ -12,7 +12,7 @@ class CategoryProductController extends Controller
      */
     public function index()
     {
-        //
+        return 'asdasa';
     }
 
     /**

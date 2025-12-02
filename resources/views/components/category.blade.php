@@ -33,7 +33,7 @@
                 item.addEventListener('click', function () {
                     const categoryName = this.querySelector('h3').textContent;
                     // Redirect to category page with path parameter
-                    window.location.href = `/kategori/${encodeURIComponent(categoryName)}`;
+                    window.location.href = `/category/${encodeURIComponent(categoryName)}`;
                 });
             });
 
