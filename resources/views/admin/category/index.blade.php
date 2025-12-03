@@ -64,8 +64,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm space-x-2">
                                     <a href="#"
                                         class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded cursor-pointer btn-edit">Edit</a>
-                                    <form action="{{ url('/admin/category', $category->id) }}" method="POST"
-                                        class="inline"
+                                    <form action="{{ url('/admin/category', $category->id) }}" method="POST" class="inline"
                                         onsubmit="return confirm('Are you sure you want to delete this category?');">
                                         @csrf
                                         @method('DELETE')
@@ -88,6 +87,8 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm space-x-2">
                                     <button
                                         class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded cursor-pointer btn-update">Update</button>
+                                    <button
+                                        class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded cursor-pointer btn-cancel">Cancel</button>
                                 </td>
                             </tr>
                         @empty
@@ -141,6 +142,10 @@
                             }
                         });
                     });
+                    $('.btn-cancel').click(function() {
+                        $(this).closest('tr.edit').hide();
+                        $(this).closest('tr.edit').prev('tr.show').show();
+                    });
                 });
             </script>
             <!-- Simple client-side search script -->
@@ -148,7 +153,16 @@
                 document.getElementById('searchCategory').addEventListener('input', function() {
                     const filter = this.value.toLowerCase();
                     const rows = document.querySelectorAll('#categoryTable tbody tr');
+
                     rows.forEach(row => {
+
+                        // Jika baris ini adalah .edit → selalu sembunyikan
+                        if (row.classList.contains('edit')) {
+                            row.style.display = 'none';
+                            return;
+                        }
+
+                        // Jika bukan .edit → jalankan filter seperti biasa
                         const text = row.textContent.toLowerCase();
                         row.style.display = text.includes(filter) ? '' : 'none';
                     });

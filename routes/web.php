@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\Admin\CategoryProductController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\CategoryProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -168,6 +169,6 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::view('/dashboard', 'admin.dashboard')->name('admin.dashboard');
     Route::resource('/category', CategoryProductController::class);
-    Route::patch('/category/inline-update/{id}', [CategoryProductController::class, 'inlineUpdate']);
+    Route::resource('/user', UserController::class);
 
 });

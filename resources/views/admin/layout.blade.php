@@ -134,6 +134,11 @@
                         </a>
 
                         {{-- Admin Page --}}
+                        <a href="/admin/user"
+                            class="flex items-center space-x-3 hover:text-cyan-400">
+                            <span class="iconify" data-icon="mdi:account-group-outline" data-width="22"></span>
+                            <span>User</span>
+                        </a>
                         <a href="/admin/category"
                             class="flex items-center space-x-3 hover:text-cyan-400">
                             <span class="iconify" data-icon="mdi:folder-multiple-outline" data-width="22"></span>

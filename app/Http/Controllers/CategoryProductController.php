@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\CategoryProduct;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,8 @@ class CategoryProductController extends Controller
      */
     public function index()
     {
-        return 'asdasa';
+        $categories = CategoryProduct::all();
+        return view('admin.category.index', compact('categories'));
     }
 
     /**
@@ -28,13 +30,20 @@ class CategoryProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'icon' => 'required|string|max:255',
+        ]);
+
+        CategoryProduct::create($request->all());
+
+        return redirect('/admin/category')->with('success', 'Category created successfully.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(CategoryProduct $categoryProduct)
+    public function show(string $id)
     {
         //
     }
@@ -42,7 +51,7 @@ class CategoryProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CategoryProduct $categoryProduct)
+    public function edit(string $id)
     {
         //
     }
@@ -50,7 +59,7 @@ class CategoryProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CategoryProduct $categoryProduct)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,8 +67,20 @@ class CategoryProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CategoryProduct $categoryProduct)
+    public function destroy(string $id)
     {
-        //
+        $category = CategoryProduct::findOrFail($id);
+        $category->delete();
+
+        return redirect('/admin/category')->with('success', 'Category deleted successfully.');
+    }
+
+    public function inlineUpdate(Request $request, $id)
+    {
+        $category = CategoryProduct::findOrFail($id);
+        $category->{$request->field} = $request->value;
+        $category->save();
+
+        return response()->json(['success' => true]);
     }
 }
