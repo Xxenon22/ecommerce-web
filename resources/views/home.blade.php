@@ -104,7 +104,7 @@
 
         <!-- Sidebar -->
         <div id="sidebar" class="fixed inset-0 bg-[#0A2540] text-white transform -translate-x-full transition-transform duration-300 z-50 flex
-    flex-col justify-between">
+    flex-col justify-between md:hidden">
             <div class="p-6 relative h-full flex flex-col justify-between">
                 <!-- Header -->
                 <div>
@@ -173,8 +173,8 @@
         <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 transition-opacity duration-300">
         </div>
 
-        <!-- Header -->
-        <header class="flex items-center justify-between p-4 bg-white shadow-md sticky top-0 z-20">
+        <!-- Mobile Header -->
+        <header class="flex items-center justify-between p-4 bg-white shadow-md sticky top-0 z-20 md:hidden">
             <button id="open-sidebar">
                 <span class="iconify" data-icon="mdi:menu" data-width="32" data-height="32"></span>
             </button>
@@ -187,84 +187,139 @@
             </div>
         </header>
 
+        <!-- Desktop Header -->
+        <header class="hidden md:flex items-center justify-between p-6 bg-white shadow-md sticky top-0 z-20">
+            <div class="flex items-center space-x-6">
+                <div class="text-2xl font-bold text-blue-600">AquaTech Fresh</div>
+                <nav class="flex space-x-6">
+                    <a href="{{ route('home') }}" class="text-gray-700 hover:text-blue-600 font-medium">Home</a>
+                    <a href="{{ route('category') }}" class="text-gray-700 hover:text-blue-600 font-medium">Kategori</a>
+                    <a href="{{ route('regisResto') }}"
+                        class="text-gray-700 hover:text-blue-600 font-medium">Restoran</a>
+                </nav>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <div class="relative flex-1 max-w-lg">
+                    <input type="text" placeholder="Cari produk segar disini..."
+                        class="w-full px-4 py-2 pl-10 pr-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <span class="iconify absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                        data-icon="mdi:magnify" data-width="20" data-height="20"></span>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <a href="{{ route('cart') }}" class="relative text-gray-700 hover:text-blue-600">
+                        <span class="iconify" data-icon="mdi:cart-outline" data-width="28" data-height="28"></span>
+                        <span
+                            class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1">{{ $cartCount ?? 0 }}</span>
+                    </a>
+                    <a href="{{ route('order') }}" class="text-gray-700 hover:text-blue-600">
+                        <span class="iconify" data-icon="mdi:clipboard-text-outline" data-width="28"
+                            data-height="28"></span>
+                    </a>
+                    <div class="flex items-center space-x-2">
+                        @if (Auth::user()->photo)
+                            <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User"
+                                class="w-8 h-8 rounded-full border-2 border-gray-300">
+                        @else
+                            <span class="iconify w-8 h-8 rounded-full border-2 border-gray-300"
+                                data-icon="mdi:account-circle" data-width="32" data-height="32"></span>
+                        @endif
+                        <span class="text-gray-700 font-medium">{{ Auth::user()->name ?? 'Username' }}</span>
+                        <form id="logout-form" method="POST" action="{{ route('logout') }}" class="inline">
+                            @csrf
+                            <button type="submit" class="text-red-500 hover:text-red-700 font-medium">Logout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </header>
+
         <main class="max-w-7xl mx-auto">
             <!-- Carousel -->
             <section class="carousel relative overflow-hidden rounded-2xl mt-4 shadow-md">
                 <div class="carousel-inner flex transition-transform duration-500 ease-in-out" id="carousel-slides">
-                    <div class="carousel-slide flex-shrink-0 w-full h-64 md:h-[500px] bg-cover bg-center"
+                    <div class="carousel-slide flex-shrink-0 w-full h-64 md:h-[600px] lg:h-[700px] bg-cover bg-center"
                         style="background-image: url('{{ asset('assets/pasar-ikan.png') }}');">
                         <div class="flex items-center justify-center h-full bg-black bg-opacity-50">
                             <h2
-                                class="text-white text-3xl md:text-5xl font-bold transform translate-x-full opacity-0 transition-all duration-500">
+                                class="text-white text-3xl md:text-6xl lg:text-7xl font-bold transform translate-x-full opacity-0 transition-all duration-500 text-center px-4">
                                 Fresh Seafood Market</h2>
                         </div>
                     </div>
                     <div
-                        class="carousel-slide flex-shrink-0 w-full h-64 md:h-[500px] bg-gradient-to-r from-blue-400 to-blue-600">
+                        class="carousel-slide flex-shrink-0 w-full h-64 md:h-[600px] lg:h-[700px] bg-gradient-to-r from-blue-400 to-blue-600">
                         <div class="flex items-center justify-center h-full">
                             <h2
-                                class="text-white text-3xl md:text-5xl font-bold transform translate-x-full opacity-0 transition-all duration-500">
+                                class="text-white text-3xl md:text-6xl lg:text-7xl font-bold transform translate-x-full opacity-0 transition-all duration-500 text-center px-4">
                                 Delivered to Your Door</h2>
                         </div>
                     </div>
                     <div
-                        class="carousel-slide flex-shrink-0 w-full h-64 md:h-[500px] bg-gradient-to-r from-green-400 to-green-600">
+                        class="carousel-slide flex-shrink-0 w-full h-64 md:h-[600px] lg:h-[700px] bg-gradient-to-r from-green-400 to-green-600">
                         <div class="flex items-center justify-center h-full">
                             <h2
-                                class="text-white text-3xl md:text-5xl font-bold transform translate-x-full opacity-0 transition-all duration-500">
+                                class="text-white text-3xl md:text-6xl lg:text-7xl font-bold transform translate-x-full opacity-0 transition-all duration-500 text-center px-4">
                                 Quality You Can Trust</h2>
                         </div>
                     </div>
                 </div>
                 <button
-                    class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2"
+                    class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-3 md:p-4 shadow-lg transition-all"
                     id="prev-btn">
                     <span class="iconify" data-icon="mdi:chevron-left" data-width="24" data-height="24"></span>
                 </button>
                 <button
-                    class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2"
+                    class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-3 md:p-4 shadow-lg transition-all"
                     id="next-btn">
                     <span class="iconify" data-icon="mdi:chevron-right" data-width="24" data-height="24"></span>
                 </button>
             </section>
 
             <!-- Pilihan Kategori -->
-            <section class="mt-10 px-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h1 class="font-bold text-gray-500">Pilihan Kategori</h1>
-                    <a href="{{ route('category') }}" class="text-indigo-500 font-semibold">Lihat Semua</a>
+            <section class="mt-10 px-6 md:px-8 lg:px-12">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="font-bold text-gray-500 text-lg md:text-xl lg:text-2xl">Pilihan Kategori</h1>
+                    <a href="{{ route('category') }}"
+                        class="text-indigo-500 font-semibold hover:text-indigo-700 transition-colors">Lihat Semua</a>
                 </div>
                 <x-category :cart-count="5" />
             </section>
 
             <!-- Spesial Hari Ini -->
-            <section class="my-10 px-6">
-                <div class="flex justify-between items-center">
-                    <h1 class="font-extrabold text-xl md:text-2xl">Spesial Hari Ini</h1>
-                    <p class="text-indigo-500 font-medium cursor-pointer">Lihat Semua</p>
+            <section class="my-10 px-6 md:px-8 lg:px-12">
+                <div class="flex justify-between items-center mb-2">
+                    <h1 class="font-extrabold text-xl md:text-3xl lg:text-4xl">Spesial Hari Ini</h1>
+                    <p class="text-indigo-500 font-medium cursor-pointer hover:text-indigo-700 transition-colors">Lihat
+                        Semua</p>
                 </div>
-                <p class="font-bold text-neutral-400 mb-4">Promo menarik dari AquaTech Fresh untuk kamu</p>
+                <p class="font-bold text-neutral-400 mb-6 text-base md:text-lg">Promo menarik dari AquaTech Fresh untuk
+                    kamu</p>
 
-                <div class="relative w-full h-96 md:h-[450px] overflow-hidden shadow-lg rounded-2xl bg-white">
+                <div
+                    class="relative w-full h-96 md:h-[500px] lg:h-[600px] overflow-hidden shadow-xl rounded-2xl bg-white">
                     <img src="{{ asset('assets/bg-pasar-ikan.jpg') }}" alt="Banner Ikan"
                         class="w-full h-full object-cover brightness-50">
 
-                    <div class="absolute inset-0 flex flex-col md:flex-row justify-between items-center px-8">
+                    <div
+                        class="absolute inset-0 flex flex-col md:flex-row justify-between items-center px-8 md:px-12 lg:px-16">
                         <div class="flex flex-col items-start text-left mb-6 md:mb-0">
-                            <h1 class="text-white text-4xl md:text-5xl italic font-semibold leading-tight mb-4"
+                            <h1 class="text-white text-4xl md:text-6xl lg:text-7xl italic font-semibold leading-tight mb-4"
                                 style="font-family: 'Caveat', cursive;">The Best<br>Dinner</h1>
+                            <p class="text-white text-lg md:text-xl lg:text-2xl font-light">Nikmati hidangan laut segar
+                                terbaik</p>
                         </div>
 
-                        <div class="flex space-x-6">
+                        <div class="flex space-x-4 md:space-x-8">
                             <a href="{{ route('produk', 'Cumi Krispy') }}"
-                                class="bg-white rounded-xl shadow-md overflow-hidden w-40 md:w-60 hover:shadow-lg transition">
+                                class="bg-white rounded-xl shadow-lg overflow-hidden w-40 md:w-64 lg:w-72 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                                 <img src="{{ asset('assets/cumi-krispy.jpg') }}" alt="Cumi Krispy"
-                                    class="w-full h-28 md:h-40 object-cover">
-                                <div class="p-4">
-                                    <h2 class="text-sm md:text-base font-semibold">Cumi Krispy</h2>
-                                    <p class="text-red-500 font-bold text-sm md:text-base">Rp15.000</p>
+                                    class="w-full h-28 md:h-44 lg:h-48 object-cover">
+                                <div class="p-4 md:p-6">
+                                    <h2 class="text-sm md:text-lg lg:text-xl font-semibold">Cumi Krispy</h2>
+                                    <p class="text-red-500 font-bold text-sm md:text-lg lg:text-xl">Rp15.000</p>
                                     <button
-                                        class="bg-cyan-600 text-white text-sm md:text-base mt-2 px-3 py-1 rounded w-full hover:bg-cyan-700 transition">
+                                        class="bg-cyan-600 text-white text-sm md:text-base lg:text-lg mt-2 px-3 py-2 md:px-4 md:py-2 rounded-lg w-full hover:bg-cyan-700 transition-colors">
                                         Tambah
                                     </button>
                                 </div>
@@ -275,17 +330,24 @@
             </section>
 
             <!-- Banner Langganan -->
-            <section class="my-10 px-6">
-                <h1 class="font-bold mb-3 text-lg md:text-xl">Berlangganan tanpa harus memesan setiap hari</h1>
-                <div class="relative w-full h-80 overflow-hidden shadow-lg rounded-2xl">
+            <section class="my-10 px-6 md:px-8 lg:px-12">
+                <h1 class="font-bold mb-6 text-lg md:text-2xl lg:text-3xl text-center">Berlangganan tanpa harus memesan
+                    setiap hari</h1>
+                <div class="relative w-full h-80 md:h-96 lg:h-[500px] overflow-hidden shadow-xl rounded-2xl">
                     <img src="{{ asset('assets/bg-pasar-ikan2.jpg') }}" alt=""
                         class="w-full h-full object-cover brightness-50">
-                    <div class="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
-                        <h1 class="font-extrabold text-white text-lg md:text-2xl leading-relaxed drop-shadow-lg">
-                            Ayo berlangganan sekarang dan atur <br> tanggal setiap pengiriman nya
+                    <div class="absolute inset-0 flex flex-col justify-center items-center text-center px-4 md:px-8">
+                        <h1
+                            class="font-extrabold text-white text-lg md:text-3xl lg:text-4xl leading-relaxed drop-shadow-lg mb-4">
+                            Ayo berlangganan sekarang dan atur <br class="hidden md:block"> tanggal setiap pengiriman
+                            nya
                         </h1>
+                        <p class="text-white text-sm md:text-lg lg:text-xl mb-6 max-w-2xl">
+                            Dapatkan kemudahan dengan layanan langganan kami. Seafood segar langsung ke pintu rumah Anda
+                            setiap minggu!
+                        </p>
                         <button
-                            class="mt-4 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold px-6 py-2 rounded-full shadow-md transition">
+                            class="bg-cyan-600 hover:bg-cyan-700 text-white font-semibold px-8 py-3 md:px-12 md:py-4 lg:px-16 lg:py-5 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 text-sm md:text-base lg:text-lg">
                             Klik Disini
                         </button>
                     </div>
@@ -345,29 +407,67 @@
             </section>
 
             <!-- Rekomendasi Resto -->
-            <section class="px-6 my-10">
-                <h1 class="font-extrabold text-lg md:text-xl mb-4">Rekomendasi Resto</h1>
-                <div class="grid md:grid-cols-2 gap-4">
+            <section class="px-6 md:px-8 lg:px-12 my-10">
+                <h1 class="font-extrabold text-lg md:text-2xl lg:text-3xl mb-6">Rekomendasi Resto</h1>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     <!-- Resto 1 -->
                     <a href="{{ route('restaurant', 'Layar Seafood 99') }}"
-                        class="flex bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
+                        class="flex bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                         <img src="{{ asset('assets/resto1.jpg') }}" alt="Layar Seafood 99"
-                            class="w-32 h-24 md:w-40 md:h-28 rounded-md object-cover mr-4">
+                            class="w-32 h-24 md:w-48 md:h-32 lg:w-56 lg:h-36 rounded-lg object-cover mr-6">
                         <div class="flex-1">
-                            <h2 class="font-semibold text-gray-900 text-base md:text-lg">Layar Seafood 99</h2>
-                            <p class="text-gray-500 text-sm leading-snug">
-                                Jalan Pesanggrahan Raya No.80,<br>
+                            <h2 class="font-semibold text-gray-900 text-base md:text-xl lg:text-2xl mb-2">Layar Seafood
+                                99</h2>
+                            <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-4">
+                                Jalan Pesanggrahan Raya No.80,<br class="hidden md:block">
                                 Meruya Utara, West Jakarta 11620
                             </p>
 
                             <button
-                                class="bg-cyan-600 text-white text-sm font-medium px-4 py-2 rounded-md w-full mt-3 hover:bg-cyan-700">
+                                class="bg-cyan-600 text-white text-sm md:text-base font-medium px-6 py-3 rounded-lg w-full hover:bg-cyan-700 transition-colors">
                                 Kunjungi Restorant
                             </button>
                         </div>
                     </a>
-                </div>
 
+                    <!-- Resto 2 (placeholder for more restaurants) -->
+                    <div class="flex bg-white rounded-xl shadow-lg p-6 opacity-75">
+                        <div
+                            class="w-32 h-24 md:w-48 md:h-32 lg:w-56 lg:h-36 rounded-lg bg-gray-200 mr-6 flex items-center justify-center">
+                            <span class="text-gray-400 text-sm">Coming Soon</span>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="font-semibold text-gray-900 text-base md:text-xl lg:text-2xl mb-2">Resto Baru
+                            </h2>
+                            <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-4">
+                                Segera hadir dengan menu seafood terbaik
+                            </p>
+                            <button
+                                class="bg-gray-400 text-white text-sm md:text-base font-medium px-6 py-3 rounded-lg w-full cursor-not-allowed">
+                                Segera Hadir
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Resto 3 (placeholder for more restaurants) -->
+                    <div class="flex bg-white rounded-xl shadow-lg p-6 opacity-75 md:col-span-2 lg:col-span-1">
+                        <div
+                            class="w-32 h-24 md:w-48 md:h-32 lg:w-56 lg:h-36 rounded-lg bg-gray-200 mr-6 flex items-center justify-center">
+                            <span class="text-gray-400 text-sm">Coming Soon</span>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="font-semibold text-gray-900 text-base md:text-xl lg:text-2xl mb-2">Resto Premium
+                            </h2>
+                            <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-4">
+                                Pengalaman kuliner seafood premium
+                            </p>
+                            <button
+                                class="bg-gray-400 text-white text-sm md:text-base font-medium px-6 py-3 rounded-lg w-full cursor-not-allowed">
+                                Segera Hadir
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </section>
 
         </main>

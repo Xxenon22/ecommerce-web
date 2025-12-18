@@ -185,7 +185,7 @@ Route::get('/produk/{name}', function ($name) {
 })->name('produk');
 
 Route::get('/edukasi/cara-menangkap-ikan', function () {
-    return view('edukasi');
+    return view('education');
 })->name('edukasi');
 
 Route::get('/restaurant/{name}', function ($name) {
