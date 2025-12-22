@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('resto_name')->nullable();
             $table->text('resto_address')->nullable();
             $table->string('photo')->nullable();
+            $table->enum('role', ['Admin', 'User'])->default('User');
             $table->rememberToken();
             $table->timestamps();
         });

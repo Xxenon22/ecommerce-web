@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\CategoryProduct;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class CategoryProductController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $categories = CategoryProduct::all();
-        return view('admin.category.index', compact('categories'));
+        $users = User::all();
+        return view('admin.user.index', compact('users'));
     }
 
     /**
@@ -32,13 +32,18 @@ class CategoryProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'icon' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:255',
+            'resto_name' => 'nullable|string|max:255',
+            'role' => 'required|in:Admin,User',
         ]);
+        $user = User::create($request->all());
 
-        CategoryProduct::create($request->all());
-
-        return redirect('/admin/category')->with('success', 'Category created successfully.');
+        return redirect()->route('user.index')->with('success', 'User created successfully');
     }
+        
 
     /**
      * Display the specified resource.
@@ -59,9 +64,11 @@ class CategoryProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        //
+        $user->update($request->all());
+        
+        return redirect()->route('user.index')->with('success', 'User updated successfully');
     }
 
     /**
@@ -69,17 +76,14 @@ class CategoryProductController extends Controller
      */
     public function destroy(string $id)
     {
-        $category = CategoryProduct::findOrFail($id);
-        $category->delete();
-
-        return redirect('/admin/category')->with('success', 'Category deleted successfully.');
+        //
     }
 
     public function inlineUpdate(Request $request, $id)
     {
-        $category = CategoryProduct::findOrFail($id);
-        $category->{$request->field} = $request->value;
-        $category->save();
+        $user = User::findOrFail($id);
+        $user->{$request->field} = $request->value;
+        $user->save();
 
         return response()->json(['success' => true]);
     }

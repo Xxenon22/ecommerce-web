@@ -4,18 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masuk - Fishery Hub</title>
+    <title>login - Fishery Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
 
 </head>
 
-<body class="backdrop-brightness-30" style="background-image: url({{ asset('assets/bg-pasar-ikan2.jpg') }}); background-size: cover;
+<body class="backdrop-brightness-30"
+    style="background-image: url({{ asset('assets/bg-pasar-ikan2.jpg') }}); background-size: cover;
          background-repeat: no-repeat;
          background-position: center;
          background-attachment: fixed;">
     <div class="">
+        <div class="absolute m-3 z-10">
+            <a href="{{ route('home') }}">
+                <span class="iconify cursor-pointer text-white" data-icon="weui:back-outlined" data-width="38"
+                    data-height="38" class="cursor-pointer"></span>
+            </a>
+        </div>
 
         <div class="flex flex-col justify-center items-center min-h-screen relative z-0 px-4">
             <div class="mb-8 text-center">

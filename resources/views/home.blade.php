@@ -110,12 +110,14 @@
                 <div>
                     <div class="flex items-center justify-between mb-8">
                         <div class="flex flex-col items-center space-x-3">
-                            @if (Auth::user()->photo)
-                                <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User"
-                                    class="w-14 h-14 rounded-full border-2 border-white">
-                            @else
-                                <span class="iconify w-14 h-14 rounded-full border-2 border-white"
-                                    data-icon="mdi:account-circle" data-width="56" data-height="56"></span>
+                            @if (Auth::check())
+                                @if (Auth::user()->photo)
+                                    <img src="{{ asset('storage/' . (Auth::user()?->photo ?? 'default.jpg')) }}" alt="User"
+                                        class="w-14 h-14 rounded-full border-2 border-white">
+                                @else
+                                    <span class="iconify w-14 h-14 rounded-full border-2 border-white"
+                                        data-icon="mdi:account-circle" data-width="56" data-height="56"></span>
+                                @endif
                             @endif
                             <div>
                                 <p class="text-sm text-gray-300">Welcome-!!</p>
@@ -133,6 +135,13 @@
                             <span class="iconify" data-icon="mdi:home-outline" data-width="22"></span>
                             <span>Home</span>
                         </a>
+                        @if (Auth::user()->role === 'Admin')
+                            <a href="{{ route('admin.dashboard') }}"
+                                class="flex items-center space-x-3 hover:text-cyan-400">
+                                <span class="iconify" data-icon="mdi:office-building" data-width="22"></span>
+                                <span>Admin Page</span>
+                            </a>
+                        @endif
                         <a href="{{ route('regisResto') }}" class="flex items-center space-x-3 hover:text-cyan-400">
                             <span class="iconify" data-icon="hugeicons:restaurant" data-width="22"></span>
                             <span>Restoran</span>
@@ -372,7 +381,8 @@
                                 <h2 class="font-semibold text-gray-900 text-base md:text-lg">Cara menangkap ikan yang
                                     benar
                                 </h2>
-                                <p class="text-gray-500 text-sm leading-tight">Gimana sih caranya? sesuai peraturan yang
+                                <p class="text-gray-500 text-sm leading-tight">Gimana sih caranya? sesuai peraturan
+                                    yang
                                     ada
                                 </p>
                             </div>
