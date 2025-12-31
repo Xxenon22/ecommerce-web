@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
@@ -172,6 +173,10 @@ Route::middleware('auth')->group(function () {
         ];
         return view('checkout', compact('cart'));
     })->name('checkout');
+
+    Route::get('/transaction/{product}', function (Product $product) {
+        return view('transaction', compact('product'));
+    })->name('transaction');
 
 
     // Dynamic Produk

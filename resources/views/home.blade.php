@@ -93,6 +93,20 @@
             overlay.addEventListener('click', closeSidebar);
         });
     </script>
+    <style>
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+    </style>
 </head>
 
 <body class="bg-gray-100 min-h-screen pb-20">
@@ -291,7 +305,59 @@
                     <a href="{{ route('category') }}"
                         class="text-indigo-500 font-semibold hover:text-indigo-700 transition-colors">Lihat Semua</a>
                 </div>
-                <x-category :cart-count="5" />
+                {{-- <x-category :cart-count="5" /> --}}
+                <!-- Kategori horizontal scroll -->
+                <div class="relative">
+                    <div class="flex space-x-3 overflow-x-auto scrollbar-hide pb-3" id="category-scroll">
+                        @foreach ($categories as $category)
+                            <a href=""
+                                class="flex-shrink-0 flex flex-col items-center justify-center bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 w-24 h-24">
+                                <span class="iconify" data-icon="{{ $category->icon }}" data-width="20"></span>
+                                <span
+                                    class="text-gray-700 text-xs font-medium text-center mt-1">{{ $category->name }}</span>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Pilihan Product -->
+            <section class="mt-10 px-6 md:px-8 lg:px-12">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="font-bold text-gray-500 text-lg md:text-xl lg:text-2xl">Pilihan Product</h1>
+                    <a href=""
+                        class="text-indigo-500 font-semibold hover:text-indigo-700 transition-colors">Lihat Semua</a>
+                </div>
+                <!-- Product Horizontal Scroll -->
+                <div class="relative">
+                    <div class="flex space-x-4 overflow-x-auto scrollbar-hide pb-4" id="product-scroll">
+                        @foreach ($products as $product)
+                            <div
+                                class="flex-shrink-0 w-64 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                                <img src="{{ asset(file_exists(public_path('assetSSs/' . $product->image)) ? 'assets/' . $product->image : 'assets/pasar-ikan.png') }}"
+                                    alt="{{ $product->name }}" class="w-full h-40 object-cover rounded-t-xl">
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-gray-900 text-base mb-1">{{ $product->name }}</h3>
+                                    <p class="text-gray-500 text-sm mb-2">{{ $product->description }}</p>
+                                    <p class="text-red-500 font-bold text-lg mb-3">
+                                        Rp{{ number_format($product->price, 0, ',', '.') }}</p>
+                                    <div class="flex gap-2">
+                                        <a href="{{ route('transaction', $product->id) }}" class="bg-cyan-600 text-white text-sm font-medium px-4 py-2 rounded-lg w-3/4 hover:bg-cyan-700 transition-colors">
+                                                Pesan
+                                        </a>
+                                        <button
+                                            class="bg-yellow-300 text-white text-sm font-medium px-4 py-2 rounded-lg w-1/4 hover:bg-yellow-700 transition-colors">
+                                            <span class="iconify" data-icon="mdi:cart-plus" data-width="20"
+                                                data-height="20"></span>
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             </section>
 
             <!-- Spesial Hari Ini -->
@@ -423,7 +489,7 @@
                         <!-- Resto {{ $loop->iteration }} -->
                         <a href="{{ route('restaurant', $resto->id) }}"
                             class="flex bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                            <img src="{{ asset(file_exists(public_path('assets/' . $resto->image)) ? 'assets/' . $resto->image : 'assets/pasar-ikan.png') }}"
+                            <img src="{{ asset(file_exists(public_path('assetsss/' . $resto->image)) ? 'assets/' . $resto->image : 'assets/pasar-ikan.png') }}"
                                 alt="{{ $resto->name }}"
                                 class="w-32 h-24 md:w-48 md:h-32 lg:w-56 lg:h-36 rounded-lg object-cover mr-6">
                             <div class="flex-1">
