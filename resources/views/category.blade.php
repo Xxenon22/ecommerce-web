@@ -10,11 +10,12 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Handle category filtering from URL path parameter
             const pathSegments = window.location.pathname.split('/');
             const kategoriIndex = pathSegments.indexOf('kategori');
-            const selectedCategory = kategoriIndex !== -1 && pathSegments[kategoriIndex + 1] ? decodeURIComponent(pathSegments[kategoriIndex + 1]) : null;
+            const selectedCategory = kategoriIndex !== -1 && pathSegments[kategoriIndex + 1] ? decodeURIComponent(
+                pathSegments[kategoriIndex + 1]) : null;
             if (selectedCategory) {
                 showCategorySection(selectedCategory);
             }
@@ -22,7 +23,7 @@
             // Handle "Lihat Semua" links
             const lihatSemuaLinks = document.querySelectorAll('.lihat-semua-link');
             lihatSemuaLinks.forEach(link => {
-                link.addEventListener('click', function (e) {
+                link.addEventListener('click', function(e) {
                     e.preventDefault();
                     const section = this.closest('.product-section');
                     const carousel = section.querySelector('.product-carousel');
@@ -32,7 +33,8 @@
                     // Toggle between carousel and grid view
                     if (productInner.classList.contains('flex')) {
                         // Switch to grid view
-                        productInner.classList.remove('flex', 'transition-transform', 'duration-500', 'ease-in-out');
+                        productInner.classList.remove('flex', 'transition-transform',
+                            'duration-500', 'ease-in-out');
                         productInner.classList.add('grid', 'grid-cols-2', 'gap-4');
                         productInner.style.transform = 'none';
                         buttons.forEach(btn => btn.style.display = 'none');
@@ -40,7 +42,8 @@
                     } else {
                         // Switch back to carousel view
                         productInner.classList.remove('grid', 'grid-cols-2', 'gap-4');
-                        productInner.classList.add('flex', 'transition-transform', 'duration-500', 'ease-in-out');
+                        productInner.classList.add('flex', 'transition-transform', 'duration-500',
+                            'ease-in-out');
                         buttons.forEach(btn => btn.style.display = 'block');
                         this.textContent = 'Lihat Semua';
                     }
@@ -81,48 +84,50 @@
     <x-navbar :cart-count="5" :active-route="'kategori'" class="block md:hidden" />
     <x-category :cart-count="5" />
 
-    <div id="product-sections"> @foreach($products as $kategori => $categoryProducts)
-        <!-- Filter Card untuk {{ $kategori }} -->
-        <div class="bg-white p-1 mt-5 product-section" data-category="{{ $kategori }}" style="display: block">
-            <div class="mt-3">
-                <div class="flex justify-between m-2">
-                    <h1 class="text-neutral-300 font-bold">{{ $kategori }}</h1>
-                    <a href="#" class="text-cyan-600 lihat-semua-link">Lihat Semua</a>
-                </div>
-
-                <!-- Product Carousel -->
-                <div class="product-carousel relative overflow-hidden mx-2">
-                    <div class="product-inner flex transition-transform duration-500 ease-in-out"
-                        id="product-slides-{{ $loop->index }}"> @foreach($categoryProducts as $product) <div
-                            class="product-slide flex-shrink-0 w-40 mx-1">
-                            <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                                            <img src=" {{ asset($product['image']) }}" alt="{{ $product['name'] }}"
-                                class="w-full h-24 object-cover">
-                                <div class="p-3">
-                                    <h2 class="text-sm font-semibold">{{ $product['name'] }}</h2>
-                                        <p class="text-red-500 font-bold text-sm">{{ $product['price'] }}</p>
-                                        <button
-                                            class="bg-cyan-600 text-white text-sm mt-2 px-3 py-1 rounded w-full">Tambah</button>
-                                </div>
-                            </div>
-                                </div>
-                        @endforeach
+    <div id="product-sections">
+        @foreach ($products as $kategori => $categoryProducts)
+            <!-- Filter Card untuk {{ $kategori }} -->
+            <div class="bg-white p-1 mt-5 product-section" data-category="{{ $kategori }}" style="display: block">
+                <div class="mt-3">
+                    <div class="flex justify-between m-2">
+                        <h1 class="text-neutral-300 font-bold">{{ $kategori }}</h1>
+                        <a href="#" class="text-cyan-600 lihat-semua-link">Lihat Semua</a>
                     </div>
-                    <button
-                        class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-75 hover:bg-opacity-100 rounded-full p-2 shadow-md carousel-btn"
-                        id="product-prev-btn-{{ $loop->index }}">
-                        <span class="iconify" data-icon="mdi:chevron-left" data-width="20" data-height="20"></span>
-                    </button>
-                    <button
-                        class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-75 hover:bg-opacity-100 rounded-full p-2 shadow-md carousel-btn"
-                        id="product-next-btn-{{ $loop->index }}">
-                        <span class="iconify" data-icon="mdi:chevron-right" data-width="20" data-height="20"></span>
-                    </button>
+
+                    <!-- Product Carousel -->
+                    <div class="product-carousel relative overflow-hidden mx-2">
+                        <div class="product-inner flex transition-transform duration-500 ease-in-out"
+                            id="product-slides-{{ $loop->index }}">
+                            @foreach ($categoryProducts as $product)
+                                <div class="product-slide flex-shrink-0 w-40 mx-1">
+                                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                                        <img src="{{ !empty($product['image']) && file_exists(public_path($product['image'])) ? asset($product['image']) : asset('assets/pasar-ikan.png') }}"
+                                            alt="{{ $product['name'] }}" class="w-full h-24 object-cover">
+                                        <div class="p-3">
+                                            <h2 class="text-sm font-semibold">{{ $product['name'] }}</h2>
+                                            <p class="text-red-500 font-bold text-sm">{{ $product['price'] }}</p>
+                                            <button
+                                                class="bg-cyan-600 text-white text-sm mt-2 px-3 py-1 rounded w-full">Tambah</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <button
+                            class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-75 hover:bg-opacity-100 rounded-full p-2 shadow-md carousel-btn"
+                            id="product-prev-btn-{{ $loop->index }}">
+                            <span class="iconify" data-icon="mdi:chevron-left" data-width="20" data-height="20"></span>
+                        </button>
+                        <button
+                            class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-75 hover:bg-opacity-100 rounded-full p-2 shadow-md carousel-btn"
+                            id="product-next-btn-{{ $loop->index }}">
+                            <span class="iconify" data-icon="mdi:chevron-right" data-width="20" data-height="20"></span>
+                        </button>
+                    </div>
                 </div>
             </div>
-                </div>
-    @endforeach
-        </div>
+        @endforeach
+    </div>
 </body>
 
 </html>

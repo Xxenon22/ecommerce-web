@@ -30,7 +30,7 @@
         <!-- Product Details -->
         <section class="mt-6 px-6">
             <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                <img src="{{ asset($product['image']) }}" alt="{{ $product['name'] }}"
+                <img src="{{ asset(file_exists(public_path($product['image'])) ? $product['image'] : 'assets/pasar-ikan.png') }}" alt="{{ $product['name'] }}"
                     class="w-full h-64 md:h-96 object-cover">
                 <div class="p-6">
                     <h1 class="text-2xl md:text-3xl font-bold text-gray-900">{{ $product['name'] }}</h1>
@@ -50,7 +50,7 @@
                 <div class="p-6">
                     <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">Informasi Toko</h2>
                     <div class="flex items-center mb-4">
-                        <img src="{{ asset($product['restaurant']['image']) }}"
+                        <img src="{{ asset(file_exists(public_path($product['restaurant']['image'])) ? $product['restaurant']['image'] : 'assets/pasar-ikan.png') }}"
                             alt="{{ $product['restaurant']['name'] }}"
                             class="w-16 h-16 md:w-20 md:h-20 rounded-lg object-cover mr-4">
                         <div>

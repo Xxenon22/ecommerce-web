@@ -74,6 +74,13 @@ class AuthController extends Controller
         if (!Auth::check()) {
             return redirect('/login');
         }
+
+        // Check if user has restaurant data, create empty one if not exists
+        $user = Auth::user();
+        if (is_null($user->restaurant)) {
+            $user->restaurant()->create(['user_id' => $user->id]);
+        }
+
         return view('account');
     }
 

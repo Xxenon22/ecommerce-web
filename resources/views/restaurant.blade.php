@@ -30,7 +30,7 @@
         <!-- Restaurant Header -->
         <section class="mt-6 px-6">
             <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                <img src="{{ asset($restaurant['image']) }}" alt="{{ $restaurant['name'] }}"
+                <img src="{{ asset(file_exists(public_path($restaurant['image'])) ? $restaurant['image'] : 'assets/pasar-ikan.png') }}" alt="{{ $restaurant['name'] }}"
                     class="w-full h-64 md:h-96 object-cover">
                 <div class="p-6">
                     <h1 class="text-2xl md:text-3xl font-bold text-gray-900">{{ $restaurant['name'] }}</h1>
@@ -45,7 +45,7 @@
             <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                 @foreach($restaurant['products'] as $product)
                     <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
-                        <img src="{{ asset($product['image']) }}" alt="{{ $product['name'] }}"
+                        <img src="{{ asset(file_exists(public_path($product['image'])) ? $product['image'] : 'assets/pasar-ikan.png') }}" alt="{{ $product['name'] }}"
                             class="w-full h-32 md:h-40 object-cover">
                         <div class="p-4">
                             <h3 class="text-sm md:text-base font-semibold">{{ $product['name'] }}</h3>

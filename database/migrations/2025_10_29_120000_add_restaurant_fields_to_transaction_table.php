@@ -10,7 +10,8 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->foreignId('restaurant_id')->constrained('restaurants')->onDelete('cascade');
             // $table->enum('business_type', ['restaurant', 'cafe', 'food_truck', 'other'])->nullable()->after('photo');
             // $table->text('description')->nullable()->after('business_type');
             // $table->string('opening_hours')->nullable()->after('description');
@@ -22,8 +23,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['business_type', 'description', 'opening_hours']);
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->dropColumn('restaurant_id');
         });
     }
 };

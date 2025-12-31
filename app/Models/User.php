@@ -32,6 +32,11 @@ class User extends Authenticatable
         'opening_hours',
     ];
 
+    public function restaurant()
+    {
+        return $this->hasOne(Restaurant::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>registration - AquaTech Fresh</title>
+    <title>registration - FisheryHub</title>
     <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
@@ -24,7 +24,7 @@
     <div class="flex flex-col justify-center items-center min-h-screen relative z-0 px-4">
         <div class="m-5 items-center">
             <h1 class="text-3xl font-bold text-center text-white">Halo, Selamat Datang di <span
-                    class="text-cyan-600">AquaTech
+                    class="text-cyan-600">FisheryHub
                     Fresh</span> </h1>
         </div>
         <div class="bg-white bg-opacity-95 backdrop-blur-sm rounded-2xl shadow-2xl p-8 w-full max-w-md">

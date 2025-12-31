@@ -18,8 +18,6 @@ return new class extends Migration
             $table->string('password');
             $table->string('phone')->nullable();
             $table->text('address')->nullable();
-            $table->string('resto_name')->nullable();
-            $table->text('resto_address')->nullable();
             $table->string('photo')->nullable();
             $table->enum('role', ['Admin', 'User'])->default('User');
             $table->rememberToken();

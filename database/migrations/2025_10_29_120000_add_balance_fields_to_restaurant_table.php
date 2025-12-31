@@ -10,10 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('restaurants', function (Blueprint $table) {
             // $table->enum('business_type', ['restaurant', 'cafe', 'food_truck', 'other'])->nullable()->after('photo');
             // $table->text('description')->nullable()->after('business_type');
-            // $table->string('opening_hours')->nullable()->after('description');
+            $table->integer('balance')->default(0)->after('name');
         });
     }
 
@@ -22,8 +22,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['business_type', 'description', 'opening_hours']);
+        Schema::table('restaurants', function (Blueprint $table) {
+            $table->dropColumn('balance');
         });
     }
 };

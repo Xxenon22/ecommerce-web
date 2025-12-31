@@ -4,13 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - AquaTech Fresh</title>
+    <title>Home - FisheryHub</title>
     <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
-
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const carouselSlides = document.getElementById('carousel-slides');
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
@@ -30,18 +29,15 @@
                     currentText.classList.add('translate-x-0', 'opacity-100');
                 }, 100);
             }
-
-            prevBtn.addEventListener('click', function () {
+            prevBtn.addEventListener('click', function() {
                 currentIndex = (currentIndex > 0) ? currentIndex - 1 : totalSlides - 1;
                 updateCarousel();
             });
-
-            nextBtn.addEventListener('click', function () {
+            nextBtn.addEventListener('click', function() {
                 currentIndex = (currentIndex < totalSlides - 1) ? currentIndex + 1 : 0;
                 updateCarousel();
             });
-
-            setInterval(function () {
+            setInterval(function() {
                 currentIndex = (currentIndex < totalSlides - 1) ? currentIndex + 1 : 0;
                 updateCarousel();
             }, 5000);
@@ -61,12 +57,12 @@
                         `translateX(-${categoriesCurrentIndex * (100 / categoriesVisibleSlides)}%)`;
                 }
 
-                categoriesPrevBtn.addEventListener('click', function () {
+                categoriesPrevBtn.addEventListener('click', function() {
                     categoriesCurrentIndex = Math.max(0, categoriesCurrentIndex - 1);
                     updateCategoriesCarousel();
                 });
 
-                categoriesNextBtn.addEventListener('click', function () {
+                categoriesNextBtn.addEventListener('click', function() {
                     const maxIndex = categoriesTotalSlides - categoriesVisibleSlides;
                     categoriesCurrentIndex = Math.min(maxIndex, categoriesCurrentIndex + 1);
                     updateCategoriesCarousel();
@@ -74,7 +70,7 @@
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const sidebar = document.getElementById('sidebar');
             const openBtn = document.getElementById('open-sidebar');
             const closeBtn = document.getElementById('close-sidebar');
@@ -103,7 +99,8 @@
     <div class="max-w-7xl mx-auto">
 
         <!-- Sidebar -->
-        <div id="sidebar" class="fixed inset-0 bg-[#0A2540] text-white transform -translate-x-full transition-transform duration-300 z-50 flex
+        <div id="sidebar"
+            class="fixed inset-0 bg-[#0A2540] text-white transform -translate-x-full transition-transform duration-300 z-50 flex
     flex-col justify-between md:hidden">
             <div class="p-6 relative h-full flex flex-col justify-between">
                 <!-- Header -->
@@ -112,8 +109,8 @@
                         <div class="flex flex-col items-center space-x-3">
                             @if (Auth::check())
                                 @if (Auth::user()->photo)
-                                    <img src="{{ asset('storage/' . (Auth::user()?->photo ?? 'default.jpg')) }}" alt="User"
-                                        class="w-14 h-14 rounded-full border-2 border-white">
+                                    <img src="{{ asset('storage/' . (Auth::user()?->photo ?? 'default.jpg')) }}"
+                                        alt="User" class="w-14 h-14 rounded-full border-2 border-white">
                                 @else
                                     <span class="iconify w-14 h-14 rounded-full border-2 border-white"
                                         data-icon="mdi:account-circle" data-width="56" data-height="56"></span>
@@ -199,7 +196,7 @@
         <!-- Desktop Header -->
         <header class="hidden md:flex items-center justify-between p-6 bg-white shadow-md sticky top-0 z-20">
             <div class="flex items-center space-x-6">
-                <div class="text-2xl font-bold text-blue-600">AquaTech Fresh</div>
+                <div class="text-2xl font-bold text-blue-600">FisheryHub</div>
                 <nav class="flex space-x-6">
                     <a href="{{ route('home') }}" class="text-gray-700 hover:text-blue-600 font-medium">Home</a>
                     <a href="{{ route('category') }}" class="text-gray-700 hover:text-blue-600 font-medium">Kategori</a>
@@ -227,14 +224,16 @@
                             data-height="28"></span>
                     </a>
                     <div class="flex items-center space-x-2">
-                        @if (Auth::user()->photo)
-                            <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User"
-                                class="w-8 h-8 rounded-full border-2 border-gray-300">
-                        @else
-                            <span class="iconify w-8 h-8 rounded-full border-2 border-gray-300"
-                                data-icon="mdi:account-circle" data-width="32" data-height="32"></span>
-                        @endif
-                        <span class="text-gray-700 font-medium">{{ Auth::user()->name ?? 'Username' }}</span>
+                        <a href="{{ route('account') }}" class="flex items-center space-x-2">
+                            @if (Auth::user()->photo)
+                                <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User"
+                                    class="w-8 h-8 rounded-full border-2 border-gray-300">
+                            @else
+                                <span class="iconify w-8 h-8 rounded-full border-2 border-gray-300"
+                                    data-icon="mdi:account-circle" data-width="32" data-height="32"></span>
+                            @endif
+                            <span class="text-gray-700 font-medium">{{ Auth::user()->name ?? 'Username' }}</span>
+                        </a>
                         <form id="logout-form" method="POST" action="{{ route('logout') }}" class="inline">
                             @csrf
                             <button type="submit" class="text-red-500 hover:text-red-700 font-medium">Logout</button>
@@ -302,7 +301,7 @@
                     <p class="text-indigo-500 font-medium cursor-pointer hover:text-indigo-700 transition-colors">Lihat
                         Semua</p>
                 </div>
-                <p class="font-bold text-neutral-400 mb-6 text-base md:text-lg">Promo menarik dari AquaTech Fresh untuk
+                <p class="font-bold text-neutral-400 mb-6 text-base md:text-lg">Promo menarik dari FisheryHub untuk
                     kamu</p>
 
                 <div
@@ -322,8 +321,8 @@
                         <div class="flex space-x-4 md:space-x-8">
                             <a href="{{ route('produk', 'Cumi Krispy') }}"
                                 class="bg-white rounded-xl shadow-lg overflow-hidden w-40 md:w-64 lg:w-72 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                                <img src="{{ asset('assets/cumi-krispy.jpg') }}" alt="Cumi Krispy"
-                                    class="w-full h-28 md:h-44 lg:h-48 object-cover">
+                                <img src="{{ asset(file_exists(public_path('assets/cumi-krispy.jpg')) ? 'assets/cumi-krispy.jpg' : 'assets/pasar-ikan.png') }}"
+                                    alt="Cumi Krispy" class="w-full h-28 md:h-44 lg:h-48 object-cover">
                                 <div class="p-4 md:p-6">
                                     <h2 class="text-sm md:text-lg lg:text-xl font-semibold">Cumi Krispy</h2>
                                     <p class="text-red-500 font-bold text-sm md:text-lg lg:text-xl">Rp15.000</p>
@@ -339,11 +338,11 @@
             </section>
 
             <!-- Banner Langganan -->
-            <section class="my-10 px-6 md:px-8 lg:px-12">
+            {{-- <section class="my-10 px-6 md:px-8 lg:px-12">
                 <h1 class="font-bold mb-6 text-lg md:text-2xl lg:text-3xl text-center">Berlangganan tanpa harus memesan
                     setiap hari</h1>
                 <div class="relative w-full h-80 md:h-96 lg:h-[500px] overflow-hidden shadow-xl rounded-2xl">
-                    <img src="{{ asset('assets/bg-pasar-ikan2.jpg') }}" alt=""
+                    <img src="{{ asset(file_exists(public_path('assets/bg-pasar-ikan2.jpg')) ? 'assets/bg-pasar-ikan2.jpg' : 'assets/pasar-ikan.png') }}" alt=""
                         class="w-full h-full object-cover brightness-50">
                     <div class="absolute inset-0 flex flex-col justify-center items-center text-center px-4 md:px-8">
                         <h1
@@ -361,7 +360,7 @@
                         </button>
                     </div>
                 </div>
-            </section>
+            </section> --}}
 
             <!-- Edukasi & Resep -->
             <section class="px-6 mt-10">
@@ -374,8 +373,8 @@
                     <!-- Card 1 -->
                     <a href="{{ route('edukasi') }}"
                         class="flex bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
-                        <img src="{{ asset('assets/edukasi-ikan.jpg') }}" alt="Cara Menangkap Ikan"
-                            class="w-32 h-24 md:w-40 md:h-28 rounded-md object-cover mr-4">
+                        <img src="{{ asset(file_exists(public_path('assets/edukasi-ikan.jpg')) ? 'assets/edukasi-ikan.jpg' : 'assets/pasar-ikan.png') }}"
+                            alt="Cara Menangkap Ikan" class="w-32 h-24 md:w-40 md:h-28 rounded-md object-cover mr-4">
                         <div class="flex flex-col justify-between">
                             <div>
                                 <h2 class="font-semibold text-gray-900 text-base md:text-lg">Cara menangkap ikan yang
@@ -396,8 +395,8 @@
                     <!-- Card 2 -->
                     <a href="{{ route('edukasi') }}"
                         class="flex bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
-                        <img src="{{ asset('assets/edukasi-gizi.jpg') }}" alt="Gizi Makanan Laut"
-                            class="w-32 h-24 md:w-40 md:h-28 rounded-md object-cover mr-4">
+                        <img src="{{ asset(file_exists(public_path('assets/edukasi-gizi.jpg')) ? 'assets/edukasi-gizi.jpg' : 'assets/pasar-ikan.png') }}"
+                            alt="Gizi Makanan Laut" class="w-32 h-24 md:w-40 md:h-28 rounded-md object-cover mr-4">
                         <div class="flex flex-col justify-between">
                             <div>
                                 <h2 class="font-semibold text-gray-900 text-base md:text-lg">
@@ -420,63 +419,28 @@
             <section class="px-6 md:px-8 lg:px-12 my-10">
                 <h1 class="font-extrabold text-lg md:text-2xl lg:text-3xl mb-6">Rekomendasi Resto</h1>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                    <!-- Resto 1 -->
-                    <a href="{{ route('restaurant', 'Layar Seafood 99') }}"
-                        class="flex bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                        <img src="{{ asset('assets/resto1.jpg') }}" alt="Layar Seafood 99"
-                            class="w-32 h-24 md:w-48 md:h-32 lg:w-56 lg:h-36 rounded-lg object-cover mr-6">
-                        <div class="flex-1">
-                            <h2 class="font-semibold text-gray-900 text-base md:text-xl lg:text-2xl mb-2">Layar Seafood
-                                99</h2>
-                            <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-4">
-                                Jalan Pesanggrahan Raya No.80,<br class="hidden md:block">
-                                Meruya Utara, West Jakarta 11620
-                            </p>
+                    @foreach ($restaurants as $resto)
+                        <!-- Resto {{ $loop->iteration }} -->
+                        <a href="{{ route('restaurant', $resto->id) }}"
+                            class="flex bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                            <img src="{{ asset(file_exists(public_path('assets/' . $resto->image)) ? 'assets/' . $resto->image : 'assets/pasar-ikan.png') }}"
+                                alt="{{ $resto->name }}"
+                                class="w-32 h-24 md:w-48 md:h-32 lg:w-56 lg:h-36 rounded-lg object-cover mr-6">
+                            <div class="flex-1">
+                                <h2 class="font-semibold text-gray-900 text-base md:text-xl lg:text-2xl mb-2">
+                                    {{ $resto->name }}</h2>
+                                <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-4">
+                                    {{ $resto->address }}
+                                </p>
 
-                            <button
-                                class="bg-cyan-600 text-white text-sm md:text-base font-medium px-6 py-3 rounded-lg w-full hover:bg-cyan-700 transition-colors">
-                                Kunjungi Restorant
-                            </button>
-                        </div>
-                    </a>
+                                <button
+                                    class="bg-cyan-600 text-white text-sm md:text-base font-medium px-6 py-3 rounded-lg w-full hover:bg-cyan-700 transition-colors">
+                                    Kunjungi Restoran
+                                </button>
+                            </div>
+                        </a>
+                    @endforeach
 
-                    <!-- Resto 2 (placeholder for more restaurants) -->
-                    <div class="flex bg-white rounded-xl shadow-lg p-6 opacity-75">
-                        <div
-                            class="w-32 h-24 md:w-48 md:h-32 lg:w-56 lg:h-36 rounded-lg bg-gray-200 mr-6 flex items-center justify-center">
-                            <span class="text-gray-400 text-sm">Coming Soon</span>
-                        </div>
-                        <div class="flex-1">
-                            <h2 class="font-semibold text-gray-900 text-base md:text-xl lg:text-2xl mb-2">Resto Baru
-                            </h2>
-                            <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-4">
-                                Segera hadir dengan menu seafood terbaik
-                            </p>
-                            <button
-                                class="bg-gray-400 text-white text-sm md:text-base font-medium px-6 py-3 rounded-lg w-full cursor-not-allowed">
-                                Segera Hadir
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Resto 3 (placeholder for more restaurants) -->
-                    <div class="flex bg-white rounded-xl shadow-lg p-6 opacity-75 md:col-span-2 lg:col-span-1">
-                        <div
-                            class="w-32 h-24 md:w-48 md:h-32 lg:w-56 lg:h-36 rounded-lg bg-gray-200 mr-6 flex items-center justify-center">
-                            <span class="text-gray-400 text-sm">Coming Soon</span>
-                        </div>
-                        <div class="flex-1">
-                            <h2 class="font-semibold text-gray-900 text-base md:text-xl lg:text-2xl mb-2">Resto Premium
-                            </h2>
-                            <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-4">
-                                Pengalaman kuliner seafood premium
-                            </p>
-                            <button
-                                class="bg-gray-400 text-white text-sm md:text-base font-medium px-6 py-3 rounded-lg w-full cursor-not-allowed">
-                                Segera Hadir
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </section>
 

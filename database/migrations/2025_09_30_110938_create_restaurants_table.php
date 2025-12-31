@@ -11,14 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('restaurants', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('expedition_id')->constrained('expeditions')->onDelete('cascade');
-            $table->integer('expedition_price')->default(0);
-            $table->integer('total_price');
-            $table->string('status')->default('pending');
-            $table->foreignId('payment_method_id')->constrained('payment_methods')->onDelete('cascade');
+            $table->string('name')->nullable();
+            $table->string('photo')->nullable();
+            $table->text('address')->nullable();
+            $table->text('description')->nullable();
+            $table->text('phone')->nullable();
+            $table->text('email')->nullable();
+            $table->time('open')->nullable();
+            $table->time('close')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('restaurants');
     }
 };

@@ -83,7 +83,7 @@
                     @foreach ($cart as $item)
                         <div class="flex items-center justify-between py-2 border-b border-gray-200 last:border-b-0">
                             <div class="flex items-center space-x-3">
-                                <img src="{{ asset($item['image']) }}" alt="{{ $item['name'] }}"
+                                <img src="{{ asset(file_exists(public_path($item['image'])) ? $item['image'] : 'assets/pasar-ikan.png') }}" alt="{{ $item['name'] }}"
                                     class="w-12 h-12 object-cover rounded">
                                 <div>
                                     <h3 class="font-medium">{{ $item['name'] }}</h3>
