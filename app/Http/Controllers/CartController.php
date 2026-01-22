@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Restaurant;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -12,7 +13,9 @@ class CartController extends Controller
      */
     public function index()
     {
-        //
+        $carts = Cart::where('user_id', auth()->user()->id)->get();
+        $restaurants = Restaurant::all();
+        return view('cart', compact('carts', 'restaurants'));
     }
 
     /**
@@ -28,7 +31,18 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        $request->merge([
+            'user_id' => auth()->user()->id,
+        ]);
+
+        Cart::create($request->all());
+
+        return redirect()->route('cart')->with('success', 'Product added to cart!');
     }
 
     /**

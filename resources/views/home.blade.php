@@ -310,7 +310,7 @@
                 <div class="relative">
                     <div class="flex space-x-3 overflow-x-auto scrollbar-hide pb-3" id="category-scroll">
                         @foreach ($categories as $category)
-                            <a href=""
+                            <a href="/category/{{ $category->id }}"
                                 class="flex-shrink-0 flex flex-col items-center justify-center bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 w-24 h-24">
                                 <span class="iconify" data-icon="{{ $category->icon }}" data-width="20"></span>
                                 <span
@@ -343,14 +343,21 @@
                                     <p class="text-red-500 font-bold text-lg mb-3">
                                         Rp{{ number_format($product->price, 0, ',', '.') }}</p>
                                     <div class="flex gap-2">
-                                        <a href="{{ route('transaction', $product->id) }}" class="bg-cyan-600 text-white text-sm font-medium px-4 py-2 rounded-lg w-3/4 hover:bg-cyan-700 transition-colors">
-                                                Pesan
+                                        <a href="{{ route('transaction', $product->id) }}"
+                                            class="bg-cyan-600 text-white text-sm font-medium px-4 py-2 rounded-lg w-3/4 hover:bg-cyan-700 transition-colors">
+                                            Pesan
                                         </a>
-                                        <button
-                                            class="bg-yellow-300 text-white text-sm font-medium px-4 py-2 rounded-lg w-1/4 hover:bg-yellow-700 transition-colors">
-                                            <span class="iconify" data-icon="mdi:cart-plus" data-width="20"
-                                                data-height="20"></span>
-                                        </button>
+                                        <form action="{{ route('cart.store') }}" method="POST" class="inline-block">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <input type="hidden" name="quantity" value="1">
+                                            <input type="hidden" name="restaurant_id" value="{{ $product->restaurant_id }}">
+                                            <button
+                                                class="bg-yellow-300 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors cursor-pointer">
+                                                <span class="iconify" data-icon="mdi:cart-plus" data-width="20"
+                                                    data-height="20"></span>
+                                            </button>
+                                        </form>
                                     </div>
 
                                 </div>
@@ -482,11 +489,11 @@
             </section>
 
             <!-- Rekomendasi Resto -->
-            <section class="px-6 md:px-8 lg:px-12 my-10">
+            <section class="px-6 my-10">
                 <h1 class="font-extrabold text-lg md:text-2xl lg:text-3xl mb-6">Rekomendasi Resto</h1>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     @foreach ($restaurants as $resto)
-                        <!-- Resto {{ $loop->iteration }} -->
+                        <!-- Resto -->
                         <a href="{{ route('restaurant', $resto->id) }}"
                             class="flex bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                             <img src="{{ asset(file_exists(public_path('assetsss/' . $resto->image)) ? 'assets/' . $resto->image : 'assets/pasar-ikan.png') }}"
@@ -501,7 +508,7 @@
 
                                 <button
                                     class="bg-cyan-600 text-white text-sm md:text-base font-medium px-6 py-3 rounded-lg w-full hover:bg-cyan-700 transition-colors">
-                                    Kunjungi Restoran
+                                    <small>Kunjungi Restoran</small>
                                 </button>
                             </div>
                         </a>

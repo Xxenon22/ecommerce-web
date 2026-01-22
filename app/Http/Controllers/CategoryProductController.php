@@ -11,10 +11,19 @@ class CategoryProductController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    // Halaman Admin Category
     public function index()
     {
         $categories = CategoryProduct::all();
         return view('admin.category.index', compact('categories'));
+    }
+    
+    // Halaman User Category
+    public function index_user()
+    {
+        $categories = CategoryProduct::all();
+        return view('category', compact('categories'));
     }
 
     /**
@@ -43,7 +52,15 @@ class CategoryProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+
+    // Halaman User Category
+    public function show_user(CategoryProduct $category)
+    {
+        $products = $category->products;
+        return view('category', compact('category', 'products'));
+    }
+
+    public function show()
     {
         //
     }

@@ -62,4 +62,9 @@ class TransactionController extends Controller
     {
         //
     }
+
+    public function checkout(Request $request)
+    {
+        dd($request->all());
+    }
 }
