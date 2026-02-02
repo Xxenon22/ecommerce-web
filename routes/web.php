@@ -23,8 +23,8 @@ Route::middleware('guest')->group(function () {
     Route::post('/registration', [AuthController::class, 'register']);
 
     // Restaurant Login & Register
-    Route::view('/login-resto', 'loginResto')->name('loginResto');
-    Route::view('/regis-resto', 'regisResto')->name('regisResto');
+    // Route::view('/login-resto', 'loginResto')->name('loginResto');
+    // Route::view('/regis-resto', 'regisResto')->name('regisResto');
 
     Route::get('/register-restaurant', [AuthController::class, 'showRestaurantRegistrationForm'])->name('register.restaurant');
     Route::post('/register-restaurant', [AuthController::class, 'registerRestaurant'])->name('register.restaurant.store');

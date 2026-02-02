@@ -92,10 +92,10 @@
                         <span>Subtotal</span>
                         <span id="subtotal">Rp0</span>
                     </div>
-                    <div class="flex justify-between mb-2">
+                    {{-- <div class="flex justify-between mb-2">
                         <span>Pajak (10%)</span>
                         <span id="tax">Rp0</span>
-                    </div>
+                    </div> --}}
                     <hr class="my-2">
                     <div class="flex justify-between font-bold">
                         <span>Total</span>
@@ -164,6 +164,7 @@
 
             plus.onclick = () => {
                 input.value++;
+                console.log(input.value);
                 updateTotals();
             };
         });
@@ -179,16 +180,25 @@
                 subtotal += price * qty;
             });
 
+            // const total = subtotal + tax;
             const tax = subtotal * 0.1;
-            const total = subtotal + tax;
+            const total = subtotal;
 
-            subtotal = subtotal.toLocaleString('id-ID');
-            tax = tax.toLocaleString('id-ID');
-            total = total.toLocaleString('id-ID');
+            const rupiah = new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            });
 
-            document.getElementById('subtotal').innerText = 'Rp' + subtotal;
-            document.getElementById('tax').innerText = 'Rp' + tax;
-            document.getElementById('total').innerText = 'Rp' + total;
+            // console.log(total);
+            // subtotal = subtotal.toLocaleString('id-ID');
+            // tax = tax.toLocaleString('id-ID');
+            // total = total.toLocaleString('id-ID');
+
+            // document.getElementById('tax').innerText = rupiah.format(tax);
+            document.getElementById('subtotal').innerText = rupiah.format(subtotal);
+            document.getElementById('total').innerText = rupiah.format(total);
         }
 
         updateTotals();

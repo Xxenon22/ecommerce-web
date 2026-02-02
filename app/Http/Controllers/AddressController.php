@@ -2,24 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
-use App\Models\Product;
-use App\Models\Restaurant;
+use App\Models\Address;
 use Illuminate\Http\Request;
-use App\Models\CategoryProduct;
 
-class HomeController extends Controller
+class AddressController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $products = Product::all();
-        $restaurants = Restaurant::all();
-        $categories = CategoryProduct::all();
-        $cartCount = Cart::where('user_id', auth()->user()->id)->count();
-        return view('home', compact('products', 'restaurants', 'categories', 'cartCount'));
+        //
     }
 
     /**
@@ -41,7 +34,7 @@ class HomeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Address $address)
     {
         //
     }
@@ -49,7 +42,7 @@ class HomeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Address $address)
     {
         //
     }
@@ -57,7 +50,7 @@ class HomeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Address $address)
     {
         //
     }
@@ -65,7 +58,7 @@ class HomeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Address $address)
     {
         //
     }
