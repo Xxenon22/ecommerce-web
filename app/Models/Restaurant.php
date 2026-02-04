@@ -14,8 +14,9 @@ class Restaurant extends Model
         'address',
         'phone',
         'email',
-        'business_type',
-        'opening_hours',
+        'open',
+        'close',
+        'photo',
     ];
     public function user()
     {

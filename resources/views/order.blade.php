@@ -72,7 +72,7 @@
                 <span class="iconify cursor-pointer" data-icon="weui:back-outlined" data-width="38"
                     data-height="38"></span>
             </a>
-            <h1 class="font-bold text-xl text-gray-700">order Saya</h1>
+            <h1 class="font-bold text-xl text-gray-700">Orderan Saya</h1>
         </div>
     </div>
 
@@ -114,10 +114,10 @@
                                 <p class="text-sm text-gray-500">{{ $order['date'] }}</p>
                             </div>
                             <span class="px-3 py-1 rounded-full text-xs font-medium
-                                                        @if($order['status'] == 'Diproses') bg-yellow-100 text-yellow-800
-                                                        @elseif($order['status'] == 'Dikirim') bg-blue-100 text-blue-800
-                                                        @elseif($order['status'] == 'Selesai') bg-green-100 text-green-800
-                                                        @else bg-gray-100 text-gray-800 @endif">
+                                                                @if($order['status'] == 'Diproses') bg-yellow-100 text-yellow-800
+                                                                @elseif($order['status'] == 'Dikirim') bg-blue-100 text-blue-800
+                                                                @elseif($order['status'] == 'Selesai') bg-green-100 text-green-800
+                                                                @else bg-gray-100 text-gray-800 @endif">
                                 {{ $order['status'] }}
                             </span>
                         </div>

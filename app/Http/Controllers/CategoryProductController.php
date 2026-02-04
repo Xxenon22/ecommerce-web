@@ -18,12 +18,13 @@ class CategoryProductController extends Controller
         $categories = CategoryProduct::all();
         return view('admin.category.index', compact('categories'));
     }
-    
+
     // Halaman User Category
     public function index_user()
     {
         $categories = CategoryProduct::all();
-        return view('category', compact('categories'));
+        $products = collect(); // kosong tapi aman
+        return view('category', compact('categories', 'products'));
     }
 
     /**

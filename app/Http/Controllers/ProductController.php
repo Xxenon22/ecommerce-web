@@ -12,13 +12,13 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::where('id_user', auth()->id())
-            ->where('status', true)
+        $products = Product::where('restaurant_id', auth()->user()->restaurant->id)
             ->with('category')
             ->get();
 
         return view('HomeResto', compact('products'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -34,13 +34,13 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
-            'id_category_product' => 'required|exists:category_products,id',
-            'price' => 'required|numeric|min:0',
-            'description' => 'nullable|string|max:1000',
+            'category_product_id' => 'required|exists:category_products,id',
+            'price' => 'required|integer|min:0',
+            'description' => 'nullable|string',
             'stock' => 'required|integer|min:0',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo' => 'nullable|image|max:2048',
         ]);
 
         $photoPath = null;
@@ -49,17 +49,17 @@ class ProductController extends Controller
         }
 
         Product::create([
-            'id_user' => auth()->id(),
-            'id_category_product' => $validatedData['id_category_product'],
-            'name' => $validatedData['name'],
-            'price' => $validatedData['price'],
-            'description' => $validatedData['description'],
-            'stock' => $validatedData['stock'],
+            'restaurant_id' => auth()->user()->restaurant->id,
+            'category_product_id' => $request->category_product_id,
+            'name' => $request->name,
+            'price' => $request->price,
+            'description' => $request->description,
+            'stock' => $request->stock,
             'photo' => $photoPath,
             'status' => true,
         ]);
 
-        return redirect()->route('home-resto')->with('success', 'Menu berhasil ditambahkan!');
+        return redirect()->back()->with('success', 'Produk berhasil ditambahkan');
     }
 
     /**
@@ -83,14 +83,44 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        abort_if($product->restaurant_id !== auth()->user()->restaurant->id, 403);
+
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'category_product_id' => 'required|exists:category_products,id',
+            'price' => 'required|integer|min:0',
+            'description' => 'nullable|string',
+            'stock' => 'required|integer|min:0',
+            'photo' => 'nullable|image|max:2048',
+        ]);
+
+        if ($request->hasFile('photo')) {
+            if ($product->photo) {
+                \Storage::disk('public')->delete($product->photo);
+            }
+            $data['photo'] = $request->file('photo')->store('products', 'public');
+        }
+
+        $product->update($data);
+
+        return back()->with('success', 'Product berhasil diupdate');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Product $product)
     {
-        //
+        abort_if($product->restaurant_id !== auth()->user()->restaurant->id, 403);
+
+        if ($product->photo) {
+            \Storage::disk('public')->delete($product->photo);
+        }
+
+        $product->delete();
+
+        return back()->with('success', 'Product berhasil dihapus');
     }
+
 }

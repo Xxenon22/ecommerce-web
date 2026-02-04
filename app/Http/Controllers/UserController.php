@@ -38,12 +38,13 @@ class UserController extends Controller
             'address' => 'nullable|string|max:255',
             'resto_name' => 'nullable|string|max:255',
             'role' => 'required|in:Admin,User',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
         $user = User::create($request->all());
 
         return redirect()->route('user.index')->with('success', 'User created successfully');
     }
-        
+
 
     /**
      * Display the specified resource.
@@ -67,7 +68,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $user->update($request->all());
-        
+
         return redirect()->route('user.index')->with('success', 'User updated successfully');
     }
 

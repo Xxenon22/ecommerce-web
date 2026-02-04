@@ -23,9 +23,8 @@
                 <div class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-700">
                     <a href="/home" class="hover:text-cyan-600">Home</a>
                     <a href="" class="hover:text-cyan-600">Products</a>
-                    <a href="" class="hover:text-cyan-600">Orders</a>
-                    <a href="" class="text-cyan-600 font-semibold">Account</a>
-                    <a href="" class="relative hover:text-cyan-600">
+                    <a href="/order" class="hover:text-cyan-600">Orders</a>
+                    <a href="/cart" class="relative hover:text-cyan-600">
                         <span class="iconify" data-icon="mdi:cart-outline" data-width="24" data-height="24"></span>
                         <span
                             class="absolute -top-2 -right-2 bg-cyan-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">{{ $cartCount ?? 0 }}</span>
@@ -92,13 +91,12 @@
             </aside>
 
             {{-- Main Content --}}
-            <section class="lg:col-span-2 space-y-8">
+            <section class="lg:col-span-2">
                 {{-- Profile Tab --}}
                 <div id="content-profile" class="tab-content">
                     <div class="bg-white rounded-xl shadow p-6">
                         <div class="flex items-center justify-between mb-6">
                             <h2 class="text-xl font-semibold text-gray-800">Personal Information</h2>
-                            <button id="edit-profile-btn" class="text-sm text-cyan-600 hover:underline">Edit</button>
                         </div>
                         <form id="profile-form" action="{{ route('account.update') }}" method="POST"
                             enctype="multipart/form-data" class="space-y-4">
@@ -126,7 +124,7 @@
                                     <p class="text-sm text-gray-500">{{ Auth::user()->email }}</p>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 gap-4 mt-2">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                                     <input type="text" name="name"
@@ -145,12 +143,6 @@
                                         value="{{ old('phone', Auth::user()->phone) }}"
                                         class="w-full px-4 py-2 border border-gray-300">
                                 </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
-                                    <input type="date" name="dob"
-                                        value="{{ old('dob', Auth::user()->dob?->format('Y-m-d')) }}"
-                                        class="w-full px-4 py-2 border border-gray-300">
-                                </div>
                             </div>
                             <div class="flex justify-end space-x-3">
                                 <button type="button" id="cancel-profile"
@@ -163,37 +155,106 @@
                     </div>
                 </div>
 
-                {{-- Addresses Tab --}}
-                {{-- <div id="content-addresses" class="tab-content hidden">
-                    <div class="bg-white rounded-xl shadow p-6">
-                        <div class="flex items-center justify-between mb-6">
-                            <h2 class="text-xl font-semibold text-gray-800">Shipping Addresses</h2>
-                            <button class="text-sm text-cyan-600 hover:underline">+ Add New Address</button>
-                        </div>
-                        <div class="space-y-4">
-                            @forelse(Auth::user()->addresses as $address)
-                                <div class="border rounded-lg p-4 {{ $address->is_default ? 'border-cyan-500 bg-cyan-50' : 'border-gray-200' }}">
-                                    <div class="flex justify-between items-start">
-                                        <div>
-                                            <p class="font-medium text-gray-800">{{ $address->label }}</p>
-                                            <p class="text-sm text-gray-600">{{ $address->street }}, {{ $address->city }}, {{ $address->province }} {{ $address->postal_code }}</p>
-                                        </div>
-                                        <div class="flex space-x-2">
-                                            @if ($address->is_default)
-                                                <span class="text-xs bg-cyan-600 text-white px-2 py-1 rounded">Default</span>
-                                            @endif
-                                            <button class="text-gray-400 hover:text-gray-600">
-                                                <span class="iconify" data-icon="mdi:pencil" data-width="18" data-height="18"></span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            @empty
-                                <p class="text-gray-500">No addresses added yet.</p>
-                            @endforelse
-                        </div>
+            {{-- Addresses Tab --}}
+            <div id="content-addresses" class="tab-content hidden">
+                <div class="bg-white rounded-xl shadow p-6 space-y-6">
+
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold text-gray-800">My Addresses</h2>
+                        <button onclick="document.getElementById('add-address-form').classList.remove('hidden')"
+                            class="px-4 py-2 rounded-lg bg-cyan-600 text-white hover:bg-cyan-700">
+                            + Add Address
+                        </button>
                     </div>
-                </div> --}}
+
+                    {{-- Address List --}}
+                    @if ($addresses->count())
+                        <div class="space-y-4">
+                            @foreach ($addresses as $address)
+                            <div class="border rounded-lg p-4 space-y-3">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <p class="font-semibold">{{ $address->recipient_name }}</p>
+                                        <p class="text-sm text-gray-600">{{ $address->phone }}</p>
+                                        <p class="text-sm text-gray-600">
+                                            {{ $address->address_detail }},
+                                            {{ $address->district }},
+                                            {{ $address->city }},
+                                            {{ $address->province }},
+                                            {{ $address->postal_code }}
+                                        </p>
+                                    </div>
+
+                                    @if ($address->is_default)
+                                        <span class="text-xs bg-cyan-100 text-cyan-700 px-2 py-1 rounded-full">Default</span>
+                                    @endif
+                                </div>
+
+                                {{-- ACTION BUTTON --}}
+                                <div class="flex gap-2">
+                                    <button
+                                        onclick="document.getElementById('edit-form-{{ $address->id }}').classList.toggle('hidden')"
+                                        class="text-sm px-3 py-1 border rounded-lg hover:bg-gray-100">
+                                        Edit
+                                    </button>
+
+                                    <form action="{{ route('addresses.destroy', $address) }}" method="POST"
+                                        onsubmit="return confirm('Delete this address?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="text-sm px-3 py-1 border border-red-300 text-red-600 rounded-lg hover:bg-red-50">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
+
+                                {{-- EDIT FORM --}}
+                                <form id="edit-form-{{ $address->id }}"
+                                    action="{{ route('addresses.update', $address) }}"
+                                    method="POST"
+                                    class="hidden border-t pt-4 space-y-3">
+                                    @csrf
+                                    @method('PUT')
+
+                                    <input type="text" name="recipient_name" value="{{ $address->recipient_name }}" class="w-full px-3 py-2 border rounded-lg">
+                                    <input type="text" name="phone" value="{{ $address->phone }}" class="w-full px-3 py-2 border rounded-lg">
+                                    <textarea name="address_detail" class="w-full px-3 py-2 border rounded-lg">{{ $address->address_detail }}</textarea>
+
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <input type="text" name="district" value="{{ $address->district }}" class="px-3 py-2 border rounded-lg">
+                                        <input type="text" name="city" value="{{ $address->city }}" class="px-3 py-2 border rounded-lg">
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <input type="text" name="province" value="{{ $address->province }}" class="px-3 py-2 border rounded-lg">
+                                        <input type="text" name="postal_code" value="{{ $address->postal_code }}" class="px-3 py-2 border rounded-lg">
+                                    </div>
+
+                                    <div class="flex justify-end gap-2">
+                                        <button type="button"
+                                            onclick="document.getElementById('edit-form-{{ $address->id }}').classList.add('hidden')"
+                                            class="px-3 py-1 border rounded-lg">
+                                            Cancel
+                                        </button>
+                                        <button type="submit"
+                                            class="px-3 py-1 bg-cyan-600 text-white rounded-lg">
+                                            Update
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            @endforeach
+
+                        </div>
+                    @else
+                        <p class="text-gray-500 text-center">No addresses added yet.</p>
+                    @endif
+
+                    {{-- Add Address Form --}}
+                    @include('account.partials.add-address-form')
+                </div>
+            </div>
 
                 {{-- Restaurant Tab --}}
                 <div id="content-restaurant" class="tab-content hidden">
@@ -213,7 +274,7 @@
                             <div id="restaurant-view" class="space-y-6">
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <div class="md:col-span-1">
-                                        {{-- <img src="{{ asset('storage/' . Auth::user()->restaurant->logo) }}" alt="Restaurant Logo" class="w-full h-40 object-cover rounded-lg"> --}}
+                                         <img src="{{ asset('storage/' . Auth::user()->restaurant->photo) }}" alt="Restaurant Logo" class="w-full h-40 object-cover rounded-lg">
                                     </div>
                                     <div class="md:col-span-2 space-y-3">
                                         <p class="text-lg font-semibold text-gray-800">
@@ -233,8 +294,8 @@
                                         <div class="flex items-center space-x-2 text-sm text-gray-600">
                                             <span class="iconify" data-icon="mdi:clock" data-width="16"
                                                 data-height="16"></span>
-                                            <span>{{ Auth::user()->restaurant->open_time }} -
-                                                {{ Auth::user()->restaurant->close_time }}</span>
+                                            <span>{{ Auth::user()->restaurant->open }} -
+                                                {{ Auth::user()->restaurant->close }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -326,7 +387,10 @@
                             <div class="bg-white rounded-xl shadow p-6 mt-8">
                                 <div class="flex items-center justify-between mb-6">
                                     <h2 class="text-xl font-semibold text-gray-800">My Products</h2>
-                                    <button class="text-sm text-cyan-600 hover:underline">+ Add New Product</button>
+                                        <a href="{{ route('tambah-menu') }}"
+                                        class="text-sm text-cyan-600 hover:underline">
+                                        + Add New Product
+                                        </a>
                                 </div>
 
                                 @if (Auth::user()->restaurant && Auth::user()->restaurant->products->count())
@@ -334,7 +398,7 @@
                                         @foreach (Auth::user()->restaurant->products as $product)
                                             <div
                                                 class="border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow">
-                                                <img src="{{ asset(file_exists(public_path($product->image)) ? $product->image : '/assets/pasar-ikan.png') }}" alt="{{ $product->name }}"
+                                                <img src="{{ asset(file_exists(public_path($product->photo)) ? $product->photo : '/assets/pasar-ikan.png') }}" alt="{{ $product->name }}"
                                                     class="w-full h-40 object-cover rounded-lg mb-3">
                                                 <div class="space-y-2">
                                                     <h3 class="font-semibold text-gray-800 truncate">
@@ -371,9 +435,11 @@
                                         <span class="iconify text-gray-300" data-icon="mdi:package-variant"
                                             data-width="64" data-height="64"></span>
                                         <p class="mt-4 text-gray-600">No products added yet.</p>
-                                        <button
-                                            class="mt-4 px-4 py-2 rounded-lg bg-cyan-600 text-white hover:bg-cyan-700">Add
-                                            Your First Product</button>
+                                        <a href="{{ route('tambah-menu') }}"
+                                        class="mt-4 px-4 py-2 rounded-lg bg-cyan-600 text-white hover:bg-cyan-700">
+                                        Add Your First Product
+                                        </a>
+
                                     </div>
                                 @endif
                             </div>

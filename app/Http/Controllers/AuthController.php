@@ -81,7 +81,12 @@ class AuthController extends Controller
             $user->restaurant()->create(['user_id' => $user->id]);
         }
 
-        return view('account');
+        $addresses = Auth::user()
+            ->addresses()
+            ->latest()
+            ->get();
+
+        return view('account', compact('addresses'));
     }
 
     public function updateProfile(Request $request)

@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Product extends Model
 {
     protected $fillable = [
-        'id_category_product',
-        'id_user',
+        'restaurant_id',
+        'category_product_id',
         'name',
         'photo',
         'price',
@@ -18,11 +18,6 @@ class Product extends Model
         'status',
     ];
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'id_user');
-    }
-
     public function category(): BelongsTo
     {
         return $this->belongsTo(CategoryProduct::class, 'category_product_id');
@@ -30,6 +25,6 @@ class Product extends Model
 
     public function restaurant(): BelongsTo
     {
-        return $this->belongsTo(Restaurant::class, 'id_restaurant');
+        return $this->belongsTo(Restaurant::class);
     }
 }
