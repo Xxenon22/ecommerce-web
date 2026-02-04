@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
@@ -17,7 +18,8 @@ class HomeController extends Controller
         $products = Product::all();
         $restaurants = Restaurant::all();
         $categories = CategoryProduct::all();
-        return view('home', compact('products', 'restaurants', 'categories'));
+        $cartCount = Cart::where('user_id', auth()->user()->id)->count();
+        return view('home', compact('products', 'restaurants', 'categories', 'cartCount'));
     }
 
     /**

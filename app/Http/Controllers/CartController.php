@@ -39,7 +39,11 @@ class CartController extends Controller
         $request->merge([
             'user_id' => auth()->user()->id,
         ]);
-
+        if(Cart::where('user_id', auth()->user()->id)
+            ->where('product_id', $request->product_id)
+            ->exists()){
+            return redirect()->route('cart')->with('error', 'Product already in cart!');
+        }
         Cart::create($request->all());
 
         return redirect()->route('cart')->with('success', 'Product added to cart!');
