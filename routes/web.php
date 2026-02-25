@@ -180,6 +180,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/transaction/{product}', function (Product $product) {
         return view('transaction', compact('product'));
     })->name('transaction');
+    
+    Route::get('/cart-checkout', [TransactionController::class, 'cart_checkout'])->name('cart_checkout');
 
 
     // Dynamic Produk

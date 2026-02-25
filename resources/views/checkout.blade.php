@@ -79,7 +79,49 @@
             <!-- Order Summary -->
             <div class="bg-white rounded-lg shadow-md p-4 mb-4">
                 <h2 class="text-lg font-semibold mb-4">Ringkasan order</h2>
-                @if (isset($cart) && count($cart) > 0)
+                @if (isset($products) && count($products) > 0)
+                    @php $total=0; @endphp
+                    @foreach ($products as $item)
+                        @php
+                            $product = App\Models\Product::find($item['product_id']);
+                            $total += $item['quantity'] * $product['price'];
+                        @endphp
+                        <div class="flex items-center justify-between py-2 border-b border-gray-200 last:border-b-0">
+                            <div class="flex items-center space-x-3">
+                                <img src="{{ asset(file_exists(public_path($product['photo'])) ? $product['photo'] : 'assets/pasar-ikan.png') }}"
+                                    alt="{{ $product['name'] }}" class="w-12 h-12 object-cover rounded">
+                                <div>
+                                    <h3 class="font-medium">{{ $product['name'] }}</h3>
+                                    <p class="text-sm text-gray-500">Qty: {{ number_format($item['quantity']) }}</p>
+                                </div>
+                            </div>
+                            <span class="font-semibold text-red-500">Rp {{ number_format($product['price']) }}</span>
+                        </div>
+                    @endforeach
+
+                    <div class="mt-4 pt-4">
+                        {{-- <div class="mt-4 pt-4 border-t border-gray-200"> --}}
+                        {{-- <div class="flex justify-between items-center mb-2">
+                            <span class="text-gray-600">Subtotal</span>
+                            <span class="font-semibold">Rp80.000</span>
+                        </div> --}}
+                        {{-- <div class="flex justify-between items-center mb-2">
+                            <span class="text-gray-600">Pajak (10%)</span>
+                            <span class="font-semibold">Rp8.000</span>
+                        </div> --}}
+                        {{-- <div class="flex justify-between items-center mb-2">
+                            <span class="text-gray-600">Ongkir</span>
+                            <span class="font-semibold">Rp10.000</span>
+                        </div>
+                        <hr class="my-2"> --}}
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold">Total</span>
+                            <span class="text-lg font-bold text-red-500">Rp {{ number_format($total) }}</span>
+                            <input type="hidden" name="total" value="{{$total}}" id="total">
+                        </div>
+                    </div>
+                @endif
+                {{-- @if (isset($cart) && count($cart) > 0)
                     @foreach ($cart as $item)
                         <div class="flex items-center justify-between py-2 border-b border-gray-200 last:border-b-0">
                             <div class="flex items-center space-x-3">
@@ -114,7 +156,7 @@
                             <input type="hidden" name="total" value="98000" id="total">
                         </div>
                     </div>
-                @endif
+                @endif --}}
             </div>
 
             <!-- Delivery Information -->
@@ -219,7 +261,8 @@
 
             <!-- Place Order Button -->
             <button type="submit"
-                class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-4 px-4 rounded-lg transition duration-300 text-lg" id="pay-button">
+                class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-4 px-4 rounded-lg transition duration-300 text-lg"
+                id="pay-button">
                 Buat order
             </button>
         </form>

@@ -152,10 +152,10 @@
                                 <span>Admin Page</span>
                             </a>
                         @endif
-                        <a href="{{ route('regisResto') }}" class="flex items-center space-x-3 hover:text-cyan-400">
+                        {{-- <a href="{{ route('regisResto') }}" class="flex items-center space-x-3 hover:text-cyan-400">
                             <span class="iconify" data-icon="hugeicons:restaurant" data-width="22"></span>
                             <span>Restoran</span>
-                        </a>
+                        </a> --}}
                         <a href="#" class="flex items-center space-x-3 hover:text-cyan-400">
                             <span class="iconify" data-icon="mdi:bell-outline" data-width="22"></span>
                             <span>Notification</span>

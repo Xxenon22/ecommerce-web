@@ -50,7 +50,7 @@
                                 <div class="cart-item flex justify-between items-center py-4 border-b last:border-b-0">
 
                                     <div class="flex items-center space-x-4">
-                                        <input type="checkbox" class="product-checkbox" name="selected_products[]"
+                                        <input type="checkbox" class="product-checkbox" name="selected_products[{{ $cart->product->id }}]"
                                             value="{{ $cart->product->id }}" data-restaurant-id="{{ $restaurant->id }}">
 
                                         <img src="{{ asset(file_exists(public_path($cart->product->photo)) ? $cart->product->photo : 'assets/pasar-ikan.png') }}"

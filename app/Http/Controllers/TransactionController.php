@@ -65,7 +65,13 @@ class TransactionController extends Controller
 
     public function checkout(Request $request)
     {
-        dd($request->all());
-        
+        $products = [];
+        foreach ($request['selected_products'] as $a => $product) {
+            $products[$a]['product_id'] = $product;
+        }
+        foreach ($request['quantity'] as $a => $product) {
+            $products[$a]['quantity'] = $product;
+        }
+        return view('checkout', compact('products'));
     }
 }
