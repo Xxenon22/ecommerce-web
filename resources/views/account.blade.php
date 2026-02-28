@@ -284,7 +284,7 @@
                                         <div class="flex items-center space-x-2 text-sm text-gray-600">
                                             <span class="iconify" data-icon="mdi:map-marker" data-width="16"
                                                 data-height="16"></span>
-                                            <span>{{ Auth::user()->restaurant->address }}</span>
+                                            <span>{{ Auth::user()->restaurant->address }}, {{ Auth::user()->restaurant->district }},{{ Auth::user()->restaurant->city }}, {{ Auth::user()->restaurant->province }}, {{ Auth::user()->restaurant->postal_code }}</span>
                                         </div>
                                         <div class="flex items-center space-x-2 text-sm text-gray-600">
                                             <span class="iconify" data-icon="mdi:phone" data-width="16"
@@ -347,13 +347,25 @@
                                         </div>
 
                                         <div class="grid grid-cols-2 gap-2">
-                                            <input type="text" name="district" value="{{ Auth::user()->restaurant->district }}" class="px-3 py-2 border rounded-lg">
-                                            <input type="text" name="city" value="{{ Auth::user()->restaurant->city }}" class="px-3 py-2 border rounded-lg">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">District</label>
+                                                <input type="text" name="district" value="{{ Auth::user()->restaurant->district }}" class="px-3 py-2 border rounded-lg">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                                                <input type="text" name="city" value="{{ Auth::user()->restaurant->city }}" class="px-3 py-2 border rounded-lg">
+                                            </div>
                                         </div>
 
                                         <div class="grid grid-cols-2 gap-2">
-                                            <input type="text" name="province" value="{{ Auth::user()->restaurant->province }}" class="px-3 py-2 border rounded-lg">
-                                            <input type="text" name="postal_code" value="{{ Auth::user()->restaurant->postal_code }}" class="px-3 py-2 border rounded-lg">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Province</label>
+                                                <input type="text" name="province" value="{{ Auth::user()->restaurant->province }}" class="px-3 py-2 border rounded-lg">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Postal Code</label>
+                                                <input type="text" name="postal_code" value="{{ Auth::user()->restaurant->postal_code }}" class="px-3 py-2 border rounded-lg">
+                                            </div>
                                         </div>
 
                                         <div>
