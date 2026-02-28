@@ -176,7 +176,8 @@ Route::middleware('auth')->group(function () {
     // })->name('checkout');
 
     Route::post('/checkout', [TransactionController::class, 'checkout'])->name('checkout');
-
+    
+    Route::post('/transaction/store', [TransactionController::class, 'store'])->name('transaction.store');
     Route::get('/transaction/{product}', function (Product $product) {
         return view('transaction', compact('product'));
     })->name('transaction');

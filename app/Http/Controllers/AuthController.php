@@ -85,7 +85,8 @@ class AuthController extends Controller
             ->addresses()
             ->latest()
             ->get();
-
+            
+        // dd($addresses);
         return view('account', compact('addresses'));
     }
 

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Midtrans\Snap;
-use Midtrans\Config;
+use App\Models\Transaction;
+use App\Models\TransactionProduct;
 use Illuminate\Http\Request;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 class PaymentController extends Controller
 {
@@ -18,7 +20,6 @@ class PaymentController extends Controller
 
     public function createTransaction(Request $request)
     {
-        // dd($request->all());
         // Konfigurasi Midtrans
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
@@ -39,13 +40,29 @@ class PaymentController extends Controller
             ],
             'customer_details' => [
                 'first_name' => $request->name,
-                // 'email' => $request->email,
-                // 'phone' => $request->phone,
+                'email' => auth()->user()->email,
+                'phone' => $request->phone,
+                'address' => $request->address,
             ],
         ];
 
         // Dapatkan Snap Token dari Midtrans
         $snapToken = Snap::getSnapToken($params);
+
+        $transaction = Transaction::create([
+            'user_id' => auth()->user()->id, 
+            'expedition_id' => NULL,
+            'expedition_price' => 1,
+            'total_price' => $request->amount,
+            'status' => 'Belum di Bayar', 
+            'payment_method_id' => NULL,
+        ]);
+
+        if($transaction){
+            TransactionProduct::create([
+                $transaction
+            ]);
+        }
 
         return response()->json([
             'order_id' => $orderId,

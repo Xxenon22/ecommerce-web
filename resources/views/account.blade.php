@@ -347,13 +347,13 @@
                                         </div>
 
                                         <div class="grid grid-cols-2 gap-2">
-                                            <input type="text" name="district" value="{{ $address->district }}" class="px-3 py-2 border rounded-lg">
-                                            <input type="text" name="city" value="{{ $address->city }}" class="px-3 py-2 border rounded-lg">
+                                            <input type="text" name="district" value="{{ Auth::user()->restaurant->district }}" class="px-3 py-2 border rounded-lg">
+                                            <input type="text" name="city" value="{{ Auth::user()->restaurant->city }}" class="px-3 py-2 border rounded-lg">
                                         </div>
 
                                         <div class="grid grid-cols-2 gap-2">
-                                            <input type="text" name="province" value="{{ $address->province }}" class="px-3 py-2 border rounded-lg">
-                                            <input type="text" name="postal_code" value="{{ $address->postal_code }}" class="px-3 py-2 border rounded-lg">
+                                            <input type="text" name="province" value="{{ Auth::user()->restaurant->province }}" class="px-3 py-2 border rounded-lg">
+                                            <input type="text" name="postal_code" value="{{ Auth::user()->restaurant->postal_code }}" class="px-3 py-2 border rounded-lg">
                                         </div>
 
                                         <div>
