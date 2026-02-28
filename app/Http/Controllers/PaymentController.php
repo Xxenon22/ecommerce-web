@@ -40,7 +40,7 @@ class PaymentController extends Controller
             ],
             'customer_details' => [
                 'first_name' => $request->name,
-                'email' => auth()->user()->email,
+                // 'email' => auth()->user()->email,
                 'phone' => $request->phone,
                 'address' => $request->address,
             ],
@@ -49,14 +49,14 @@ class PaymentController extends Controller
         // Dapatkan Snap Token dari Midtrans
         $snapToken = Snap::getSnapToken($params);
 
-        $transaction = Transaction::create([
-            'user_id' => auth()->user()->id, 
-            'expedition_id' => NULL,
-            'expedition_price' => 1,
-            'total_price' => $request->amount,
-            'status' => 'Belum di Bayar', 
-            'payment_method_id' => NULL,
-        ]);
+        // $transaction = Transaction::create([
+        //     'user_id' => auth()->user()->id, 
+        //     'expedition_id' => NULL,
+        //     'expedition_price' => 1,
+        //     'total_price' => $request->amount,
+        //     'status' => 'Belum di Bayar', 
+        //     'payment_method_id' => NULL,
+        // ]);
 
         // if($transaction){
         //     TransactionProduct::create([

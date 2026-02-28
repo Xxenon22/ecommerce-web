@@ -72,6 +72,13 @@ class TransactionController extends Controller
         foreach ($request['quantity'] as $a => $product) {
             $products[$a]['quantity'] = $product;
         }
-        return view('checkout', compact('products'));
+
+        // Get user's saved addresses
+        $addresses = [];
+        if (auth()->check()) {
+            $addresses = auth()->user()->addresses()->get();
+        }
+
+        return view('checkout', compact('products', 'addresses'));
     }
 }
