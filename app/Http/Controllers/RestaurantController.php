@@ -59,7 +59,10 @@ class RestaurantController extends Controller
             'address' => 'required|string|max:255',
             'description' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
-            // 'email' => 'required|string|max:255',
+            'province' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'district' => 'required|string|max:255',
+            'postal_code' => 'required|string|max:255',
             'open' => 'required|string|max:255',
             'close' => 'required|string|max:255',
         ]);
