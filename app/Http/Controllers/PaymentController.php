@@ -58,11 +58,11 @@ class PaymentController extends Controller
             'payment_method_id' => NULL,
         ]);
 
-        if($transaction){
-            TransactionProduct::create([
-                $transaction
-            ]);
-        }
+        // if($transaction){
+        //     TransactionProduct::create([
+        //         $transaction
+        //     ]);
+        // }
 
         return response()->json([
             'order_id' => $orderId,

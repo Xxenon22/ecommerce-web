@@ -9,13 +9,13 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Tab switching
             const tabButtons = document.querySelectorAll('.tab-btn');
             const tabContents = document.querySelectorAll('.tab-content');
 
             tabButtons.forEach(button => {
-                button.addEventListener('click', function () {
+                button.addEventListener('click', function() {
                     // Remove active class from all buttons
                     tabButtons.forEach(btn => {
                         btn.classList.remove('border-cyan-600', 'text-cyan-600');
@@ -38,7 +38,7 @@
             // Order actions
             const actionButtons = document.querySelectorAll('.order-action-btn');
             actionButtons.forEach(button => {
-                button.addEventListener('click', function () {
+                button.addEventListener('click', function() {
                     const action = this.getAttribute('data-action');
                     const orderId = this.closest('.order-card').getAttribute('data-order-id');
 
@@ -105,16 +105,17 @@
 
         <!-- Tab Content -->
         <div id="semua" class="tab-content">
-            @if(isset($orders) && count($orders) > 0)
-                @foreach($orders as $order)
+            @if (isset($orders) && count($orders) > 0)
+                @foreach ($orders as $order)
                     <div class="order-card bg-white rounded-lg shadow-md p-4 mb-4" data-order-id="{{ $order['id'] }}">
                         <div class="flex justify-between items-start mb-4">
                             <div>
                                 <h3 class="font-semibold text-gray-800">order #{{ $order['id'] }}</h3>
                                 <p class="text-sm text-gray-500">{{ $order['date'] }}</p>
                             </div>
-                            <span class="px-3 py-1 rounded-full text-xs font-medium
-                                                                @if($order['status'] == 'Diproses') bg-yellow-100 text-yellow-800
+                            <span
+                                class="px-3 py-1 rounded-full text-xs font-medium
+                                                                @if ($order['status'] == 'Diproses') bg-yellow-100 text-yellow-800
                                                                 @elseif($order['status'] == 'Dikirim') bg-blue-100 text-blue-800
                                                                 @elseif($order['status'] == 'Selesai') bg-green-100 text-green-800
                                                                 @else bg-gray-100 text-gray-800 @endif">
@@ -123,7 +124,7 @@
                         </div>
 
                         <div class="border-t border-gray-200 pt-4">
-                            @foreach($order['items'] as $item)
+                            @foreach ($order['items'] as $item)
                                 <div class="flex items-center justify-between py-2">
                                     <div class="flex items-center space-x-3">
                                         <img src="{{ asset($item['image']) }}" alt="{{ $item['name'] }}"
@@ -145,7 +146,7 @@
                             </div>
 
                             <div class="flex space-x-2">
-                                @if($order['status'] == 'Diproses')
+                                @if ($order['status'] == 'Diproses')
                                     <button
                                         class="order-action-btn flex-1 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-sm font-medium transition"
                                         data-action="cancel">

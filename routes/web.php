@@ -130,6 +130,8 @@ Route::middleware('auth')->group(function () {
         return view('order', compact('orders'));
     })->name('order');
 
+    Route::get('/history-transaction', [TransactionController::class]);
+
     // Route::get('cart', function () {
     //     // Sample cart data - replace with actual cart logic later
     //     $cart = [
