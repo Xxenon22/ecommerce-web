@@ -272,49 +272,67 @@
         $('#courier').change(function () {
 
             let courier = $(this).val();
-
             if (!courier) return;
 
             $.post("{{ route('get.rates') }}", {
                 _token: "{{ csrf_token() }}",
                 courier: courier,
                 destination_postal_code: "{{$addresses[0]->postal_code ?? ''}}",
-                total: $('#total').val(),
+                total: $('#order-total').data('total'),
                 products: @json($products)
             }, function (response) {
 
                 console.log("FULL RESPONSE:", response);
-                let options = '';
+
+                if (!response.success || !response.pricing || response.pricing.length === 0) {
+                    alert("Tidak ada layanan pengiriman tersedia");
+                    $('#service-dropdown').html('<option value="">Tidak ada service tersedia</option>');
+                    return;
+                }
+
+                let options = '<option value="">-- Pilih Service --</option>';
 
                 response.pricing.forEach(function (rate) {
+
+                    // FIX: price langsung number dari API
+                    let price = Number(rate.price) || 0;
+
+                    let duration = rate.duration || '-';
+
                     options += `
-                <option value="${rate.courier_service_code}" 
-                        data-price="${rate.price}">
+                <option value="${rate.courier_service_code}" data-price="${price}">
                     ${rate.courier_name} - 
-                    ${rate.courier_service_name} 
-                    (${rate.duration} hari) - 
-                    Rp ${rate.price}
+                    ${rate.courier_service_name}
+                    (${duration}) - 
+                    Rp ${price.toLocaleString('id-ID')}
                 </option>
             `;
+
                 });
 
                 $('#service-dropdown').html(options);
+
+            }).fail(function () {
+                alert("Gagal mengambil ongkir dari server");
             });
 
         });
 
-        $('#service-dropdown').change(function () {
 
-            let price = $(this).find(':selected').data('price');
+        $('#service-dropdown').on('change', function () {
 
-            if (!price) return;
+            let selected = $(this).find(':selected');
 
-            let orderTotal = parseInt($('#order-total').data('total'));
+            let price = Number(selected.data('price')) || 0;
 
-            let finalTotal = orderTotal + parseInt(price);
+            console.log("ONGKIR:", price);
 
-            $('#ongkir').text('Rp ' + parseInt(price).toLocaleString());
-            $('#grand-total').text('Rp ' + finalTotal.toLocaleString());
+            let orderTotal = Number($('#order-total').data('total')) || 0;
+
+            let grandTotal = orderTotal + price;
+
+            $('#ongkir').text('Rp ' + price.toLocaleString('id-ID'));
+            $('#grand-total').text('Rp ' + grandTotal.toLocaleString('id-ID'));
 
         });
     </script>
