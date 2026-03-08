@@ -145,7 +145,7 @@
                             <span>Category Product</span>
                         </a>
 
-                        <a href="#" class="flex items-center space-x-3 hover:text-cyan-400">
+                        <a href="/admin/history" class="flex items-center space-x-3 hover:text-cyan-400">
                             <span class="iconify" data-icon="mdi:history" data-width="22"></span>
                             <span>History</span>
                         </a>

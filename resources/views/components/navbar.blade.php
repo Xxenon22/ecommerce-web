@@ -23,10 +23,10 @@
         </a>
     </div>
 
-    <!-- order -->
-    <a href="{{ route('order') }}" class="flex flex-col items-center text-gray-500">
+    <!-- History -->
+    <a href="{{ route('history') }}" class="flex flex-col items-center text-gray-500">
         <span class="iconify" data-icon="mdi:clipboard-text-outline" data-width="26" data-height="26"></span>
-        <span class="text-xs font-medium mt-1">order</span>
+        <span class="text-xs font-medium mt-1">History Transaction</span>
     </a>
 
     <!-- Akun -->

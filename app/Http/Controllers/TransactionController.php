@@ -12,7 +12,8 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
+        $transactions = Transaction::with('TransactionProduct')->get();
+        return view('admin.history.index', compact('transactions'));
     }
 
     /**
@@ -80,5 +81,11 @@ class TransactionController extends Controller
         }
 
         return view('checkout', compact('products', 'addresses'));
+    }
+
+    public function history()
+    {
+        $orders = Transaction::with('TransactionProduct')->where('user_id', auth()->user()->id)->get();
+        return view('history', compact('orders'));
     }
 }

@@ -87,6 +87,11 @@
                 </button>
                 <button
                     class="tab-btn flex-1 py-3 px-4 text-center border-b-2 border-transparent text-gray-500 font-medium"
+                    data-tab="belumdibayar">
+                    Belum dibayar
+                </button>
+                <button
+                    class="tab-btn flex-1 py-3 px-4 text-center border-b-2 border-transparent text-gray-500 font-medium"
                     data-tab="diproses">
                     Diproses
                 </button>
@@ -99,6 +104,11 @@
                     class="tab-btn flex-1 py-3 px-4 text-center border-b-2 border-transparent text-gray-500 font-medium"
                     data-tab="selesai">
                     Selesai
+                </button>
+                <button
+                    class="tab-btn flex-1 py-3 px-4 text-center border-b-2 border-transparent text-gray-500 font-medium"
+                    data-tab="batal">
+                    Batal
                 </button>
             </div>
         </div>
@@ -194,6 +204,14 @@
         </div>
 
         <!-- Other tabs (initially hidden) -->
+        <div id="belumdibayar" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-md p-8 text-center">
+                <span class="iconify block mx-auto mb-4 text-red-400" data-icon="mdi:cash-clock" data-width="64"
+                    data-height="64"></span>
+                <h2 class="text-xl font-semibold text-gray-700 mb-2">Belum dibayar</h2>
+                <p class="text-gray-500">Tidak ada order yang belum dibayar</p>
+            </div>
+        </div>
         <div id="diproses" class="tab-content hidden">
             <div class="bg-white rounded-lg shadow-md p-8 text-center">
                 <span class="iconify block mx-auto mb-4 text-yellow-400" data-icon="mdi:cog-outline" data-width="64"
@@ -220,9 +238,17 @@
                 <p class="text-gray-500">Tidak ada order yang sudah selesai</p>
             </div>
         </div>
+        <div id="batal" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-md p-8 text-center">
+                <span class="iconify block mx-auto mb-4 text-red-400" data-icon="mdi:alpha-x-circle-outline"
+                    data-width="64" data-height="64"></span>
+                <h2 class="text-xl font-semibold text-gray-700 mb-2">Order Batal</h2>
+                <p class="text-gray-500">Tidak ada order yang dibatalkan</p>
+            </div>
+        </div>
     </main>
 
-    <x-navbar :cart-count="0" :active-route="'order'" class="block md:hidden" />
+    <x-navbar :cart-count="0" :active-route="'history'" class="block md:hidden" />
 </body>
 
 </html>

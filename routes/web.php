@@ -130,7 +130,7 @@ Route::middleware('auth')->group(function () {
         return view('order', compact('orders'));
     })->name('order');
 
-    Route::get('/history-transaction', [TransactionController::class]);
+    Route::get('/history-transaction', [TransactionController::class, 'history'])->name('history');
 
     // Route::get('cart', function () {
     //     // Sample cart data - replace with actual cart logic later
@@ -274,4 +274,5 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::view('/dashboard', 'admin.dashboard')->name('admin.dashboard');
     Route::resource('/category', CategoryProductController::class);
     Route::resource('/user', UserController::class);
+    Route::resource('/history', TransactionController::class);
 });

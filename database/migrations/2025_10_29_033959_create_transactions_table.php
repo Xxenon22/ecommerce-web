@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('expedition_id')->constrained('expeditions')->onDelete('cascade');
             $table->integer('expedition_price')->default(0);
             $table->integer('total_price');
+            $table->longText('address');
             $table->string('status')->default('pending');
             $table->foreignId('payment_method_id')->constrained('payment_methods')->onDelete('cascade');
             $table->timestamps();

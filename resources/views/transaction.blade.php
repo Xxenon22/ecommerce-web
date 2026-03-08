@@ -57,7 +57,7 @@
                     // Show success message
                     alert('order berhasil dibuat! Terima kasih telah berbelanja.');
                     // Redirect to order page or home
-                    window.location.href = '{{ route('order') }}';
+                    window.location.href = '{{ route('history') }}';
                 }
             });
         });

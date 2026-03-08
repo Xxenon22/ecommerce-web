@@ -23,7 +23,7 @@
                 <div class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-700">
                     <a href="/home" class="hover:text-cyan-600">Home</a>
                     <a href="" class="hover:text-cyan-600">Products</a>
-                    <a href="/order" class="hover:text-cyan-600">Orders</a>
+                    <a href="/history" class="hover:text-cyan-600">History Transaction</a>
                     <a href="/cart" class="relative hover:text-cyan-600">
                         <span class="iconify" data-icon="mdi:cart-outline" data-width="24" data-height="24"></span>
                         <span
