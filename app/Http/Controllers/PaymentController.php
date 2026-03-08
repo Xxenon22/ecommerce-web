@@ -46,8 +46,8 @@ class PaymentController extends Controller
             ],
         ];
 
-        // Dapatkan Snap Token dari Midtrans
         $snapToken = Snap::getSnapToken($params);
+        // Dapatkan Snap Token dari Midtrans
 
         // $transaction = Transaction::create([
         //     'user_id' => auth()->user()->id, 

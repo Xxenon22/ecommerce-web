@@ -130,7 +130,8 @@ Route::middleware('auth')->group(function () {
         return view('order', compact('orders'));
     })->name('order');
 
-    Route::get('/history-transaction', [TransactionController::class, 'history'])->name('history');
+    Route::post('/get-rates', [TransactionController::class, 'getRates'])->name('get.rates');
+    Route::get('/history-transaction', [TransactionController::class])->name('history');
 
     // Route::get('cart', function () {
     //     // Sample cart data - replace with actual cart logic later
@@ -178,12 +179,12 @@ Route::middleware('auth')->group(function () {
     // })->name('checkout');
 
     Route::post('/checkout', [TransactionController::class, 'checkout'])->name('checkout');
-    
+
     Route::post('/transaction/store', [TransactionController::class, 'store'])->name('transaction.store');
     Route::get('/transaction/{product}', function (Product $product) {
         return view('transaction', compact('product'));
     })->name('transaction');
-    
+
     Route::get('/cart-checkout', [TransactionController::class, 'cart_checkout'])->name('cart_checkout');
 
 
