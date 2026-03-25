@@ -20,6 +20,23 @@ class PaymentController extends Controller
 
     public function createTransaction(Request $request)
     {
+
+        $transaction = Transaction::create([
+            'user_id' => $request->id, 
+            'expedition_id' => NULL,
+            'restaurant_id' => 1,
+            'expedition_price' => $request->ongkir,
+            'total_price' => $request->amount,
+            'status' => 'Belum di Bayar', 
+            'payment_method_id' => NULL,
+        ]);
+
+        // if($transaction){
+        //     TransactionProduct::create([
+        //         $transaction
+        //     ]);
+        // }
+
         // Konfigurasi Midtrans
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');

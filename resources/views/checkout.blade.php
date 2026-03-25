@@ -88,11 +88,14 @@
                     $.post("{{ route('mid.pay') }}", {
                         _method: 'POST',
                         _token: '{{ csrf_token() }}',
+                        id: {{ auth()->user()->id }},
                         name: $('#name').val(),
                         phone: $('#phone').val(),
                         address: $('#address').val(),
                         notes: $('#notes').val(),
                         amount: $('#total').val(),
+                        courier: $('#courier').val(),
+                        ongkir: $('#price-ongkir').val(),
                     }, function(data, status) {
                         console.log(name)
                         snap.pay(data.snap_token, {
@@ -270,6 +273,7 @@
                         <span id="ongkir" class="text-lg font-bold text-red-500">
                             Rp 0
                         </span>
+                        <input type="hidden" name="price-ongkir" value="" id="price-ongkir">
                     </div>
 
                     <div class="flex justify-between items-center mt-2">
@@ -359,7 +363,9 @@
             let grandTotal = orderTotal + price;
 
             $('#ongkir').text('Rp ' + price.toLocaleString('id-ID'));
+            $('#price-ongkir').val(price);
             $('#grand-total').text('Rp ' + grandTotal.toLocaleString('id-ID'));
+            $('#total').val(grandTotal);
 
         });
     </script>

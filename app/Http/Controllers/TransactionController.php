@@ -87,7 +87,7 @@ class TransactionController extends Controller
         $courierResponse = $biteship->getCouriers();
 
         $couriers = $courierResponse['couriers'] ?? [];
-        // dd($couriers);
+        // dd($products);
         return view('checkout', compact(
             'products',
             'addresses',
