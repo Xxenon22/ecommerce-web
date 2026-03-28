@@ -97,16 +97,53 @@ class PaymentController extends Controller
 
     public function callback(Request $request)
     {
+        \Log::info('Midtrans Callback:', $request->all());
         $serverKey = config('midtrans.server_key');
-        $signature = hash('sha512', $request->order_id . $request->status_code . $request->gross_amount . $serverKey);
+        
+        // Validasi signature
+        $signature = hash('sha512', 
+            $request->order_id . 
+            $request->status_code . 
+            $request->gross_amount . 
+            $serverKey
+        );
 
-        if ($signature === $request->signature_key) {
-            // Update status di database sesuai order_id
-            // contoh: Transaction::where('order_id', $request->order_id)->update(['status' => $request->transaction_status]);
-
-            return response()->json(['message' => 'Callback received']);
+        if ($signature !== $request->signature_key) {
+            return response()->json(['message' => 'Invalid signature'], 403);
         }
 
-        return response()->json(['message' => 'Invalid signature'], 403);
+        $transaction = Transaction::where('id', $request->order_id)->first();
+
+        if (!$transaction) {
+            return response()->json(['message' => 'Transaction not found'], 404);
+        }
+
+        // Mapping status Midtrans → status aplikasi
+        $transactionStatus = $request->transaction_status;
+        $fraudStatus = $request->fraud_status;
+
+        if ($transactionStatus == 'capture') {
+            $status = $fraudStatus == 'accept' ? 'Sudah di Bayar' : 'Ditolak';
+        } elseif ($transactionStatus == 'settlement') {
+            $status = 'Sudah di Bayar';
+        } elseif ($transactionStatus == 'pending') {
+            $status = 'Belum di Bayar';
+        } elseif ($transactionStatus == 'deny') {
+            $status = 'Ditolak';
+        } elseif ($transactionStatus == 'expire') {
+            $status = 'Kadaluarsa';
+        } elseif ($transactionStatus == 'cancel') {
+            $status = 'Dibatalkan';
+        } else {
+            $status = $transactionStatus; // fallback
+        }
+
+        $transaction->update([
+            'status' => $status,
+            // 'payment_method' => $request->payment_type ?? null,
+        ]);
+
+        return response()->json(['message' => 'Callback received']);
     }
+
 }
