@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TransactionProduct extends Model
 {
     protected $table = 'transaction_products';
-    protected $fillable = ['transaction_id', 'product_id', 'quantity', 'price'];
+    protected $fillable = ['transaction_id', 'product_id', 'qty', 'price'];
     public function transaction()
     {
         return $this->belongsTo(Transaction::class);

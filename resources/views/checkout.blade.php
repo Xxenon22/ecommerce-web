@@ -96,6 +96,7 @@
                         amount: $('#total').val(),
                         courier: $('#courier').val(),
                         ongkir: $('#price-ongkir').val(),
+                        products: @json($products),
                     }, function(data, status) {
                         console.log(name)
                         snap.pay(data.snap_token, {

@@ -83,7 +83,7 @@ class TransactionController extends Controller
             $addresses = auth()->user()->addresses()->get();
         }
 
-        // 🔥 Ambil courier dari Biteship
+        // Ambil courier dari Biteship
         $courierResponse = $biteship->getCouriers();
 
         $couriers = $courierResponse['couriers'] ?? [];

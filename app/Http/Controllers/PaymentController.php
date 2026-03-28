@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\TransactionProduct;
 use Illuminate\Http\Request;
@@ -20,22 +21,28 @@ class PaymentController extends Controller
 
     public function createTransaction(Request $request)
     {
-
+        // dd($request->all());
         $transaction = Transaction::create([
-            'user_id' => $request->id, 
+            'user_id' => $request->id,
             'expedition_id' => NULL,
             'restaurant_id' => 1,
             'expedition_price' => $request->ongkir,
             'total_price' => $request->amount,
-            'status' => 'Belum di Bayar', 
+            'status' => 'Belum di Bayar',
             'payment_method_id' => NULL,
         ]);
 
-        // if($transaction){
-        //     TransactionProduct::create([
-        //         $transaction
-        //     ]);
-        // }
+        if ($transaction) {
+            foreach ($request->products as $i => $products) {
+                $product = Product::find($products['product_id']);
+                TransactionProduct::create([
+                    'transaction_id'    => $transaction->id,
+                    'product_id'        => $product->id,
+                    'qty'               => $products['quantity'],
+                    'price'             => $product->price
+                ]);
+            }
+        }
 
         // Konfigurasi Midtrans
         Config::$serverKey = config('midtrans.server_key');
@@ -48,7 +55,8 @@ class PaymentController extends Controller
             CURLOPT_HTTPHEADER => [],
         );
         // Data transaksi
-        $orderId = 'ORDER-' . time();
+        $orderId = $transaction->id;
+        // $orderId = 'ORDER-' . time();
 
         $params = [
             'transaction_details' => [
