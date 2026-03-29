@@ -3,6 +3,7 @@
         'mdi:cash-clock' => 'text-amber-300',
         'mdi:cog-outline' => 'text-blue-300',
         'mdi:truck-outline' => 'text-indigo-300',
+        'mdi:check-decagram-outline' => 'text-emerald-300',
         'mdi:check-circle-outline' => 'text-teal-300',
         'mdi:alpha-x-circle-outline' => 'text-red-300',
         default => 'text-gray-300',

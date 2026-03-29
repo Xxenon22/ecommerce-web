@@ -62,7 +62,9 @@
 
         <div class="flex gap-2">
             @if ($status == 'Belum di Bayar')
-                <button class="btn-action btn-primary order-action-btn" data-action="pay">
+                <button class="btn-action btn-primary order-action-btn" data-action="pay"
+                    data-id="{{ $order['id'] ?? $order->id }}" data-token="{{ $order->snap_token ?? '' }}"> {{-- jika sudah
+                    ada token --}}
                     <span class="iconify" data-icon="mdi:credit-card-outline" data-width="15"></span>
                     Bayar
                 </button>

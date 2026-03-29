@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Cart;
 use App\Models\Transaction;
 use App\Models\TransactionProduct;
 use Illuminate\Http\Request;
@@ -36,11 +37,14 @@ class PaymentController extends Controller
             foreach ($request->products as $i => $products) {
                 $product = Product::find($products['product_id']);
                 TransactionProduct::create([
-                    'transaction_id'    => $transaction->id,
-                    'product_id'        => $product->id,
-                    'qty'               => $products['quantity'],
-                    'price'             => $product->price
+                    'transaction_id' => $transaction->id,
+                    'product_id' => $product->id,
+                    'qty' => $products['quantity'],
+                    'price' => $product->price
                 ]);
+                Cart::where('product_id', $product->id)
+                    ->where('user_id', $request->id)
+                    ->delete();
             }
         }
 
@@ -72,6 +76,7 @@ class PaymentController extends Controller
         ];
 
         $snapToken = Snap::getSnapToken($params);
+        $transaction->update(['snap_token' => $snapToken]);
         // Dapatkan Snap Token dari Midtrans
 
         // $transaction = Transaction::create([
@@ -99,12 +104,13 @@ class PaymentController extends Controller
     {
         \Log::info('Midtrans Callback:', $request->all());
         $serverKey = config('midtrans.server_key');
-        
+
         // Validasi signature
-        $signature = hash('sha512', 
-            $request->order_id . 
-            $request->status_code . 
-            $request->gross_amount . 
+        $signature = hash(
+            'sha512',
+            $request->order_id .
+            $request->status_code .
+            $request->gross_amount .
             $serverKey
         );
 
@@ -131,7 +137,7 @@ class PaymentController extends Controller
         } elseif ($transactionStatus == 'deny') {
             $status = 'Ditolak';
         } elseif ($transactionStatus == 'expire') {
-            $status = 'Kadaluarsa';
+            $status = 'Belum di Bayar';
         } elseif ($transactionStatus == 'cancel') {
             $status = 'Dibatalkan';
         } else {
@@ -145,5 +151,48 @@ class PaymentController extends Controller
 
         return response()->json(['message' => 'Callback received']);
     }
+    public function getSnapToken($id)
+    {
+        $transaction = Transaction::with('transactionProducts.product')
+            ->where('id', $id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
 
+        // Jika sudah punya token, langsung return
+        if ($transaction->snap_token) {
+            return response()->json(['snap_token' => $transaction->snap_token]);
+        }
+
+        // Buat token baru
+        $params = [
+            'transaction_details' => [
+                'order_id' => $transaction->id,
+                'gross_amount' => $transaction->total_price,
+            ],
+            'customer_details' => [
+                'first_name' => auth()->user()->name,
+                'email' => auth()->user()->email,
+            ],
+        ];
+
+        $snapToken = Snap::getSnapToken($params);
+        $transaction->update(['snap_token' => $snapToken]);
+
+        return response()->json(['snap_token' => $snapToken]);
+    }
+    public function cancelOrder($id)
+    {
+        $transaction = Transaction::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        // Pastikan hanya bisa cancel jika belum dibayar
+        if ($transaction->status !== 'Belum di Bayar') {
+            return response()->json(['message' => 'Order tidak bisa dibatalkan'], 403);
+        }
+
+        $transaction->update(['status' => 'Dibatalkan']);
+
+        return response()->json(['message' => 'Order berhasil dibatalkan']);
+    }
 }

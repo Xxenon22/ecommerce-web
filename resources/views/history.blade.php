@@ -175,6 +175,7 @@
                     $tabs = [
                         ['id' => 'semua', 'label' => 'Semua'],
                         ['id' => 'belumdibayar', 'label' => 'Belum Bayar'],
+                        ['id' => 'sudahdibayar', 'label' => 'Sudah Bayar'],
                         ['id' => 'diproses', 'label' => 'Diproses'],
                         ['id' => 'dikirim', 'label' => 'Dikirim'],
                         ['id' => 'selesai', 'label' => 'Selesai'],
@@ -217,7 +218,8 @@
                         <div class="flex justify-between items-start mb-3">
                             <div>
                                 <p class="text-xs text-gray-400 mb-0.5">
-                                    {{ $order['date'] ?? $order->created_at->format('d M Y') }}</p>
+                                    {{ $order['date'] ?? $order->created_at->format('d M Y') }}
+                                </p>
                                 <h3 class="font-700 text-gray-800 text-sm">{{ $order->restaurant->name }}</h3>
                             </div>
                             <span class="badge {{ $badgeConfig['bg'] }} {{ $badgeConfig['text'] }}">
@@ -258,11 +260,14 @@
 
                             <div class="flex gap-2">
                                 @if ($status == 'Belum di Bayar')
-                                    <button class="btn-action btn-primary order-action-btn" data-action="pay">
+                                    <button class="btn-action btn-primary order-action-btn" data-action="pay"
+                                        data-id="{{ $order['id'] ?? $order->id }}" data-token="{{ $order->snap_token ?? '' }}">
+                                        {{-- jika sudah ada token --}}
                                         <span class="iconify" data-icon="mdi:credit-card-outline" data-width="15"></span>
                                         Bayar
                                     </button>
-                                    <button class="btn-action btn-danger order-action-btn" data-action="cancel">
+                                    <button class="btn-action btn-danger order-action-btn"
+                                        data-id="{{ $order['id'] ?? $order->id }}" data-action="cancel">
                                         Batal
                                     </button>
                                 @elseif ($status == 'Diproses')
@@ -322,6 +327,18 @@
             @endif
         </div>
 
+        {{-- Tab: Sudah dibayar --}}
+        <div id="sudahdibayar" class="tab-content hidden">
+            @php $filtered = isset($orders) ? $orders->filter(fn($o) => ($o['status'] ?? $o->status) == 'Sudah di Bayar') : collect(); @endphp
+            @if ($filtered->count() > 0)
+                @foreach ($filtered as $order)
+                    @include('partials.order-card', ['order' => $order])
+                @endforeach
+            @else
+                @include('partials.empty-tab', ['icon' => 'mdi:cog-outline', 'label' => 'Tidak ada order yang sudah dibayar'])
+            @endif
+        </div>
+
         {{-- Tab: Diproses --}}
         <div id="diproses" class="tab-content hidden">
             @php $filtered = isset($orders) ? $orders->filter(fn($o) => ($o['status'] ?? $o->status) == 'Diproses') : collect(); @endphp
@@ -373,7 +390,9 @@
     </main>
 
     <x-navbar :cart-count="0" :active-route="'history'" class="block md:hidden" />
-
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('midtrans.client_key') }}">
+        </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
@@ -403,10 +422,56 @@
                     const orderId = card?.dataset.orderId;
 
                     switch (action) {
-                        case 'pay':
-                            window.location.href = `/order/${orderId}/pay`;
+                        case 'pay': {  // ← tambah kurung kurawal
+                            const existingToken = button.dataset.token; // ← hapus const orderId disini
+
+                            button.disabled = true;
+                            button.innerHTML = '<span class="iconify animate-spin" data-icon="mdi:loading" data-width="15"></span> Memuat...';
+
+                            const doSnap = (token) => {
+                                snap.pay(token, {
+                                    onSuccess: function (result) { window.location.reload(); },
+                                    onPending: function (result) { window.location.reload(); },
+                                    onError: function (result) {
+                                        alert('Pembayaran gagal');
+                                        button.disabled = false;
+                                        button.innerHTML = '<span class="iconify" data-icon="mdi:credit-card-outline" data-width="15"></span> Bayar';
+                                    },
+                                    onClose: function () {
+                                        button.disabled = false;
+                                        button.innerHTML = '<span class="iconify" data-icon="mdi:credit-card-outline" data-width="15"></span> Bayar';
+                                    }
+                                });
+                            };
+
+                            if (existingToken) {
+                                doSnap(existingToken);
+                            } else {
+                                fetch(`/order/${orderId}/pay`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                        'Content-Type': 'application/json'
+                                    }
+                                })
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        if (data.snap_token) {
+                                            doSnap(data.snap_token);
+                                        } else {
+                                            alert('Gagal mendapatkan token pembayaran');
+                                        }
+                                    })
+                                    .catch(() => {
+                                        alert('Terjadi kesalahan');
+                                        button.disabled = false;
+                                        button.innerHTML = '<span class="iconify" data-icon="mdi:credit-card-outline" data-width="15"></span> Bayar';
+                                    });
+                            }
                             break;
-                        case 'cancel':
+                        }  // ← tutup kurung kurawal
+
+                        case 'cancel': {  // ← tambah kurung kurawal
                             if (confirm('Apakah Anda yakin ingin membatalkan order ini?')) {
                                 fetch(`/order/${orderId}/cancel`, {
                                     method: 'POST',
@@ -414,16 +479,18 @@
                                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
                                         'Content-Type': 'application/json'
                                     }
-                                }).then(res => {
-                                    if (res.ok) {
+                                })
+                                    .then(res => res.json())
+                                    .then(data => {
                                         card.style.opacity = '0';
                                         card.style.transform = 'scale(0.95)';
                                         card.style.transition = 'all 0.3s ease';
-                                        setTimeout(() => card.remove(), 300);
-                                    }
-                                }).catch(() => alert('Gagal membatalkan order'));
+                                        setTimeout(() => window.location.reload(), 300);
+                                    })
+                                    .catch(() => alert('Gagal membatalkan order'));
                             }
                             break;
+                        }
                         case 'track':
                             alert('Fitur tracking sedang dalam pengembangan');
                             break;
