@@ -131,7 +131,7 @@ Route::middleware('auth')->group(function () {
     })->name('order');
 
     Route::post('/get-rates', [TransactionController::class, 'getRates'])->name('get.rates');
-    Route::get('/history-transaction', [TransactionController::class])->name('history');
+    Route::get('/history-transaction', [TransactionController::class, 'history'])->name('history');
 
     // Route::get('cart', function () {
     //     // Sample cart data - replace with actual cart logic later

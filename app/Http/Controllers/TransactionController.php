@@ -125,7 +125,7 @@ class TransactionController extends Controller
 
     public function history()
     {
-        $orders = Transaction::with('TransactionProduct')->where('user_id', auth()->user()->id)->get();
+        $orders = Transaction::with('transactionProducts')->where('user_id', auth()->user()->id)->get();
         return view('history', compact('orders'));
     }
 }
