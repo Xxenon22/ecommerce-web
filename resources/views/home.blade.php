@@ -1,526 +1,599 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - FisheryHub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const carouselSlides = document.getElementById('carousel-slides');
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            let currentIndex = 0;
-            const totalSlides = carouselSlides.children.length;
-
-            function updateCarousel() {
-                carouselSlides.style.transform = `translateX(-${currentIndex * 100}%)`;
-                const texts = carouselSlides.querySelectorAll('h2');
-                texts.forEach(text => {
-                    text.classList.remove('translate-x-0', 'opacity-100');
-                    text.classList.add('translate-x-full', 'opacity-0');
-                });
-                setTimeout(() => {
-                    const currentText = carouselSlides.children[currentIndex].querySelector('h2');
-                    currentText.classList.remove('translate-x-full', 'opacity-0');
-                    currentText.classList.add('translate-x-0', 'opacity-100');
-                }, 100);
-            }
-            prevBtn.addEventListener('click', function () {
-                currentIndex = (currentIndex > 0) ? currentIndex - 1 : totalSlides - 1;
-                updateCarousel();
-            });
-            nextBtn.addEventListener('click', function () {
-                currentIndex = (currentIndex < totalSlides - 1) ? currentIndex + 1 : 0;
-                updateCarousel();
-            });
-            setInterval(function () {
-                currentIndex = (currentIndex < totalSlides - 1) ? currentIndex + 1 : 0;
-                updateCarousel();
-            }, 5000);
-
-            const categoriesSlides = document.getElementById('categories-slides');
-            if (categoriesSlides) {
-                const categoriesPrevBtn = document.getElementById('categories-prev-btn');
-                const categoriesNextBtn = document.getElementById('categories-next-btn');
-                let categoriesCurrentIndex = 0;
-                const categoriesTotalSlides = categoriesSlides.children.length;
-                const categoriesVisibleSlides = 3;
-
-                function updateCategoriesCarousel() {
-                    const maxIndex = categoriesTotalSlides - categoriesVisibleSlides;
-                    categoriesCurrentIndex = Math.max(0, Math.min(categoriesCurrentIndex, maxIndex));
-                    categoriesSlides.style.transform =
-                        `translateX(-${categoriesCurrentIndex * (100 / categoriesVisibleSlides)}%)`;
-                }
-
-                categoriesPrevBtn.addEventListener('click', function () {
-                    categoriesCurrentIndex = Math.max(0, categoriesCurrentIndex - 1);
-                    updateCategoriesCarousel();
-                });
-
-                categoriesNextBtn.addEventListener('click', function () {
-                    const maxIndex = categoriesTotalSlides - categoriesVisibleSlides;
-                    categoriesCurrentIndex = Math.min(maxIndex, categoriesCurrentIndex + 1);
-                    updateCategoriesCarousel();
-                });
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const sidebar = document.getElementById('sidebar');
-            const openBtn = document.getElementById('open-sidebar');
-            const closeBtn = document.getElementById('close-sidebar');
-            const overlay = document.getElementById('overlay');
-
-            function openSidebar() {
-                sidebar.classList.remove('-translate-x-full');
-                overlay.classList.remove('hidden');
-                document.body.classList.add('overflow-hidden'); // biar tidak bisa scroll
-            }
-
-            function closeSidebar() {
-                sidebar.classList.add('-translate-x-full');
-                overlay.classList.add('hidden');
-                document.body.classList.remove('overflow-hidden');
-            }
-
-            openBtn.addEventListener('click', openSidebar);
-            closeBtn.addEventListener('click', closeSidebar);
-            overlay.addEventListener('click', closeSidebar);
-        });
-    </script>
     <style>
-        /* Hide scrollbar for Chrome, Safari and Opera */
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
+        :root {
+            --cyan: #0891b2;
+            --cyan-dark: #0e7490;
+            --cyan-light: #ecfeff;
         }
 
-        /* Hide scrollbar for IE, Edge and Firefox */
-        .scrollbar-hide {
-            -ms-overflow-style: none;
-            /* IE and Edge */
-            scrollbar-width: none;
-            /* Firefox */
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        .font-display { font-family: 'Fraunces', serif; }
+
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Carousel */
+        .carousel-inner { transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+
+        /* Product card */
+        .product-card {
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+
+        /* Category pill */
+        .cat-pill {
+            transition: all 0.2s ease;
+        }
+        .cat-pill:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(8,145,178,0.2);
+            border-color: var(--cyan);
+        }
+
+        /* Resto card */
+        .resto-card {
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .resto-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.1);
+        }
+
+        /* Sidebar */
+        #sidebar { transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        #overlay { transition: opacity 0.3s ease; }
+
+        /* Fade in up animation */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .fade-up { animation: fadeUp 0.5s ease forwards; }
+        .fade-up-1 { animation-delay: 0.05s; }
+        .fade-up-2 { animation-delay: 0.1s; }
+        .fade-up-3 { animation-delay: 0.15s; }
+        .fade-up-4 { animation-delay: 0.2s; }
+
+        /* Section title accent */
+        .section-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--cyan);
+        }
+
+        /* Search bar */
+        .search-bar {
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 999px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .search-bar:focus-within {
+            border-color: var(--cyan);
+            box-shadow: 0 0 0 3px rgba(8,145,178,0.1);
+        }
+
+        /* Add to cart button pulse */
+        .cart-btn { transition: all 0.15s ease; }
+        .cart-btn:active { transform: scale(0.92); }
+
+        /* Gradient overlay */
+        .gradient-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
+        }
+
+        /* Edu card */
+        .edu-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .edu-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+        }
+
+        /* Nav badge */
+        .nav-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #ef4444;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
         }
     </style>
 </head>
 
-<body class="bg-gray-100 min-h-screen pb-20">
-    <div class="max-w-7xl mx-auto">
+<body class="bg-gray-50 min-h-screen pb-24">
+<div class="max-w-7xl mx-auto">
 
-        <!-- Sidebar -->
-        <div id="sidebar" class="fixed inset-0 bg-[#0A2540] text-white transform -translate-x-full transition-transform duration-300 z-50 flex
-    flex-col justify-between md:hidden">
-            <div class="p-6 relative h-full flex flex-col justify-between">
-                <!-- Header -->
-                <div>
-                    <div class="flex items-center justify-between mb-8">
-                        <div class="flex flex-col items-center space-x-3">
-                            @if (Auth::check())
-                                @if (Auth::user()->photo)
-                                    <img src="{{ asset('storage/' . (Auth::user()?->photo ?? 'default.jpg')) }}" alt="User"
-                                        class="w-14 h-14 rounded-full border-2 border-white">
-                                @else
-                                    <span class="iconify w-14 h-14 rounded-full border-2 border-white"
-                                        data-icon="mdi:account-circle" data-width="56" data-height="56"></span>
-                                @endif
-                            @endif
-                            <div>
-                                <p class="text-sm text-gray-300">Welcome-!!</p>
-                                <h2 class="text-lg font-semibold">{{ Auth::user()->name ?? 'Username' }}</h2>
-                            </div>
-                        </div>
-                        <button id="close-sidebar" class="absolute top-6 right-6">
-                            <span class="iconify" data-icon="mdi:close" data-width="28"></span>
-                        </button>
-                    </div>
+    {{-- ═══════════════════════════════════════
+         SIDEBAR
+    ═══════════════════════════════════════ --}}
+    <div id="sidebar" class="fixed inset-0 bg-[#0a1628] text-white transform -translate-x-full z-50 flex flex-col md:hidden">
+        <div class="p-6 flex flex-col h-full">
 
-                    <!-- Navigation -->
-                    <nav class="space-y-10 text-sm">
-                        <a href="{{ route('home') }}" class="flex items-center space-x-3 hover:text-cyan-400">
-                            <span class="iconify" data-icon="mdi:home-outline" data-width="22"></span>
-                            <span>Home</span>
-                        </a>
-                        @if (Auth::user()->role === 'Admin')
-                            <a href="{{ route('admin.dashboard') }}"
-                                class="flex items-center space-x-3 hover:text-cyan-400">
-                                <span class="iconify" data-icon="mdi:office-building" data-width="22"></span>
-                                <span>Admin Page</span>
-                            </a>
-                        @endif
-                        {{-- <a href="{{ route('regisResto') }}" class="flex items-center space-x-3 hover:text-cyan-400">
-                            <span class="iconify" data-icon="hugeicons:restaurant" data-width="22"></span>
-                            <span>Restoran</span>
-                        </a> --}}
-                        <a href="#" class="flex items-center space-x-3 hover:text-cyan-400">
-                            <span class="iconify" data-icon="mdi:bell-outline" data-width="22"></span>
-                            <span>Notification</span>
-                        </a>
-                        <a href="#" class="flex items-center space-x-3 hover:text-cyan-400">
-                            <span class="iconify" data-icon="mdi:star-outline" data-width="22"></span>
-                            <span>Rate Us</span>
-                        </a>
-                        <a href="#" class="flex items-center space-x-3 hover:text-cyan-400">
-                            <span class="iconify" data-icon="mdi:ticket-percent-outline" data-width="22"></span>
-                            <span>Coupon</span>
-                        </a>
-                        <a href="#" class="flex items-center space-x-3 hover:text-cyan-400">
-                            <span class="iconify" data-icon="mdi:help-circle-outline" data-width="22"></span>
-                            <span>Help Center</span>
-                        </a>
-
-                        <hr class="my-4 border-gray-600">
-
-                        <form id="logout-form" method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit"
-                                class="w-full text-left flex items-center space-x-3 hover:text-red-400">
-                                <span class="iconify" data-icon="mdi:logout" data-width="22"></span>
-                                <span>Log Out</span>
-                            </button>
-                        </form>
-                    </nav>
-                </div>
-            </div>
-        </div>
-
-        <!-- Overlay -->
-        <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 transition-opacity duration-300">
-        </div>
-
-        <!-- Mobile Header -->
-        <header class="flex items-center justify-between p-4 bg-white shadow-md sticky top-0 z-20 md:hidden">
-            <button id="open-sidebar">
-                <span class="iconify" data-icon="mdi:menu" data-width="32" data-height="32"></span>
+            {{-- Close --}}
+            <button id="close-sidebar" class="self-end w-9 h-9 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition mb-6">
+                <span class="iconify" data-icon="mdi:close" data-width="20"></span>
             </button>
 
-            <div class="relative flex-1 max-w-md mx-4">
-                <input type="text" placeholder="Cari produk segar disini..."
-                    class="w-full px-4 py-2 pl-10 pr-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                <span class="iconify absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                    data-icon="mdi:magnify" data-width="20" data-height="20"></span>
-            </div>
-        </header>
-
-        <!-- Desktop Header -->
-        <header class="hidden md:flex items-center justify-between p-6 bg-white shadow-md sticky top-0 z-20">
-            <div class="flex items-center space-x-6">
-                <div class="text-2xl font-bold text-blue-600">FisheryHub</div>
-                <nav class="flex space-x-6">
-                    <a href="{{ route('home') }}" class="text-gray-700 hover:text-blue-600 font-medium">Home</a>
-                    <a href="{{ route('category') }}" class="text-gray-700 hover:text-blue-600 font-medium">Kategori</a>
-                    <a href="{{ route('home-resto') }}"
-                        class="text-gray-700 hover:text-blue-600 font-medium">Restoran</a>
-                </nav>
-            </div>
-
-            <div class="flex items-center space-x-4">
-                <div class="relative flex-1 max-w-lg">
-                    <input type="text" placeholder="Cari produk segar disini..."
-                        class="w-full px-4 py-2 pl-10 pr-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <span class="iconify absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                        data-icon="mdi:magnify" data-width="20" data-height="20"></span>
+            {{-- User --}}
+            <div class="flex items-center gap-4 mb-8 p-4 bg-white/5 rounded-2xl">
+                @if (Auth::check() && Auth::user()->photo)
+                    <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User"
+                        class="w-12 h-12 rounded-full border-2 border-cyan-400 object-cover">
+                @else
+                    <div class="w-12 h-12 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                        <span class="iconify text-cyan-400" data-icon="mdi:account" data-width="28"></span>
+                    </div>
+                @endif
+                <div>
+                    <p class="text-xs text-gray-400">Selamat datang</p>
+                    <p class="font-semibold text-white">{{ Auth::user()->name ?? 'Username' }}</p>
                 </div>
+            </div>
 
-                <div class="flex items-center space-x-4">
-                    <a href="{{ route('cart') }}" class="relative text-gray-700 hover:text-blue-600">
-                        <span class="iconify" data-icon="mdi:cart-outline" data-width="28" data-height="28"></span>
-                        <span
-                            class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1">{{ $cartCount ?? 0 }}</span>
+            {{-- Nav --}}
+            <nav class="flex-1 space-y-1">
+                @php
+                    $navItems = [
+                        ['href' => route('home'),     'icon' => 'mdi:home-outline',           'label' => 'Home'],
+                        ['href' => '#',              'icon' => 'mdi:bell-outline',           'label' => 'Notifikasi'],
+                        ['href' => '#',              'icon' => 'mdi:star-outline',           'label' => 'Beri Rating'],
+                        ['href' => '#',              'icon' => 'mdi:ticket-percent-outline', 'label' => 'Kupon'],
+                        ['href' => '#',              'icon' => 'mdi:help-circle-outline',    'label' => 'Pusat Bantuan'],
+                    ];
+                @endphp
+                @if (Auth::check() && Auth::user()->role === 'Admin')
+                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition text-sm font-medium">
+                        <span class="iconify text-cyan-400" data-icon="mdi:office-building" data-width="20"></span>
+                        Admin Page
                     </a>
-                    <a href="{{ route('history') }}" class="text-gray-700 hover:text-blue-600">
-                        <span class="iconify" data-icon="mdi:clipboard-text-outline" data-width="28"
-                            data-height="28"></span>
+                @endif
+                @foreach ($navItems as $item)
+                    <a href="{{ $item['href'] }}" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition text-sm font-medium">
+                        <span class="iconify text-cyan-400" data-icon="{{ $item['icon'] }}" data-width="20"></span>
+                        {{ $item['label'] }}
                     </a>
-                    <div class="flex items-center space-x-2">
-                        <a href="{{ route('account') }}" class="flex items-center space-x-2">
-                            @if (Auth::user()->photo)
-                                <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User"
-                                    class="w-8 h-8 rounded-full border-2 border-gray-300">
-                            @else
-                                <span class="iconify w-8 h-8 rounded-full border-2 border-gray-300"
-                                    data-icon="mdi:account-circle" data-width="32" data-height="32"></span>
-                            @endif
-                            <span class="text-gray-700 font-medium">{{ Auth::user()->name ?? 'Username' }}</span>
-                        </a>
-                        <form id="logout-form" method="POST" action="{{ route('logout') }}" class="inline">
-                            @csrf
-                            <button type="submit" class="text-red-500 hover:text-red-700 font-medium">Logout</button>
-                        </form>
+                @endforeach
+            </nav>
+
+            {{-- Logout --}}
+            <div class="mt-4 pt-4 border-t border-white/10">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-500/10 transition text-sm font-medium text-red-400 w-full">
+                        <span class="iconify" data-icon="mdi:logout" data-width="20"></span>
+                        Keluar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- Overlay --}}
+    <div id="overlay" class="fixed inset-0 bg-black/50 hidden z-40"></div>
+
+    {{-- ═══════════════════════════════════════
+         MOBILE HEADER
+    ═══════════════════════════════════════ --}}
+    <header class="sticky top-0 z-30 bg-white border-b border-gray-100 shadow-sm md:hidden">
+        <div class="flex items-center gap-3 px-4 py-3">
+            <button id="open-sidebar" class="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100 transition flex-shrink-0">
+                <span class="iconify text-gray-700" data-icon="mdi:menu" data-width="22"></span>
+            </button>
+
+            <div class="search-bar flex items-center flex-1 px-4 py-2 gap-2">
+                <span class="iconify text-gray-400" data-icon="mdi:magnify" data-width="18"></span>
+                <input type="text" placeholder="Cari produk segar..."
+                    class="bg-transparent text-sm text-gray-700 placeholder-gray-400 outline-none flex-1">
+            </div>
+
+            <a href="{{ route('cart') }}" class="relative w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100 transition flex-shrink-0">
+                <span class="iconify text-gray-700" data-icon="mdi:cart-outline" data-width="22"></span>
+                <span class="nav-badge">{{ $cartCount ?? 0 }}</span>
+            </a>
+        </div>
+    </header>
+
+    {{-- ═══════════════════════════════════════
+         DESKTOP HEADER
+    ═══════════════════════════════════════ --}}
+    <header class="hidden md:flex items-center justify-between px-8 py-4 bg-white border-b border-gray-100 shadow-sm sticky top-0 z-30">
+        <div class="flex items-center gap-8">
+            <span class="font-display text-2xl text-cyan-600 italic">FisheryHub</span>
+            <nav class="flex gap-6">
+                <a href="{{ route('home') }}" class="text-sm font-semibold text-cyan-600 border-b-2 border-cyan-600 pb-0.5">Home</a>
+                <a href="{{ route('category') }}" class="text-sm font-medium text-gray-500 hover:text-gray-800 transition">Kategori</a>
+                <a href="{{ route('home-resto') }}" class="text-sm font-medium text-gray-500 hover:text-gray-800 transition">Restoran</a>
+            </nav>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <div class="search-bar flex items-center w-72 px-4 py-2 gap-2">
+                <span class="iconify text-gray-400" data-icon="mdi:magnify" data-width="18"></span>
+                <input type="text" placeholder="Cari produk segar..."
+                    class="bg-transparent text-sm text-gray-700 placeholder-gray-400 outline-none flex-1">
+            </div>
+
+            <a href="{{ route('cart') }}" class="relative w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 transition">
+                <span class="iconify text-gray-700" data-icon="mdi:cart-outline" data-width="22"></span>
+                <span class="nav-badge">{{ $cartCount ?? 0 }}</span>
+            </a>
+            <a href="{{ route('history') }}" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 transition">
+                <span class="iconify text-gray-700" data-icon="mdi:clipboard-text-outline" data-width="22"></span>
+            </a>
+            <a href="{{ route('account') }}" class="flex items-center gap-2">
+                @if (Auth::user()->photo)
+                    <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User"
+                        class="w-8 h-8 rounded-full object-cover border-2 border-cyan-200">
+                @else
+                    <div class="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center">
+                        <span class="iconify text-cyan-600" data-icon="mdi:account" data-width="18"></span>
+                    </div>
+                @endif
+                <span class="text-sm font-semibold text-gray-700">{{ Auth::user()->name ?? 'User' }}</span>
+            </a>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="text-sm font-medium text-red-400 hover:text-red-600 transition">Keluar</button>
+            </form>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto">
+
+        {{-- ═══════════════════════════════════════
+             CAROUSEL
+        ═══════════════════════════════════════ --}}
+        <section class="relative overflow-hidden mt-4 mx-4 rounded-3xl shadow-xl">
+            <div class="flex transition-transform duration-600 ease-out" id="carousel-slides">
+
+                <div class="flex-shrink-0 w-full h-56 md:h-[480px] bg-cover bg-center relative"
+                    style="background-image: url('{{ asset('assets/pasar-ikan.png') }}');">
+                    <div class="absolute inset-0 gradient-overlay rounded-3xl"></div>
+                    <div class="absolute bottom-8 left-8 right-8">
+                        <p class="section-label text-white/70 mb-2">Produk Segar</p>
+                        <h2 class="font-display text-white text-3xl md:text-6xl italic transform translate-x-full opacity-0 transition-all duration-500">
+                            Fresh Seafood Market
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="flex-shrink-0 w-full h-56 md:h-[480px] relative"
+                    style="background: linear-gradient(135deg, #0369a1, #0891b2, #06b6d4);">
+                    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 20% 80%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px); background-size: 40px 40px;"></div>
+                    <div class="absolute bottom-8 left-8 right-8">
+                        <p class="section-label text-white/70 mb-2">Pengiriman Cepat</p>
+                        <h2 class="font-display text-white text-3xl md:text-6xl italic transform translate-x-full opacity-0 transition-all duration-500">
+                            Delivered to Your Door
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="flex-shrink-0 w-full h-56 md:h-[480px] relative"
+                    style="background: linear-gradient(135deg, #065f46, #059669, #34d399);">
+                    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 20% 80%, white 1px, transparent 1px); background-size: 30px 30px;"></div>
+                    <div class="absolute bottom-8 left-8 right-8">
+                        <p class="section-label text-white/70 mb-2">Terpercaya</p>
+                        <h2 class="font-display text-white text-3xl md:text-6xl italic transform translate-x-full opacity-0 transition-all duration-500">
+                            Quality You Can Trust
+                        </h2>
                     </div>
                 </div>
             </div>
-        </header>
 
-        <main class="max-w-7xl mx-auto">
-            <!-- Carousel -->
-            <section class="carousel relative overflow-hidden rounded-2xl mt-4 shadow-md">
-                <div class="carousel-inner flex transition-transform duration-500 ease-in-out" id="carousel-slides">
-                    <div class="carousel-slide flex-shrink-0 w-full h-64 md:h-[600px] lg:h-[700px] bg-cover bg-center"
-                        style="background-image: url('{{ asset('assets/pasar-ikan.png') }}');">
-                        <div class="flex items-center justify-center h-full bg-black bg-opacity-50">
-                            <h2
-                                class="text-white text-3xl md:text-6xl lg:text-7xl font-bold transform translate-x-full opacity-0 transition-all duration-500 text-center px-4">
-                                Fresh Seafood Market</h2>
+            {{-- Prev/Next --}}
+            <button id="prev-btn" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 hover:bg-white/40 backdrop-blur-sm rounded-full flex items-center justify-center transition">
+                <span class="iconify text-white" data-icon="mdi:chevron-left" data-width="22"></span>
+            </button>
+            <button id="next-btn" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 hover:bg-white/40 backdrop-blur-sm rounded-full flex items-center justify-center transition">
+                <span class="iconify text-white" data-icon="mdi:chevron-right" data-width="22"></span>
+            </button>
+
+            {{-- Dots --}}
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2" id="carousel-dots">
+                <span class="w-6 h-1.5 bg-white rounded-full transition-all dot"></span>
+                <span class="w-1.5 h-1.5 bg-white/50 rounded-full transition-all dot"></span>
+                <span class="w-1.5 h-1.5 bg-white/50 rounded-full transition-all dot"></span>
+            </div>
+        </section>
+
+        {{-- ═══════════════════════════════════════
+             KATEGORI
+        ═══════════════════════════════════════ --}}
+        <section class="mt-8 px-4 md:px-8">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <p class="section-label">Jelajahi</p>
+                    <h2 class="text-xl font-bold text-gray-900">Pilihan Kategori</h2>
+                </div>
+                <a href="{{ route('category') }}" class="text-sm font-semibold text-cyan-600 hover:text-cyan-700 flex items-center gap-1 transition">
+                    Lihat Semua
+                    <span class="iconify" data-icon="mdi:chevron-right" data-width="16"></span>
+                </a>
+            </div>
+
+            <div class="flex gap-3 overflow-x-auto scrollbar-hide pb-2">
+                @foreach ($categories as $category)
+                    <a href="/category/{{ $category->id }}"
+                        class="cat-pill flex-shrink-0 flex flex-col items-center gap-2 bg-white border border-gray-100 rounded-2xl px-4 py-3 shadow-sm w-20">
+                        <div class="w-10 h-10 bg-cyan-50 rounded-xl flex items-center justify-center">
+                            <span class="iconify text-cyan-600" data-icon="{{ $category->icon }}" data-width="20"></span>
                         </div>
-                    </div>
-                    <div
-                        class="carousel-slide flex-shrink-0 w-full h-64 md:h-[600px] lg:h-[700px] bg-gradient-to-r from-blue-400 to-blue-600">
-                        <div class="flex items-center justify-center h-full">
-                            <h2
-                                class="text-white text-3xl md:text-6xl lg:text-7xl font-bold transform translate-x-full opacity-0 transition-all duration-500 text-center px-4">
-                                Delivered to Your Door</h2>
-                        </div>
-                    </div>
-                    <div
-                        class="carousel-slide flex-shrink-0 w-full h-64 md:h-[600px] lg:h-[700px] bg-gradient-to-r from-green-400 to-green-600">
-                        <div class="flex items-center justify-center h-full">
-                            <h2
-                                class="text-white text-3xl md:text-6xl lg:text-7xl font-bold transform translate-x-full opacity-0 transition-all duration-500 text-center px-4">
-                                Quality You Can Trust</h2>
-                        </div>
-                    </div>
-                </div>
-                <button
-                    class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-3 md:p-4 shadow-lg transition-all"
-                    id="prev-btn">
-                    <span class="iconify" data-icon="mdi:chevron-left" data-width="24" data-height="24"></span>
-                </button>
-                <button
-                    class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-3 md:p-4 shadow-lg transition-all"
-                    id="next-btn">
-                    <span class="iconify" data-icon="mdi:chevron-right" data-width="24" data-height="24"></span>
-                </button>
-            </section>
+                        <span class="text-gray-700 text-xs font-semibold text-center leading-tight">{{ $category->name }}</span>
+                    </a>
+                @endforeach
+            </div>
+        </section>
 
-            <!-- Pilihan Kategori -->
-            <section class="mt-10 px-6 md:px-8 lg:px-12">
-                <div class="flex justify-between items-center mb-6">
-                    <h1 class="font-bold text-gray-500 text-lg md:text-xl lg:text-2xl">Pilihan Kategori</h1>
-                    <a href="{{ route('category') }}"
-                        class="text-indigo-500 font-semibold hover:text-indigo-700 transition-colors">Lihat Semua</a>
+        {{-- ═══════════════════════════════════════
+             PRODUK
+        ═══════════════════════════════════════ --}}
+        <section class="mt-8 px-4 md:px-8">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <p class="section-label">Terlaris</p>
+                    <h2 class="text-xl font-bold text-gray-900">Pilihan Produk</h2>
                 </div>
-                {{-- <x-category :cart-count="5" /> --}}
-                <!-- Kategori horizontal scroll -->
-                <div class="relative">
-                    <div class="flex space-x-3 overflow-x-auto scrollbar-hide pb-3" id="category-scroll">
-                        @foreach ($categories as $category)
-                            <a href="/category/{{ $category->id }}"
-                                class="flex-shrink-0 flex flex-col items-center justify-center bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 w-24 h-24">
-                                <span class="iconify" data-icon="{{ $category->icon }}" data-width="20"></span>
-                                <span
-                                    class="text-gray-700 text-xs font-medium text-center mt-1">{{ $category->name }}</span>
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
+                <a href="#" class="text-sm font-semibold text-cyan-600 hover:text-cyan-700 flex items-center gap-1 transition">
+                    Lihat Semua
+                    <span class="iconify" data-icon="mdi:chevron-right" data-width="16"></span>
+                </a>
+            </div>
 
-            </section>
-
-            <!-- Pilihan Product -->
-            <section class="mt-10 px-6 md:px-8 lg:px-12">
-                <div class="flex justify-between items-center mb-6">
-                    <h1 class="font-bold text-gray-500 text-lg md:text-xl lg:text-2xl">Pilihan Product</h1>
-                    <a href="" class="text-indigo-500 font-semibold hover:text-indigo-700 transition-colors">Lihat
-                        Semua</a>
-                </div>
-                <!-- Product Horizontal Scroll -->
-                <div class="relative">
-                    <div class="flex space-x-4 overflow-x-auto scrollbar-hide pb-4" id="product-scroll">
-                        @foreach ($products as $product)
-                            <div
-                                class="flex-shrink-0 w-64 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-                                <img src="{{ asset(file_exists(public_path('assetSSs/' . $product->image)) ? 'assets/' . $product->image : 'assets/pasar-ikan.png') }}"
-                                    alt="{{ $product->name }}" class="w-full h-40 object-cover rounded-t-xl">
-                                <div class="p-4">
-                                    <h3 class="font-semibold text-gray-900 text-base mb-1">{{ $product->name }}</h3>
-                                    <p class="text-gray-500 text-sm mb-2">{{ $product->description }}</p>
-                                    <p class="text-red-500 font-bold text-lg mb-3">
-                                        Rp{{ number_format($product->price, 0, ',', '.') }}</p>
-                                    <div class="flex gap-2">
-                                        <a href="{{ route('transaction', $product->id) }}"
-                                            class="bg-cyan-600 text-white text-sm font-medium px-4 py-2 rounded-lg w-3/4 hover:bg-cyan-700 transition-colors">
-                                            Pesan
-                                        </a>
-                                        <form action="{{ route('cart.store') }}" method="POST" class="inline-block">
-                                            @csrf
-                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                            <input type="hidden" name="quantity" value="1">
-                                            <input type="hidden" name="restaurant_id" value="{{ $product->restaurant_id }}">
-                                            <button
-                                                class="bg-yellow-300 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors cursor-pointer">
-                                                <span class="iconify" data-icon="mdi:cart-plus" data-width="20"
-                                                    data-height="20"></span>
-                                            </button>
-                                        </form>
-                                    </div>
-
-                                </div>
+            <div class="flex gap-4 overflow-x-auto scrollbar-hide pb-4">
+                @foreach ($products as $product)
+                    <div class="product-card flex-shrink-0 w-52 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden fade-up">
+                        <div class="relative">
+                            <img src="{{ asset(file_exists(public_path('storage/' . $product->photo)) ? 'storage/' . $product->photo : 'assets/pasar-ikan.png') }}"
+                                alt="{{ $product->name }}"
+                                class="w-full h-36 object-cover">
+                            <div class="absolute top-2 right-2">
+                                <span class="bg-white/90 backdrop-blur-sm text-cyan-700 text-xs font-bold px-2 py-1 rounded-full shadow-sm">
+                                    Segar
+                                </span>
                             </div>
-                        @endforeach
-                    </div>
-                </div>
-            </section>
-
-            <!-- Spesial Hari Ini -->
-            <section class="my-10 px-6 md:px-8 lg:px-12">
-                <div class="flex justify-between items-center mb-2">
-                    <h1 class="font-extrabold text-xl md:text-3xl lg:text-4xl">Spesial Hari Ini</h1>
-                    <p class="text-indigo-500 font-medium cursor-pointer hover:text-indigo-700 transition-colors">Lihat
-                        Semua</p>
-                </div>
-                <p class="font-bold text-neutral-400 mb-6 text-base md:text-lg">Promo menarik dari FisheryHub untuk
-                    kamu</p>
-
-                <div
-                    class="relative w-full h-96 md:h-[500px] lg:h-[600px] overflow-hidden shadow-xl rounded-2xl bg-white">
-                    <img src="{{ asset('assets/bg-pasar-ikan.jpg') }}" alt="Banner Ikan"
-                        class="w-full h-full object-cover brightness-50">
-
-                    <div
-                        class="absolute inset-0 flex flex-col md:flex-row justify-between items-center px-8 md:px-12 lg:px-16">
-                        <div class="flex flex-col items-start text-left mb-6 md:mb-0">
-                            <h1 class="text-white text-4xl md:text-6xl lg:text-7xl italic font-semibold leading-tight mb-4"
-                                style="font-family: 'Caveat', cursive;">The Best<br>Dinner</h1>
-                            <p class="text-white text-lg md:text-xl lg:text-2xl font-light">Nikmati hidangan laut segar
-                                terbaik</p>
                         </div>
-
-                        <div class="flex space-x-4 md:space-x-8">
-                            <a href="{{ route('produk', 'Cumi Krispy') }}"
-                                class="bg-white rounded-xl shadow-lg overflow-hidden w-40 md:w-64 lg:w-72 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                                <img src="{{ asset(file_exists(public_path('assets/cumi-krispy.jpg')) ? 'assets/cumi-krispy.jpg' : 'assets/pasar-ikan.png') }}"
-                                    alt="Cumi Krispy" class="w-full h-28 md:h-44 lg:h-48 object-cover">
-                                <div class="p-4 md:p-6">
-                                    <h2 class="text-sm md:text-lg lg:text-xl font-semibold">Cumi Krispy</h2>
-                                    <p class="text-red-500 font-bold text-sm md:text-lg lg:text-xl">Rp15.000</p>
-                                    <button
-                                        class="bg-cyan-600 text-white text-sm md:text-base lg:text-lg mt-2 px-3 py-2 md:px-4 md:py-2 rounded-lg w-full hover:bg-cyan-700 transition-colors">
-                                        Tambah
+                        <div class="p-3">
+                            <h3 class="font-semibold text-gray-900 text-sm truncate mb-0.5">{{ $product->name }}</h3>
+                            <p class="text-gray-400 text-xs truncate mb-2">{{ $product->description }}</p>
+                            <p class="text-cyan-600 font-bold text-sm mb-3">Rp{{ number_format($product->price, 0, ',', '.') }}</p>
+                            <div class="flex gap-2">
+                                <a href="{{ route('transaction', $product->id) }}"
+                                    class="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-semibold py-2 rounded-xl text-center transition">
+                                    Pesan
+                                </a>
+                                <form action="{{ route('cart.store') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <input type="hidden" name="restaurant_id" value="{{ $product->restaurant_id }}">
+                                    <button type="submit"
+                                        class="cart-btn w-9 h-9 bg-amber-400 hover:bg-amber-500 text-white rounded-xl flex items-center justify-center transition">
+                                        <span class="iconify" data-icon="mdi:cart-plus" data-width="16"></span>
                                     </button>
-                                </div>
-                            </a>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                @endforeach
+            </div>
+        </section>
 
-            <!-- Banner Langganan -->
-            {{-- <section class="my-10 px-6 md:px-8 lg:px-12">
-                <h1 class="font-bold mb-6 text-lg md:text-2xl lg:text-3xl text-center">Berlangganan tanpa harus memesan
-                    setiap hari</h1>
-                <div class="relative w-full h-80 md:h-96 lg:h-[500px] overflow-hidden shadow-xl rounded-2xl">
-                    <img src="{{ asset(file_exists(public_path('assets/bg-pasar-ikan2.jpg')) ? 'assets/bg-pasar-ikan2.jpg' : 'assets/pasar-ikan.png') }}"
-                        alt="" class="w-full h-full object-cover brightness-50">
-                    <div class="absolute inset-0 flex flex-col justify-center items-center text-center px-4 md:px-8">
-                        <h1
-                            class="font-extrabold text-white text-lg md:text-3xl lg:text-4xl leading-relaxed drop-shadow-lg mb-4">
-                            Ayo berlangganan sekarang dan atur <br class="hidden md:block"> tanggal setiap pengiriman
-                            nya
+        {{-- ═══════════════════════════════════════
+             SPESIAL HARI INI
+        ═══════════════════════════════════════ --}}
+        <section class="mt-8 px-4 md:px-8">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <p class="section-label">Promo</p>
+                    <h2 class="text-xl font-bold text-gray-900">Spesial Hari Ini</h2>
+                </div>
+                <span class="text-sm font-semibold text-cyan-600 cursor-pointer hover:text-cyan-700">Lihat Semua</span>
+            </div>
+
+            <div class="relative rounded-3xl overflow-hidden h-64 md:h-96 shadow-xl">
+                <img src="{{ asset('assets/bg-pasar-ikan.jpg') }}" alt="Banner"
+                    class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent"></div>
+
+                <div class="absolute inset-0 flex items-center justify-between px-8">
+                    <div>
+                        <p class="section-label text-white/60 mb-1">Rekomendasi Chef</p>
+                        <h1 class="font-display text-white text-4xl md:text-6xl italic leading-tight mb-2">
+                            The Best<br>Dinner
                         </h1>
-                        <p class="text-white text-sm md:text-lg lg:text-xl mb-6 max-w-2xl">
-                            Dapatkan kemudahan dengan layanan langganan kami. Seafood segar langsung ke pintu rumah Anda
-                            setiap minggu!
-                        </p>
-                        <button
-                            class="bg-cyan-600 hover:bg-cyan-700 text-white font-semibold px-8 py-3 md:px-12 md:py-4 lg:px-16 lg:py-5 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 text-sm md:text-base lg:text-lg">
-                            Klik Disini
-                        </button>
+                        <p class="text-white/70 text-sm md:text-base">Hidangan laut segar terbaik</p>
                     </div>
-                </div>
-            </section> --}}
 
-            <!-- Edukasi & Resep -->
-            <section class="px-6 mt-10">
-                <div class="flex justify-between items-center mb-4">
-                    <h1 class="font-extrabold text-lg md:text-xl">Edukasi dan Resep Untuk Kamu</h1>
-                    <a href="#" class="text-cyan-600 font-medium hover:underline">Lihat Semua</a>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-4">
-                    <!-- Card 1 -->
-                    <a href="{{ route('edukasi') }}"
-                        class="flex bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
-                        <img src="{{ asset(file_exists(public_path('assets/edukasi-ikan.jpg')) ? 'assets/edukasi-ikan.jpg' : 'assets/pasar-ikan.png') }}"
-                            alt="Cara Menangkap Ikan" class="w-32 h-24 md:w-40 md:h-28 rounded-md object-cover mr-4">
-                        <div class="flex flex-col justify-between">
-                            <div>
-                                <h2 class="font-semibold text-gray-900 text-base md:text-lg">Cara menangkap ikan yang
-                                    benar
-                                </h2>
-                                <p class="text-gray-500 text-sm leading-tight">Gimana sih caranya? sesuai peraturan
-                                    yang
-                                    ada
-                                </p>
-                            </div>
-                            <button
-                                class="bg-cyan-600 text-white text-sm font-medium px-4 py-1 rounded-md w-fit mt-2 hover:bg-cyan-700">
-                                Klik Disini
-                            </button>
-                        </div>
-                    </a>
-
-                    <!-- Card 2 -->
-                    <a href="{{ route('edukasi') }}"
-                        class="flex bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
-                        <img src="{{ asset(file_exists(public_path('assets/edukasi-gizi.jpg')) ? 'assets/edukasi-gizi.jpg' : 'assets/pasar-ikan.png') }}"
-                            alt="Gizi Makanan Laut" class="w-32 h-24 md:w-40 md:h-28 rounded-md object-cover mr-4">
-                        <div class="flex flex-col justify-between">
-                            <div>
-                                <h2 class="font-semibold text-gray-900 text-base md:text-lg">
-                                    Pentingnya Gizi Makanan Laut seperti....
-                                </h2>
-                                <p class="text-gray-500 text-sm leading-tight">Apa saja sih kelebihannya mengonsumsi
-                                    nya?
-                                </p>
-                            </div>
-                            <button
-                                class="bg-cyan-600 text-white text-sm font-medium px-4 py-1 rounded-md w-fit mt-2 hover:bg-cyan-700">
-                                Klik Disini
+                    <a href="{{ route('produk', 'Cumi Krispy') }}"
+                        class="bg-white rounded-2xl overflow-hidden shadow-xl w-36 md:w-48 flex-shrink-0 hover:shadow-2xl transition transform hover:-translate-y-1">
+                        <img src="{{ asset(file_exists(public_path('assets/cumi-krispy.jpg')) ? 'assets/cumi-krispy.jpg' : 'assets/pasar-ikan.png') }}"
+                            alt="Cumi Krispy" class="w-full h-24 md:h-32 object-cover">
+                        <div class="p-3">
+                            <h2 class="font-semibold text-gray-900 text-sm">Cumi Krispy</h2>
+                            <p class="text-cyan-600 font-bold text-sm">Rp15.000</p>
+                            <button class="bg-cyan-600 text-white text-xs font-semibold mt-2 py-1.5 rounded-xl w-full hover:bg-cyan-700 transition">
+                                Tambah
                             </button>
                         </div>
                     </a>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- Rekomendasi Resto -->
-            <section class="px-6 my-10">
-                <h1 class="font-extrabold text-lg md:text-2xl lg:text-3xl mb-6">Rekomendasi Resto</h1>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                    @foreach ($restaurants as $resto)
-                        <!-- Resto -->
-                        <a href="{{ route('restaurant', $resto->id) }}"
-                            class="flex bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                            <img src="{{ asset(file_exists(public_path('assetsss/' . $resto->image)) ? 'assets/' . $resto->image : 'assets/pasar-ikan.png') }}"
+        {{-- ═══════════════════════════════════════
+             EDUKASI & RESEP
+        ═══════════════════════════════════════ --}}
+        <section class="mt-8 px-4 md:px-8">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <p class="section-label">Belajar</p>
+                    <h2 class="text-xl font-bold text-gray-900">Edukasi & Resep</h2>
+                </div>
+                <a href="#" class="text-sm font-semibold text-cyan-600 hover:text-cyan-700 flex items-center gap-1">
+                    Lihat Semua <span class="iconify" data-icon="mdi:chevron-right" data-width="16"></span>
+                </a>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-3">
+                <a href="{{ route('edukasi') }}" class="edu-card flex bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                    <img src="{{ asset(file_exists(public_path('assets/edukasi-ikan.jpg')) ? 'assets/edukasi-ikan.jpg' : 'assets/pasar-ikan.png') }}"
+                        alt="Edukasi Ikan" class="w-28 h-24 object-cover flex-shrink-0">
+                    <div class="p-4 flex flex-col justify-between flex-1">
+                        <div>
+                            <span class="text-xs font-bold text-cyan-600 bg-cyan-50 px-2 py-0.5 rounded-full">Edukasi</span>
+                            <h2 class="font-semibold text-gray-900 text-sm mt-1 leading-tight">Cara menangkap ikan yang benar</h2>
+                            <p class="text-gray-400 text-xs mt-0.5">Sesuai peraturan yang ada</p>
+                        </div>
+                        <span class="text-xs font-semibold text-cyan-600 flex items-center gap-1 mt-2">
+                            Baca selengkapnya <span class="iconify" data-icon="mdi:arrow-right" data-width="14"></span>
+                        </span>
+                    </div>
+                </a>
+
+                <a href="{{ route('edukasi') }}" class="edu-card flex bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                    <img src="{{ asset(file_exists(public_path('assets/edukasi-gizi.jpg')) ? 'assets/edukasi-gizi.jpg' : 'assets/pasar-ikan.png') }}"
+                        alt="Gizi" class="w-28 h-24 object-cover flex-shrink-0">
+                    <div class="p-4 flex flex-col justify-between flex-1">
+                        <div>
+                            <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Nutrisi</span>
+                            <h2 class="font-semibold text-gray-900 text-sm mt-1 leading-tight">Pentingnya Gizi Makanan Laut</h2>
+                            <p class="text-gray-400 text-xs mt-0.5">Apa saja kelebihannya?</p>
+                        </div>
+                        <span class="text-xs font-semibold text-cyan-600 flex items-center gap-1 mt-2">
+                            Baca selengkapnya <span class="iconify" data-icon="mdi:arrow-right" data-width="14"></span>
+                        </span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        {{-- ═══════════════════════════════════════
+             REKOMENDASI RESTO
+        ═══════════════════════════════════════ --}}
+        <section class="mt-8 px-4 md:px-8 mb-10">
+            <div class="mb-4">
+                <p class="section-label">Pilihan</p>
+                <h2 class="text-xl font-bold text-gray-900">Rekomendasi Restoran</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                @foreach ($restaurants as $resto)
+                    <a href="{{ route('restaurant', $resto->id) }}"
+                        class="resto-card bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                        <div class="relative h-36 overflow-hidden">
+                            <img src="{{ asset(file_exists(public_path('storage/' . $resto->photo)) ? 'storage/' . $resto->photo : asset('assets/pasar-ikan.png')) }}"
                                 alt="{{ $resto->name }}"
-                                class="w-32 h-24 md:w-48 md:h-32 lg:w-56 lg:h-36 rounded-lg object-cover mr-6">
-                            <div class="flex-1">
-                                <h2 class="font-semibold text-gray-900 text-base md:text-xl lg:text-2xl mb-2">
-                                    {{ $resto->name }}
-                                </h2>
-                                <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-4">
-                                    {{ $resto->address }}
-                                </p>
-
-                                <button
-                                    class="bg-cyan-600 text-white text-sm md:text-base font-medium px-6 py-3 rounded-lg w-full hover:bg-cyan-700 transition-colors">
-                                    <small>Kunjungi Restoran</small>
-                                </button>
+                                class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                        </div>
+                        <div class="p-4">
+                            <h2 class="font-bold text-gray-900 text-base mb-1">{{ $resto->name }}</h2>
+                            <p class="text-gray-500 text-xs flex items-start gap-1 mb-3">
+                                <span class="iconify text-gray-400 flex-shrink-0 mt-0.5" data-icon="mdi:map-marker-outline" data-width="14"></span>
+                                {{ $resto->address }}
+                            </p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+                                    Buka
+                                </span>
+                                <span class="text-xs font-semibold text-cyan-600 flex items-center gap-1">
+                                    Kunjungi <span class="iconify" data-icon="mdi:arrow-right" data-width="14"></span>
+                                </span>
                             </div>
-                        </a>
-                    @endforeach
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </section>
 
-                </div>
-            </section>
+    </main>
 
-        </main>
-        <x-navbar :cart-count="5" :active-route="'home'" class="block md:hidden" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <x-navbar :cart-count="$cartCount ?? 0" :active-route="'home'" class="block md:hidden" />
 
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+    // ── Carousel ──────────────────────────────────────────────────
+    const slides    = document.getElementById('carousel-slides');
+    const dots      = document.querySelectorAll('.dot');
+    const totalSlides = slides.children.length;
+    let current = 0;
+
+    function goTo(index) {
+        current = (index + totalSlides) % totalSlides;
+        slides.style.transform = `translateX(-${current * 100}%)`;
+
+        // Animate heading
+        document.querySelectorAll('#carousel-slides h2').forEach((h, i) => {
+            h.classList.remove('translate-x-0', 'opacity-100');
+            h.classList.add('translate-x-full', 'opacity-0');
+        });
+        setTimeout(() => {
+            const h = slides.children[current].querySelector('h2');
+            h.classList.remove('translate-x-full', 'opacity-0');
+            h.classList.add('translate-x-0', 'opacity-100');
+        }, 100);
+
+        // Dots
+        dots.forEach((d, i) => {
+            d.className = i === current
+                ? 'w-6 h-1.5 bg-white rounded-full transition-all dot'
+                : 'w-1.5 h-1.5 bg-white/50 rounded-full transition-all dot';
+        });
+    }
+
+    document.getElementById('prev-btn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('next-btn').addEventListener('click', () => goTo(current + 1));
+    setInterval(() => goTo(current + 1), 5000);
+    goTo(0);
+
+    // ── Sidebar ───────────────────────────────────────────────────
+    const sidebar  = document.getElementById('sidebar');
+    const overlay  = document.getElementById('overlay');
+
+    function openSidebar() {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+    }
+    function closeSidebar() {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    }
+
+    document.getElementById('open-sidebar').addEventListener('click', openSidebar);
+    document.getElementById('close-sidebar').addEventListener('click', closeSidebar);
+    overlay.addEventListener('click', closeSidebar);
+</script>
 </body>
-
 </html>

@@ -2,7 +2,7 @@
 
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{CategoryProductController, TransactionController, AuthController, HomeController, UserController, ProductController, RestaurantController, CartController, AddressController};
+use App\Http\Controllers\{CategoryProductController, TransactionController, AuthController, HomeController, UserController, ProductController, RestaurantController, CartController, AddressController, PaymentController};
 
 
 /*
@@ -184,6 +184,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/transaction/{product}', function (Product $product) {
         return view('transaction', compact('product'));
     })->name('transaction');
+    Route::post('/order/{id}/pay', [PaymentController::class, 'getSnapToken'])
+        ->name('order.pay');
+    Route::post('/order/{id}/cancel', [PaymentController::class, 'cancelOrder'])
+        ->name('order.cancel');
 
     Route::get('/cart-checkout', [TransactionController::class, 'cart_checkout'])->name('cart_checkout');
 

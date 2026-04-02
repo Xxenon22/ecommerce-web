@@ -83,11 +83,11 @@ class TransactionController extends Controller
             $addresses = auth()->user()->addresses()->get();
         }
 
-        // 🔥 Ambil courier dari Biteship
+        // Ambil courier dari Biteship
         $courierResponse = $biteship->getCouriers();
 
         $couriers = $courierResponse['couriers'] ?? [];
-        // dd($couriers);
+        // dd($products);
         return view('checkout', compact(
             'products',
             'addresses',
@@ -125,7 +125,7 @@ class TransactionController extends Controller
 
     public function history()
     {
-        $orders = Transaction::with('TransactionProduct')->where('user_id', auth()->user()->id)->get();
+        $orders = Transaction::with('transactionProducts')->where('user_id', auth()->user()->id)->latest()->get();
         return view('history', compact('orders'));
     }
 }
