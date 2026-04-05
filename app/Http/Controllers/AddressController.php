@@ -16,6 +16,8 @@ class AddressController extends Controller
             'city' => 'required|string',
             'province' => 'required|string',
             'postal_code' => 'required|string',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
         ]);
 
         Address::create([
@@ -27,6 +29,8 @@ class AddressController extends Controller
             'city' => $request->city,
             'province' => $request->province,
             'postal_code' => $request->postal_code,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
             'is_default' => Auth::user()->addresses()->count() === 0, // alamat pertama otomatis default
         ]);
 
@@ -46,10 +50,21 @@ class AddressController extends Controller
             'city' => 'required|string',
             'province' => 'required|string',
             'postal_code' => 'required|string',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
         ]);
 
-        $address->update($request->all());
-
+        $address->update([
+            'recipient_name' => $request->recipient_name,
+            'phone' => $request->phone,
+            'address_detail' => $request->address_detail,
+            'district' => $request->district,
+            'city' => $request->city,
+            'province' => $request->province,
+            'postal_code' => $request->postal_code,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
+        ]);
         return back()->with('success', 'Address updated successfully');
     }
 

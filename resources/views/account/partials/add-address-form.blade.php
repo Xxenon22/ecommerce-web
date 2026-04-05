@@ -38,6 +38,26 @@
             <input type="text" name="postal_code" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required>
         </div>
     </div>
+    <div class="grid grid-cols-2 gap-4">
+        <div>
+            <label class="text-sm font-medium">Latitude</label>
+            <input type="text" id="latitude" name="latitude" class="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                required>
+        </div>
+        <div>
+            <label class="text-sm font-medium">Longitude</label>
+            <input type="text" id="longitude" name="longitude"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg" required>
+        </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+        <button type="button" onclick="getLocation()"
+            class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+            📍 Ambil Lokasi Otomatis
+        </button>
+        <span class="text-xs text-gray-500">Isi otomatis dari GPS</span>
+    </div>
 
     <div class="flex justify-end gap-2">
         <button type="button" onclick="this.closest('form').classList.add('hidden')"

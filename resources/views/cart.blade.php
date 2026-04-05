@@ -5,14 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart - Fishery Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
     <style>
-        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        * {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
 
-        .cart-item { transition: background 0.15s ease; }
-        .cart-item:hover { background: #f9fafb; border-radius: 12px; }
+        .cart-item {
+            transition: background 0.15s ease;
+        }
+
+        .cart-item:hover {
+            background: #f9fafb;
+            border-radius: 12px;
+        }
 
         .qty-btn {
             width: 32px;
@@ -30,6 +39,7 @@
             transition: all 0.15s ease;
             line-height: 1;
         }
+
         .qty-btn:hover {
             border-color: #0891b2;
             color: #0891b2;
@@ -47,23 +57,42 @@
             transition: all 0.15s ease;
             flex-shrink: 0;
         }
+
         .custom-checkbox:checked {
             background: #0891b2;
             border-color: #0891b2;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3E%3C/svg%3E");
         }
 
-        .divider { height: 1px; background: #f3f4f6; margin: 10px 0; }
+        .divider {
+            height: 1px;
+            background: #f3f4f6;
+            margin: 10px 0;
+        }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         .restaurant-card {
             animation: fadeInUp 0.3s ease forwards;
         }
-        .restaurant-card:nth-child(2) { animation-delay: 0.05s; }
-        .restaurant-card:nth-child(3) { animation-delay: 0.1s; }
+
+        .restaurant-card:nth-child(2) {
+            animation-delay: 0.05s;
+        }
+
+        .restaurant-card:nth-child(3) {
+            animation-delay: 0.1s;
+        }
 
         .checkout-btn {
             background: #0891b2;
@@ -81,8 +110,15 @@
             justify-content: center;
             gap: 8px;
         }
-        .checkout-btn:hover { background: #0e7490; transform: translateY(-1px); }
-        .checkout-btn:active { transform: scale(0.98); }
+
+        .checkout-btn:hover {
+            background: #0e7490;
+            transform: translateY(-1px);
+        }
+
+        .checkout-btn:active {
+            transform: scale(0.98);
+        }
     </style>
 </head>
 
@@ -131,11 +167,10 @@
                                     <div class="cart-item flex items-center gap-3 py-3 px-1 border-b border-gray-50 last:border-b-0">
 
                                         <input type="checkbox" class="custom-checkbox product-checkbox"
-                                            name="selected_products[{{ $cart->product->id }}]"
-                                            value="{{ $cart->product->id }}"
+                                            name="selected_products[{{ $cart->product->id }}]" value="{{ $cart->product->id }}"
                                             data-restaurant-id="{{ $restaurant->id }}">
 
-                                        <img src="{{ asset(file_exists(public_path('storage/'.$cart->product->photo)) ? 'storage/'.$cart->product->photo : 'assets/pasar-ikan.png') }}"
+                                        <img src="{{ asset(file_exists(public_path('storage/' . $cart->product->photo)) ? 'storage/' . $cart->product->photo : 'assets/pasar-ikan.png') }}"
                                             class="w-14 h-14 rounded-xl object-cover border border-gray-100 flex-shrink-0">
 
                                         <div class="flex-1 min-w-0">
@@ -152,9 +187,7 @@
                                         {{-- Quantity --}}
                                         <div class="flex items-center gap-2 flex-shrink-0">
                                             <button type="button" class="minus-btn qty-btn">−</button>
-                                            <input type="number"
-                                                name="quantity[{{ $cart->product->id }}]"
-                                                value="{{ $cart->quantity }}"
+                                            <input type="number" name="quantity[{{ $cart->product->id }}]" value="{{ $cart->quantity }}"
                                                 min="1"
                                                 class="quantity-input w-10 text-center text-sm font-semibold text-gray-800 border-0 bg-transparent focus:outline-none">
                                             <button type="button" class="plus-btn qty-btn">+</button>
@@ -217,7 +250,7 @@
     <script>
         /* Restaurant checkbox -> products */
         document.querySelectorAll('.restaurant-checkbox').forEach(r => {
-            r.addEventListener('change', function() {
+            r.addEventListener('change', function () {
                 const id = this.dataset.restaurantId;
                 document.querySelectorAll(
                     `.product-checkbox[data-restaurant-id="${id}"]`
@@ -228,7 +261,7 @@
 
         /* Product checkbox -> restaurant */
         document.querySelectorAll('.product-checkbox').forEach(p => {
-            p.addEventListener('change', function() {
+            p.addEventListener('change', function () {
                 const id = this.dataset.restaurantId;
                 const products = document.querySelectorAll(
                     `.product-checkbox[data-restaurant-id="${id}"]`
@@ -244,7 +277,7 @@
         /* Quantity buttons */
         document.querySelectorAll('.cart-item').forEach(item => {
             const minus = item.querySelector('.minus-btn');
-            const plus  = item.querySelector('.plus-btn');
+            const plus = item.querySelector('.plus-btn');
             const input = item.querySelector('.quantity-input');
 
             minus.onclick = () => {
@@ -262,13 +295,13 @@
             let subtotal = 0;
 
             document.querySelectorAll('.product-checkbox:checked').forEach(cb => {
-                const item  = cb.closest('.cart-item');
+                const item = cb.closest('.cart-item');
                 const price = parseInt(item.querySelector('.item-price').dataset.price);
-                const qty   = parseInt(item.querySelector('.quantity-input').value);
+                const qty = parseInt(item.querySelector('.quantity-input').value);
                 subtotal += price * qty;
             });
 
-            const tax   = subtotal * 0.1;
+            const tax = subtotal * 0.1;
             const total = subtotal;
 
             const rupiah = new Intl.NumberFormat('id-ID', {
@@ -279,11 +312,12 @@
             });
 
             document.getElementById('subtotal').innerText = rupiah.format(subtotal);
-            document.getElementById('total').innerText    = rupiah.format(total);
+            document.getElementById('total').innerText = rupiah.format(total);
         }
 
         updateTotals();
     </script>
 
 </body>
+
 </html>
