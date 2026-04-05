@@ -185,7 +185,7 @@
                                             {{ $address->district }},
                                             {{ $address->city }},
                                             {{ $address->province }},
-                                            {{ $address->postal_code }}
+                                            {{ $address->postal_code }},    
                                         </p>
                                     </div>
 
@@ -233,6 +233,11 @@
                                     <div class="grid grid-cols-2 gap-2">
                                         <input type="text" name="province" value="{{ $address->province }}" class="px-3 py-2 border rounded-lg">
                                         <input type="text" name="postal_code" value="{{ $address->postal_code }}" class="px-3 py-2 border rounded-lg">
+                                    </div>
+    
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <input type="text" name="latitude" value="{{ $address->latitude }}" class="px-3 py-2 border rounded-lg">
+                                        <input type="text"  name="longitude" value="{{ $address->longitude }}" class="px-3 py-2 border rounded-lg">
                                     </div>
 
                                     <div class="flex justify-end gap-2">
@@ -552,39 +557,107 @@
     </style>
 
     <script>
-        function showTab(tab) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('bg-cyan-50', 'text-cyan-700', 'font-semibold');
-                btn.classList.add('hover:bg-gray-100', 'text-gray-700');
-            });
-            document.getElementById('content-' + tab).classList.remove('hidden');
-            const activeBtn = document.getElementById('tab-' + tab);
-            activeBtn.classList.add('bg-cyan-50', 'text-cyan-700', 'font-semibold');
-            activeBtn.classList.remove('hover:bg-gray-100', 'text-gray-700');
+document.addEventListener("DOMContentLoaded", function () {
+
+    // ======================
+    // TAB SWITCHING
+    // ======================
+    window.showTab = function (tab) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('bg-cyan-50', 'text-cyan-700', 'font-semibold');
+            btn.classList.add('hover:bg-gray-100', 'text-gray-700');
+        });
+
+        const content = document.getElementById('content-' + tab);
+        const button = document.getElementById('tab-' + tab);
+
+        if (content) content.classList.remove('hidden');
+        if (button) {
+            button.classList.add('bg-cyan-50', 'text-cyan-700', 'font-semibold');
+            button.classList.remove('hover:bg-gray-100', 'text-gray-700');
+        }
+    };
+
+    // ======================
+    // PREVIEW IMAGE PROFILE
+    // ======================
+    window.previewImage = function (event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const img = document.getElementById('profile-img');
+            if (img) img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    };
+
+    // ======================
+    // PROFILE CANCEL BUTTON
+    // ======================
+    const cancelProfile = document.getElementById('cancel-profile');
+    if (cancelProfile) {
+        cancelProfile.addEventListener('click', () => {
+            document.querySelectorAll('#profile-form input, #profile-form textarea')
+                .forEach(el => el.disabled = true);
+
+            cancelProfile.classList.add('hidden');
+        });
+    }
+
+    // ======================
+    // RESTAURANT EDIT TOGGLE
+    // ======================
+    const editRestaurantBtn = document.getElementById('edit-restaurant-btn');
+    const cancelRestaurantBtn = document.getElementById('cancel-restaurant');
+
+    if (editRestaurantBtn) {
+        editRestaurantBtn.addEventListener('click', () => {
+            document.getElementById('restaurant-view')?.classList.add('hidden');
+            document.getElementById('restaurant-form')?.classList.remove('hidden');
+        });
+    }
+
+    if (cancelRestaurantBtn) {
+        cancelRestaurantBtn.addEventListener('click', () => {
+            document.getElementById('restaurant-form')?.classList.add('hidden');
+            document.getElementById('restaurant-view')?.classList.remove('hidden');
+        });
+    }
+
+    // ======================
+    // GET LOCATION (GLOBAL)
+    // ======================
+    window.getLocation = function () {
+        if (!navigator.geolocation) {
+            alert("Browser tidak mendukung geolocation");
+            return;
         }
 
-        function previewImage(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = e => document.getElementById('profile-img').src = e.target.result;
-                reader.readAsDataURL(file);
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                const latInput = document.getElementById("latitude");
+                const lngInput = document.getElementById("longitude");
+
+                if (latInput) latInput.value = lat;
+                if (lngInput) lngInput.value = lng;
+
+                alert("Lokasi berhasil diambil!\nLat: " + lat + "\nLng: " + lng);
+            },
+            function (error) {
+                alert("Gagal mengambil lokasi: " + error.message);
             }
-        }
+        );
+    };
 
-        document.getElementById('edit-profile-btn').addEventListener('click', () => {
-            document.querySelectorAll('#profile-form input, #profile-form textarea').forEach(el => el.disabled =
-                false);
-            document.getElementById('cancel-profile').classList.remove('hidden');
-        });
-
-        document.getElementById('cancel-profile').addEventListener('click', () => {
-            document.querySelectorAll('#profile-form input, #profile-form textarea').forEach(el => el.disabled =
-                true);
-            document.getElementById('cancel-profile').classList.add('hidden');
-        });
-    </script>
+});
+</script>
 </body>
 
 </html>

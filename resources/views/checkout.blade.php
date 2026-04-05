@@ -5,17 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout - Fishery Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
     <style>
-        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        * {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
 
         .section-card {
             background: white;
             border-radius: 20px;
             border: 0.5px solid #f3f4f6;
-            box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
             padding: 1.25rem;
             margin-bottom: 0.75rem;
         }
@@ -54,8 +57,16 @@
             background-size: 16px;
             padding-right: 36px;
         }
-        .custom-select:focus { border-color: #0891b2; }
-        .custom-select:disabled { background: #f9fafb; color: #9ca3af; cursor: not-allowed; }
+
+        .custom-select:focus {
+            border-color: #0891b2;
+        }
+
+        .custom-select:disabled {
+            background: #f9fafb;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
 
         .custom-textarea {
             width: 100%;
@@ -68,7 +79,10 @@
             resize: none;
             transition: border-color 0.2s;
         }
-        .custom-textarea:focus { border-color: #0891b2; }
+
+        .custom-textarea:focus {
+            border-color: #0891b2;
+        }
 
         .product-row {
             display: flex;
@@ -77,9 +91,16 @@
             padding: 10px 0;
             border-bottom: 1px solid #f3f4f6;
         }
-        .product-row:last-of-type { border-bottom: none; }
 
-        .divider { height: 1px; background: #f3f4f6; margin: 12px 0; }
+        .product-row:last-of-type {
+            border-bottom: none;
+        }
+
+        .divider {
+            height: 1px;
+            background: #f3f4f6;
+            margin: 12px 0;
+        }
 
         .total-row {
             display: flex;
@@ -104,8 +125,16 @@
             justify-content: center;
             gap: 8px;
         }
-        .checkout-btn:hover:not(:disabled) { background: #0e7490; transform: translateY(-1px); }
-        .checkout-btn:active:not(:disabled) { transform: scale(0.98); }
+
+        .checkout-btn:hover:not(:disabled) {
+            background: #0e7490;
+            transform: translateY(-1px);
+        }
+
+        .checkout-btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
         .checkout-btn:disabled {
             background: #e5e7eb;
             color: #9ca3af;
@@ -130,16 +159,40 @@
             padding: 10px 0;
         }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .spin { animation: spin 0.8s linear infinite; display: inline-block; }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spin {
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        .section-card { animation: fadeInUp 0.3s ease forwards; }
-        .section-card:nth-child(2) { animation-delay: 0.05s; }
-        .section-card:nth-child(3) { animation-delay: 0.1s; }
+
+        .section-card {
+            animation: fadeInUp 0.3s ease forwards;
+        }
+
+        .section-card:nth-child(2) {
+            animation-delay: 0.05s;
+        }
+
+        .section-card:nth-child(3) {
+            animation-delay: 0.1s;
+        }
     </style>
 </head>
 
@@ -172,10 +225,10 @@
                     <label class="label-sm">Pilih Alamat</label>
                     <select id="saved_address" class="custom-select">
                         @foreach ($addresses as $addr)
-                            <option value="{{ $addr->id }}"
-                                data-name="{{ $addr->recipient_name }}"
+                            <option value="{{ $addr->id }}" data-name="{{ $addr->recipient_name }}"
                                 data-phone="{{ $addr->phone }}"
-                                data-address="{{ $addr->address_detail }}, {{ $addr->district }}, {{ $addr->city }}, {{ $addr->province }} {{ $addr->postal_code }}">
+                                data-address="{{ $addr->address_detail }}, {{ $addr->district }}, {{ $addr->city }}, {{ $addr->province }} {{ $addr->postal_code }}"
+                                data-lat="{{ $addr->latitude }}" data-lng="{{ $addr->longitude }}">
                                 {{ $addr->recipient_name }} — {{ $addr->address_detail }}, {{ $addr->district }}
                             </option>
                         @endforeach
@@ -186,7 +239,8 @@
             {{-- Address Preview --}}
             <div id="address_preview" class="address-card">
                 <div class="flex items-start gap-3">
-                    <span class="iconify text-cyan-500 mt-0.5 flex-shrink-0" data-icon="mdi:map-marker" data-width="20"></span>
+                    <span class="iconify text-cyan-500 mt-0.5 flex-shrink-0" data-icon="mdi:map-marker"
+                        data-width="20"></span>
                     <div>
                         <p id="preview_name" class="font-semibold text-gray-800 text-sm"></p>
                         <p id="preview_phone" class="text-gray-500 text-xs mt-0.5"></p>
@@ -198,7 +252,8 @@
             {{-- Default Address (fallback jika tidak ada saved address) --}}
             <div id="default_address" class="address-card hidden">
                 <div class="flex items-start gap-3">
-                    <span class="iconify text-cyan-500 mt-0.5 flex-shrink-0" data-icon="mdi:map-marker" data-width="20"></span>
+                    <span class="iconify text-cyan-500 mt-0.5 flex-shrink-0" data-icon="mdi:map-marker"
+                        data-width="20"></span>
                     <div>
                         <p class="font-semibold text-gray-800 text-sm">{{ Auth::user()->name ?? '' }}</p>
                         <p class="text-gray-500 text-xs mt-0.5">{{ Auth::user()->phone ?? '' }}</p>
@@ -208,10 +263,14 @@
             </div>
 
             {{-- Hidden fields --}}
-            <input type="hidden" id="name" value="{{ isset($addresses[0]) ? $addresses[0]->recipient_name : (Auth::user()->name ?? '') }}">
-            <input type="hidden" id="phone" value="{{ isset($addresses[0]) ? $addresses[0]->phone : (Auth::user()->phone ?? '') }}">
-            <input type="hidden" id="address" value="{{ isset($addresses[0]) ? $addresses[0]->address_detail.', '.$addresses[0]->district.', '.$addresses[0]->city.', '.$addresses[0]->province.' '.$addresses[0]->postal_code : (Auth::user()->address ?? '-') }}">
-
+            <input type="hidden" id="name"
+                value="{{ isset($addresses[0]) ? $addresses[0]->recipient_name : (Auth::user()->name ?? '') }}">
+            <input type="hidden" id="phone"
+                value="{{ isset($addresses[0]) ? $addresses[0]->phone : (Auth::user()->phone ?? '') }}">
+            <input type="hidden" id="address"
+                value="{{ isset($addresses[0]) ? $addresses[0]->address_detail . ', ' . $addresses[0]->district . ', ' . $addresses[0]->city . ', ' . $addresses[0]->province . ' ' . $addresses[0]->postal_code : (Auth::user()->address ?? '-') }}">
+            <input type="hidden" id="lat" value="{{ $addresses[0]->latitude ?? '' }}">
+            <input type="hidden" id="lng" value="{{ $addresses[0]->longitude ?? '' }}">
             {{-- Notes --}}
             <div class="mt-3">
                 <label class="label-sm">Catatan (Opsional)</label>
@@ -239,7 +298,7 @@
                             $total += $item['quantity'] * $product['price'];
                         @endphp
                         <div class="product-row">
-                            <img src="{{ asset(file_exists(public_path('storage/'.$product['photo'])) ? 'storage/'.$product['photo'] : 'assets/pasar-ikan.png') }}"
+                            <img src="{{ asset(file_exists(public_path('storage/' . $product['photo'])) ? 'storage/' . $product['photo'] : 'assets/pasar-ikan.png') }}"
                                 alt="{{ $product['name'] }}"
                                 class="w-12 h-12 object-cover rounded-xl border border-gray-100 flex-shrink-0">
                             <div class="flex-1 min-w-0">
@@ -293,8 +352,7 @@
                     <div class="space-y-1">
                         <div class="total-row">
                             <span class="text-sm text-gray-500">Total Pesanan</span>
-                            <span id="order-total" class="text-sm font-semibold text-gray-800"
-                                data-total="{{ $total }}">
+                            <span id="order-total" class="text-sm font-semibold text-gray-800" data-total="{{ $total }}">
                                 Rp {{ number_format($total, 0, ',', '.') }}
                             </span>
                         </div>
@@ -331,6 +389,18 @@
         data-client-key="{{ config('midtrans.client_key') }}"></script>
 
     <script>
+        function isFrozenService(serviceName) {
+            const name = serviceName.toLowerCase();
+
+            return (
+                name.includes('frozen') ||
+                name.includes('cold') ||
+                name.includes('fresh') ||
+                name.includes('chilled') ||
+                name.includes('cool')
+            );
+        }
+
         // ── Auto-select first address on load ──────────────────────────────
         (function () {
             const select = document.getElementById('saved_address');
@@ -349,12 +419,16 @@
         })();
 
         function fillAddress(option) {
-            document.getElementById('name').value    = option.dataset.name    || '';
-            document.getElementById('phone').value   = option.dataset.phone   || '';
+            document.getElementById('name').value = option.dataset.name || '';
+            document.getElementById('phone').value = option.dataset.phone || '';
             document.getElementById('address').value = option.dataset.address || '';
 
-            document.getElementById('preview_name').textContent    = option.dataset.name    || '';
-            document.getElementById('preview_phone').textContent   = option.dataset.phone   || '';
+            // 🔥 TAMBAHAN PENTING
+            document.getElementById('lat').value = option.dataset.lat || '';
+            document.getElementById('lng').value = option.dataset.lng || '';
+
+            document.getElementById('preview_name').textContent = option.dataset.name || '';
+            document.getElementById('preview_phone').textContent = option.dataset.phone || '';
             document.getElementById('preview_address').textContent = option.dataset.address || '';
 
             document.getElementById('address_preview').classList.remove('hidden');
@@ -366,6 +440,11 @@
             const opt = this.options[this.selectedIndex];
             if (opt.value) {
                 fillAddress(opt);
+
+                // 🔥 FIX UTAMA
+                if ($('#courier').val()) {
+                    $('#courier').trigger('change');
+                }
             } else {
                 document.getElementById('address_preview').classList.add('hidden');
                 document.getElementById('default_address')?.classList.remove('hidden');
@@ -376,7 +455,7 @@
         function updateCheckoutBtn() {
             const courierVal = $('#courier').val();
             const serviceVal = $('#service-dropdown').val();
-            const btn        = document.getElementById('pay-button');
+            const btn = document.getElementById('pay-button');
 
             if (courierVal && serviceVal) {
                 btn.disabled = false;
@@ -405,7 +484,8 @@
             $.post("{{ route('get.rates') }}", {
                 _token: "{{ csrf_token() }}",
                 courier: courier,
-                destination_postal_code: "{{ $addresses[0]->postal_code ?? '' }}",
+                destination_latitude: $('#lat').val(),
+                destination_longitude: $('#lng').val(),
                 total: $('#order-total').data('total'),
                 products: @json($products)
             }, function (response) {
@@ -418,14 +498,37 @@
                 }
 
                 let options = '<option value="">-- Pilih Service --</option>';
-                response.pricing.forEach(function (rate) {
-                    const price    = Number(rate.price) || 0;
-                    const duration = rate.duration || '-';
-                    options += `<option value="${rate.courier_service_code}" data-price="${price}">
-                        ${rate.courier_name} - ${rate.courier_service_name} (${duration}) - Rp ${price.toLocaleString('id-ID')}
-                    </option>`;
+
+                // 🔥 SORTING LOGIC
+                response.pricing.sort((a, b) => {
+
+                    const aFrozen = isFrozenService(a.courier_service_name);
+                    const bFrozen = isFrozenService(b.courier_service_name);
+
+                    // 1. Prioritas frozen
+                    if (aFrozen && !bFrozen) return -1;
+                    if (!aFrozen && bFrozen) return 1;
+
+                    // 2. Kalau sama → sort harga termurah
+                    return (a.price || 0) - (b.price || 0);
                 });
 
+                // 🔥 RENDER TANPA FILTER APAPUN
+                response.pricing.forEach(function (rate) {
+
+                    const price = Number(rate.price) || 0;
+                    const duration = rate.duration || '-';
+
+                    const isFrozen = isFrozenService(rate.courier_service_name);
+
+                    options += `
+        <option value="${rate.courier_service_code}" 
+                data-price="${price}">
+            ${isFrozen ? '❄️ ' : ''}
+            ${rate.courier_name} - ${rate.courier_service_name} (${duration}) - Rp ${price.toLocaleString('id-ID')}
+        </option>
+    `;
+                });
                 $('#service-dropdown').html(options).prop('disabled', false);
                 updateCheckoutBtn();
             }).fail(function () {
@@ -437,7 +540,7 @@
 
         // ── Service change → update totals ────────────────────────────────
         $('#service-dropdown').on('change', function () {
-            const price      = Number($(this).find(':selected').data('price')) || 0;
+            const price = Number($(this).find(':selected').data('price')) || 0;
             const orderTotal = Number($('#order-total').data('total')) || 0;
             const grandTotal = orderTotal + price;
 
@@ -457,27 +560,32 @@
             btn.disabled = true;
             btn.innerHTML = '<span class="iconify spin" data-icon="mdi:loading" data-width="18"></span> Memproses...';
 
+            if (!$('#lat').val() || !$('#lng').val()) {
+                alert('Alamat belum memiliki koordinat (lat/lng)');
+                return;
+            }
+
             $.post("{{ route('mid.pay') }}", {
-                _token:   '{{ csrf_token() }}',
+                _token: '{{ csrf_token() }}',
                 id:       {{ auth()->user()->id }},
-                name:     $('#name').val(),
-                phone:    $('#phone').val(),
-                address:  $('#address').val(),
-                notes:    $('#notes').val(),
-                amount:   $('#total').val(),
-                courier:  $('#courier').val(),
-                ongkir:   $('#price-ongkir').val(),
+                name: $('#name').val(),
+                phone: $('#phone').val(),
+                address: $('#address').val(),
+                notes: $('#notes').val(),
+                amount: $('#total').val(),
+                courier: $('#courier').val(),
+                ongkir: $('#price-ongkir').val(),
                 products: @json($products),
             }, function (data) {
                 snap.pay(data.snap_token, {
                     onSuccess: function () { location.href = '{{ route('history') }}'; },
                     onPending: function () { location.href = '{{ route('history') }}'; },
-                    onError:   function () {
+                    onError: function () {
                         alert('Pembayaran gagal, silakan coba lagi.');
                         btn.disabled = false;
                         btn.innerHTML = '<span class="iconify" data-icon="mdi:credit-card-outline" data-width="18"></span> Buat Order & Bayar';
                     },
-                    onClose:   function () {
+                    onClose: function () {
                         btn.disabled = false;
                         btn.innerHTML = '<span class="iconify" data-icon="mdi:credit-card-outline" data-width="18"></span> Buat Order & Bayar';
                     },
@@ -490,4 +598,5 @@
         });
     </script>
 </body>
+
 </html>
