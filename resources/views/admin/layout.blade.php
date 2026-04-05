@@ -128,9 +128,9 @@
 
                     <!-- Navigation -->
                     <nav class="space-y-10 text-sm">
-                        <a href="{{ route('home') }}" class="flex items-center space-x-3 hover:text-cyan-400">
+                        <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3 hover:text-cyan-400">
                             <span class="iconify" data-icon="mdi:home-outline" data-width="22"></span>
-                            <span>Home</span>
+                            <span>Dashboard</span>
                         </a>
 
                         {{-- Admin Page --}}

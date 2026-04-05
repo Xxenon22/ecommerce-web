@@ -8,6 +8,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+    <style>
+        .font-display { font-family: 'Fraunces', serif; }
+
+    </style>
 </head>
 
 <body class="min-h-screen bg-gray-50">
@@ -17,12 +21,12 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <a href="{{ route('home') }}" class="flex items-center space-x-2">
-                    <span class="iconify text-cyan-600" data-icon="mdi:fish" data-width="28" data-height="28"></span>
-                    <span class="font-bold text-xl text-gray-800">Fishery Hub</span>
+                    {{-- <span class="iconify text-cyan-600" data-icon="mdi:fish" data-width="28" data-height="28"></span> --}}
+                    <span class="font-bold font-display text-2xl text-cyan-600 italic">FisheryHub</span>
                 </a>
                 <div class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-700">
                     <a href="/home" class="hover:text-cyan-600">Home</a>
-                    <a href="" class="hover:text-cyan-600">Products</a>
+                    {{-- <a href="" class="hover:text-cyan-600">Products</a> --}}
                     <a href="/history" class="hover:text-cyan-600">History Transaction</a>
                     <a href="/cart" class="relative hover:text-cyan-600">
                         <span class="iconify" data-icon="mdi:cart-outline" data-width="24" data-height="24"></span>
@@ -274,7 +278,7 @@
                             <div id="restaurant-view" class="space-y-6">
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <div class="md:col-span-1">
-                                         <img src="{{ asset('storage/' . Auth::user()->restaurant->photo) }}" alt="Restaurant Logo" class="w-full h-40 object-cover rounded-lg">
+                                         <img src="{{ asset('restaurants/photo/' . Auth::user()->restaurant->photo) }}" alt="Restaurant Logo" class="w-full h-40 object-cover rounded-lg">
                                     </div>
                                     <div class="md:col-span-2 space-y-3">
                                         <p class="text-lg font-semibold text-gray-800">
@@ -345,7 +349,7 @@
                                                 class="block text-sm font-medium text-gray-700 mb-1">Description</label>
                                             <textarea name="description" rows="3" class="w-full px-4 py-2 border border-gray-300">{{ old('description', Auth::user()->restaurant->description) }}</textarea>
                                         </div>
-
+                                        
                                         <div class="grid grid-cols-2 gap-2">
                                             <div>
                                                 <label class="block text-sm font-medium text-gray-700 mb-1">District</label>
@@ -521,7 +525,7 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="border-t pt-6">
+                        {{-- <div class="border-t pt-6">
                             <h3 class="text-lg font-semibold text-gray-800 mb-4">Two-Factor Authentication</h3>
                             <div class="flex items-center justify-between">
                                 <div>
@@ -531,7 +535,7 @@
                                 <button
                                     class="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50">Enable</button>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </section>

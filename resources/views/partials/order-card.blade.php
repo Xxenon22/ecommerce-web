@@ -22,7 +22,7 @@
             <p class="text-xs text-gray-400 mb-0.5">
                 {{ isset($order['date']) ? $order['date'] : $order->created_at->format('d M Y') }}
             </p>
-            <h3 class="font-semibold text-gray-800 text-sm">Order #{{ $order['id'] ?? $order->id }}</h3>
+            <h3 class="font-semibold text-gray-800 text-sm">{{ $order->restaurant->name }}</h3>
         </div>
         <span class="badge {{ $badgeConfig['bg'] }} {{ $badgeConfig['text'] }}">
             <span class="badge-dot {{ $badgeConfig['dot'] }}"></span>

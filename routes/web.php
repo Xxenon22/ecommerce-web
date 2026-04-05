@@ -2,7 +2,7 @@
 
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{CategoryProductController, TransactionController, AuthController, HomeController, UserController, ProductController, RestaurantController, CartController, AddressController, PaymentController};
+use App\Http\Controllers\{AdminDashboardController, CategoryProductController, TransactionController, AuthController, HomeController, UserController, ProductController, RestaurantController, CartController, AddressController, PaymentController};
 
 
 /*
@@ -276,7 +276,7 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth'])->prefix('admin')->group(function () {
-    Route::view('/dashboard', 'admin.dashboard')->name('admin.dashboard');
+    Route::get('/', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::resource('/category', CategoryProductController::class);
     Route::resource('/user', UserController::class);
     Route::resource('/history', TransactionController::class);

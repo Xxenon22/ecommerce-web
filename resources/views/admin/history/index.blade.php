@@ -33,8 +33,8 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $loop->iteration }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $transaction->user->name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $transaction->restaurant->name }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $transaction->transactionProduct->product->name }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $transaction->expedition->name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Transaksi Produk</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $transaction->expedition_id }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $transaction->expedition_price }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $transaction->total_price }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $transaction->address->name }}</td>

@@ -467,7 +467,7 @@
             <div class="ring ring-1"></div>
             <div class="ring ring-2"></div>
             {{-- <div class="ring ring-3"></div> --}}
-            <img src="{{ asset('assets/pasar-ikan.png') }}" alt="Fishery Hub Illustration" />
+            <img src="{{ asset('logo.jpeg') }}" alt="Fishery Hub Illustration" />
         </div>
 
         <!-- Desktop: right column wrapper -->

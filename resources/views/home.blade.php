@@ -225,11 +225,16 @@
     ═══════════════════════════════════════ --}}
     <header class="hidden md:flex items-center justify-between px-8 py-4 bg-white border-b border-gray-100 shadow-sm sticky top-0 z-30">
         <div class="flex items-center gap-8">
+            {{-- <img src="{{ asset('logo.jpeg') }}" alt="" width=""> --}}
+            {{-- <img src="{{ asset('logo.jpeg') }}" alt="Logo" class="h-10 w-auto object-contain"> --}}
             <span class="font-display text-2xl text-cyan-600 italic">FisheryHub</span>
             <nav class="flex gap-6">
                 <a href="{{ route('home') }}" class="text-sm font-semibold text-cyan-600 border-b-2 border-cyan-600 pb-0.5">Home</a>
                 <a href="{{ route('category') }}" class="text-sm font-medium text-gray-500 hover:text-gray-800 transition">Kategori</a>
                 <a href="{{ route('home-resto') }}" class="text-sm font-medium text-gray-500 hover:text-gray-800 transition">Restoran</a>
+                @if(Auth::check() && Auth::user()->role === 'Admin')
+                    <a href="{{ route('admin.dashboard') }}" class="text-sm font-medium text-gray-500 hover:text-gray-800 transition">Admin Page</a>
+                @endif
             </nav>
         </div>
 
@@ -341,7 +346,7 @@
             <div class="flex gap-3 overflow-x-auto scrollbar-hide pb-2">
                 @foreach ($categories as $category)
                     <a href="/category/{{ $category->id }}"
-                        class="cat-pill flex-shrink-0 flex flex-col items-center gap-2 bg-white border border-gray-100 rounded-2xl px-4 py-3 shadow-sm w-20">
+                        class="cat-pill flex-shrink-0 flex flex-col items-center gap-2 bg-white border border-gray-100 rounded-2xl px-4 py-3 shadow-sm w-25">
                         <div class="w-10 h-10 bg-cyan-50 rounded-xl flex items-center justify-center">
                             <span class="iconify text-cyan-600" data-icon="{{ $category->icon }}" data-width="20"></span>
                         </div>

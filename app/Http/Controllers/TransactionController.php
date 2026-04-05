@@ -13,7 +13,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::with('TransactionProduct')->get();
+        $transactions = Transaction::with('transactionProducts')->get();
         return view('admin.history.index', compact('transactions'));
     }
 

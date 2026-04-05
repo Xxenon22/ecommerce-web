@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class RestaurantController extends Controller
 {
@@ -50,11 +51,12 @@ class RestaurantController extends Controller
     /**
      * Update the specified resource in storage.
      */
+
     public function update(Request $request, Restaurant $restaurant)
     {
-        //
         $request->validate([
             'name' => 'required|string|max:255',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'address' => 'required|string|max:255',
             'description' => 'required|string|max:255',
@@ -67,7 +69,29 @@ class RestaurantController extends Controller
             'close' => 'required|string|max:255',
         ]);
 
-        $restaurant->update($request->all());
+        dd($request->all());
+
+        $data = $request->except(['logo', 'photo']);
+
+        if ($request->hasFile('logo')) {
+
+            if ($restaurant->logo && Storage::disk('public')->exists($restaurant->logo)) {
+                Storage::disk('public')->delete($restaurant->logo);
+            }
+
+            $data['logo'] = $request->file('logo')->store('restaurants/logo', 'public');
+        }
+
+        if ($request->hasFile('photo')) {
+
+            if ($restaurant->photo && Storage::disk('public')->exists($restaurant->photo)) {
+                Storage::disk('public')->delete($restaurant->photo);
+            }
+
+            $data['photo'] = $request->file('photo')->store('restaurants/photo', 'public');
+        }
+
+        $restaurant->update($data);
 
         return redirect()->route('account')->with('success', 'Restaurant updated successfully');
     }

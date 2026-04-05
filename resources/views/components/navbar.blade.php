@@ -5,14 +5,14 @@
     <a href="{{ route('home') }}"
         class="flex flex-col items-center {{ $activeRoute === 'home' ? 'text-blue-600' : 'text-gray-500' }}">
         <span class="iconify" data-icon="mdi:home-outline" data-width="26" data-height="26"></span>
-        <span class="text-xs font-medium mt-1">home</span>
+        <span class="text-xs font-medium mt-1">Home</span>
     </a>
 
     <!-- Kategori -->
     <a href="{{ route('category') }}"
         class="flex flex-col items-center {{ $activeRoute === 'category' ? 'text-blue-600' : 'text-gray-500' }}">
         <span class="iconify" data-icon="mdi:shape-outline" data-width="26" data-height="26"></span>
-        <span class="text-xs font-medium mt-1">Kategori</span>
+        <span class="text-xs font-medium mt-1">Category</span>
     </a>
 
     <!-- Tombol cart Tengah -->
@@ -26,13 +26,13 @@
     <!-- History -->
     <a href="{{ route('history') }}" class="flex flex-col items-center text-gray-500">
         <span class="iconify" data-icon="mdi:clipboard-text-outline" data-width="26" data-height="26"></span>
-        <span class="text-xs font-medium mt-1">History Transaction</span>
+        <span class="text-xs font-medium mt-1">History</span>
     </a>
 
     <!-- Akun -->
     <a href="{{ route('account') }}"
         class="flex flex-col items-center {{ $activeRoute === 'account' ? 'text-blue-600' : 'text-gray-500' }}">
         <span class="iconify" data-icon="mdi:account-outline" data-width="26" data-height="26"></span>
-        <span class="text-xs font-medium mt-1">Akun</span>
+        <span class="text-xs font-medium mt-1">Account</span>
     </a>
 </nav>
