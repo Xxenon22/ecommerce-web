@@ -12,11 +12,12 @@ return new class extends Migration {
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->string('transaction_code')->nullable()->after('id');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->nullable();
             $table->foreignId('expedition_id')->constrained('expeditions')->onDelete('cascade');
             $table->integer('expedition_price')->default(0);
             $table->integer('total_price');
-            $table->longText('address');
+            $table->foreignId('address_id')->nullable();
             $table->string('status')->default('pending');
             $table->foreignId('payment_method_id')->constrained('payment_methods')->onDelete('cascade')->nullable();
             $table->timestamps();

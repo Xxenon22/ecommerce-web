@@ -197,7 +197,6 @@
 </head>
 
 <body class="bg-gray-50 min-h-screen pb-8">
-
     {{-- Header --}}
     <div class="sticky top-0 z-50 bg-white border-b border-gray-100 px-4 py-3 flex items-center gap-3 shadow-sm">
         <a href="{{ route('cart') }}"
@@ -267,8 +266,8 @@
                 value="{{ isset($addresses[0]) ? $addresses[0]->recipient_name : (Auth::user()->name ?? '') }}">
             <input type="hidden" id="phone"
                 value="{{ isset($addresses[0]) ? $addresses[0]->phone : (Auth::user()->phone ?? '') }}">
-            <input type="hidden" id="address"
-                value="{{ isset($addresses[0]) ? $addresses[0]->address_detail . ', ' . $addresses[0]->district . ', ' . $addresses[0]->city . ', ' . $addresses[0]->province . ' ' . $addresses[0]->postal_code : (Auth::user()->address ?? '-') }}">
+            <input type="hidden" id="address_id" class="address"
+                value="{{ isset($addresses[0]) ? $addresses[0]->id : (Auth::user()->address ?? '-') }}">
             <input type="hidden" id="lat" value="{{ $addresses[0]->latitude ?? '' }}">
             <input type="hidden" id="lng" value="{{ $addresses[0]->longitude ?? '' }}">
             {{-- Notes --}}
@@ -389,6 +388,7 @@
         data-client-key="{{ config('midtrans.client_key') }}"></script>
 
     <script>
+        let aid = $('#address_id').val();
         function isFrozenService(serviceName) {
             const name = serviceName.toLowerCase();
 
@@ -421,7 +421,7 @@
         function fillAddress(option) {
             document.getElementById('name').value = option.dataset.name || '';
             document.getElementById('phone').value = option.dataset.phone || '';
-            document.getElementById('address').value = option.dataset.address || '';
+            document.getElementById('address_id').value = option.dataset.address_id || '';
 
             // 🔥 TAMBAHAN PENTING
             document.getElementById('lat').value = option.dataset.lat || '';
@@ -570,11 +570,15 @@
                 id:       {{ auth()->user()->id }},
                 name: $('#name').val(),
                 phone: $('#phone').val(),
-                address: $('#address').val(),
+                address_id: aid,
                 notes: $('#notes').val(),
                 amount: $('#total').val(),
                 courier: $('#courier').val(),
                 ongkir: $('#price-ongkir').val(),
+                courier_name: $('#service-dropdown').val(),
+                lat: $('#lat').val(),
+                lng: $('#lng').val(),
+
                 products: @json($products),
             }, function (data) {
                 snap.pay(data.snap_token, {
