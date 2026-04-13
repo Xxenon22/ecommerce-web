@@ -26,6 +26,7 @@ class PaymentController extends Controller
         $transaction = Transaction::create([
             'user_id' => $request->id,
             'expedition_id' => NULL,
+            'address' => $request->address,
             'restaurant_id' => 1,
             'expedition_price' => $request->ongkir,
             'total_price' => $request->amount,
