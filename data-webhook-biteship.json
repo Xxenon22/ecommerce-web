@@ -1,0 +1,16 @@
+{
+    "event": "order.status",
+    "order_id": "69dcdccc7639b98b4c2d8395",
+    "order_price": 20000,
+    "courier_tracking_id": "9STxWLcYqbmtm2BrN0oY0aMQ",
+    "courier_waybill_id": "WYB-1776082124139",
+    "courier_company": "jne",
+    "courier_type": "reg",
+    "courier_driver_name": "john doe",
+    "courier_driver_phone": "62888888888",
+    "courier_driver_plate_number": "B 123456 LS",
+    "courier_driver_photo_url": "https://picsum.photos/200/300",
+    "courier_link": "https://track.biteship.com/9STxWLcYqbmtm2BrN0oY0aMQ?environment=development",
+    "status": "allocated",
+    "updated_at": "2026-04-13T12:50:14.585Z"
+}

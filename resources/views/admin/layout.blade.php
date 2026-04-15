@@ -10,7 +10,7 @@
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const carouselSlides = document.getElementById('carousel-slides');
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
@@ -31,17 +31,17 @@
                 }, 100);
             }
 
-            prevBtn.addEventListener('click', function() {
+            prevBtn.addEventListener('click', function () {
                 currentIndex = (currentIndex > 0) ? currentIndex - 1 : totalSlides - 1;
                 updateCarousel();
             });
 
-            nextBtn.addEventListener('click', function() {
+            nextBtn.addEventListener('click', function () {
                 currentIndex = (currentIndex < totalSlides - 1) ? currentIndex + 1 : 0;
                 updateCarousel();
             });
 
-            setInterval(function() {
+            setInterval(function () {
                 currentIndex = (currentIndex < totalSlides - 1) ? currentIndex + 1 : 0;
                 updateCarousel();
             }, 5000);
@@ -61,12 +61,12 @@
                         `translateX(-${categoriesCurrentIndex * (100 / categoriesVisibleSlides)}%)`;
                 }
 
-                categoriesPrevBtn.addEventListener('click', function() {
+                categoriesPrevBtn.addEventListener('click', function () {
                     categoriesCurrentIndex = Math.max(0, categoriesCurrentIndex - 1);
                     updateCategoriesCarousel();
                 });
 
-                categoriesNextBtn.addEventListener('click', function() {
+                categoriesNextBtn.addEventListener('click', function () {
                     const maxIndex = categoriesTotalSlides - categoriesVisibleSlides;
                     categoriesCurrentIndex = Math.min(maxIndex, categoriesCurrentIndex + 1);
                     updateCategoriesCarousel();
@@ -74,7 +74,7 @@
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const sidebar = document.getElementById('sidebar');
             const openBtn = document.getElementById('open-sidebar');
             const closeBtn = document.getElementById('close-sidebar');
@@ -134,13 +134,11 @@
                         </a>
 
                         {{-- Admin Page --}}
-                        <a href="/admin/user"
-                            class="flex items-center space-x-3 hover:text-cyan-400">
+                        <a href="/admin/user" class="flex items-center space-x-3 hover:text-cyan-400">
                             <span class="iconify" data-icon="mdi:account-group-outline" data-width="22"></span>
                             <span>User</span>
                         </a>
-                        <a href="/admin/category"
-                            class="flex items-center space-x-3 hover:text-cyan-400">
+                        <a href="/admin/category" class="flex items-center space-x-3 hover:text-cyan-400">
                             <span class="iconify" data-icon="mdi:folder-multiple-outline" data-width="22"></span>
                             <span>Category Product</span>
                         </a>
@@ -149,9 +147,9 @@
                             <span class="iconify" data-icon="mdi:history" data-width="22"></span>
                             <span>History</span>
                         </a>
-                        <a href="#" class="flex items-center space-x-3 hover:text-cyan-400">
-                            <span class="iconify" data-icon="mdi:bell-outline" data-width="22"></span>
-                            <span>Notification</span>
+                        <a href="/admin/education" class="flex items-center space-x-3 hover:text-cyan-400">
+                            <span class="iconify" data-icon="boxicons:education-filled" data-width="22"></span>
+                            <span>Education</span>
                         </a>
                         <a href="#" class="flex items-center space-x-3 hover:text-cyan-400">
                             <span class="iconify" data-icon="mdi:star-outline" data-width="22"></span>

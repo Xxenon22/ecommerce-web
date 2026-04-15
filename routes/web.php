@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Controllers\NutrisiController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{AdminDashboardController, CategoryProductController, TransactionController, AuthController, HomeController, UserController, ProductController, RestaurantController, CartController, AddressController, PaymentController};
+use App\Http\Controllers\{AdminDashboardController, CategoryProductController, TransactionController, AuthController, HomeController, UserController, ProductController, RestaurantController, CartController, AddressController, PaymentController, EdukasiController};
 
 
 /*
@@ -10,6 +11,7 @@ use App\Http\Controllers\{AdminDashboardController, CategoryProductController, T
 | AUTH ROUTES (GUEST ONLY) / NOT LOGIN
 |--------------------------------------------------------------------------
 */
+
 Route::middleware('guest')->group(function () {
 
     Route::get('/', function () {
@@ -258,7 +260,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/restaurant', RestaurantController::class);
 
     // Edukasi
-    Route::view('/edukasi/cara-menangkap-ikan', 'edukasi')->name('edukasi');
+    Route::view('/education/cara-menangkap-ikan', 'education')->name('education');
 
     // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -280,4 +282,5 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::resource('/category', CategoryProductController::class);
     Route::resource('/user', UserController::class);
     Route::resource('/history', TransactionController::class);
+    Route::resource('/education', EdukasiController::class);
 });

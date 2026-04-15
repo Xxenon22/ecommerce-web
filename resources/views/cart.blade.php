@@ -70,6 +70,17 @@
             margin: 10px 0;
         }
 
+        .checkout-btn:hover {
+            background: #0e7490;
+        }
+
+        .checkout-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            pointer-events: none;
+            transform: none;
+        }
+
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -219,7 +230,7 @@
                         <span class="font-bold text-lg text-cyan-600" id="total">Rp 0</span>
                     </div>
 
-                    <button type="submit" class="checkout-btn">
+                    <button type="submit" id="checkOutBtn" class="checkout-btn" disabled>
                         <span class="iconify" data-icon="mdi:shopping-outline" data-width="20"></span>
                         Checkout
                     </button>
@@ -294,7 +305,9 @@
         function updateTotals() {
             let subtotal = 0;
 
-            document.querySelectorAll('.product-checkbox:checked').forEach(cb => {
+            const checkedProducts = document.querySelectorAll('.product-checkbox:checked')
+
+            checkedProducts.forEach(cb => {
                 const item = cb.closest('.cart-item');
                 const price = parseInt(item.querySelector('.item-price').dataset.price);
                 const qty = parseInt(item.querySelector('.quantity-input').value);
@@ -313,6 +326,16 @@
 
             document.getElementById('subtotal').innerText = rupiah.format(subtotal);
             document.getElementById('total').innerText = rupiah.format(total);
+
+            const checkOutBtn = document.getElementById('checkOutBtn');
+
+            if (checkedProducts.length > 0) {
+                checkOutBtn.disabled = false;
+                checkOutBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                checkOutBtn.disabled = true;
+                checkOutBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
         }
 
         updateTotals();

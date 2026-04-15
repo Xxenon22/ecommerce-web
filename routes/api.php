@@ -5,3 +5,4 @@ use App\Http\Controllers\PaymentController;
 
 Route::post('/midtrans/transaction', [PaymentController::class, 'createTransaction'])->name('mid.pay');
 Route::post('/midtrans/callback', [PaymentController::class, 'callback']);
+Route::post('/biteship/webhook', [PaymentController::class, 'webhook_biteship']);

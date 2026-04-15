@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Service\BiteshipService;
 use App\Models\Product;
 use App\Models\Cart;
 use App\Models\Transaction;
@@ -9,6 +10,7 @@ use App\Models\TransactionProduct;
 use Illuminate\Http\Request;
 use Midtrans\Config;
 use Midtrans\Snap;
+use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
 {
@@ -20,12 +22,13 @@ class PaymentController extends Controller
         Config::$is3ds = config('midtrans.is_3ds');
     }
 
-    public function createTransaction(Request $request)
+    public function createTransaction(Request $request, BiteshipService $biteship)
     {
         // dd($request->all());
         $transaction = Transaction::create([
             'user_id' => $request->id,
             'expedition_id' => NULL,
+            'address_id' => $request->address_id,
             'restaurant_id' => 1,
             'expedition_price' => $request->ongkir,
             'total_price' => $request->amount,
@@ -34,6 +37,7 @@ class PaymentController extends Controller
         ]);
 
         if ($transaction) {
+            $items = [];
             foreach ($request->products as $i => $products) {
                 $product = Product::find($products['product_id']);
                 TransactionProduct::create([
@@ -45,6 +49,12 @@ class PaymentController extends Controller
                 Cart::where('product_id', $product->id)
                     ->where('user_id', $request->id)
                     ->delete();
+                $items[] = [
+                    'name' => $product->name, // pastikan sesuai field di tabel product
+                    'value' => $product->price,
+                    'quantity' => $products['quantity'],
+                    'weight' => $product->weight ?? 1000, // default kalau tidak ada
+                ];
             }
         }
 
@@ -59,7 +69,7 @@ class PaymentController extends Controller
             CURLOPT_HTTPHEADER => [],
         );
         // Data transaksi
-        $orderId = $transaction->id;
+        $orderId = $transaction->transaction_code;
         // $orderId = 'ORDER-' . time();
 
         $params = [
@@ -76,7 +86,40 @@ class PaymentController extends Controller
         ];
 
         $snapToken = Snap::getSnapToken($params);
+
         $transaction->update(['snap_token' => $snapToken]);
+        if ($snapToken) {
+            $data = [
+                'origin_contact_name' => 'Gudang Utama',
+                'origin_contact_phone' => '08123456789',
+                'origin_address' => 'Jl. Contoh No. 1 Jakarta',
+                'origin_coordinate' => [
+                    'latitude' => -6.200000,
+                    'longitude' => 106.816666,
+                ],
+                'destination_contact_name' => $transaction->address->recipient_name,
+                'destination_contact_phone' => $transaction->address->phone,
+                'destination_address' => $transaction->address->address_detail,
+                'destination_postal_code' => $transaction->address->postal_code,
+                'destination_coordinate' => [
+                    'latitude' => $transaction->address->latitude,
+                    'longitude' => $transaction->address->longitude,
+                ],
+                'courier_company' => $request->courier,
+                'courier_type' => $request->courier_name,
+                'delivery_type' => 'now',
+                'items' => $items
+            ];
+            $response = $biteship->createOrder($data);
+            Log::info('Biteship Order Response', $response);
+
+            $orderId = $response['id'] ?? null;
+            if ($orderId) {
+                $transaction->update([
+                    'biteship_order_id' => $orderId
+                ]);
+            }
+        }
         // Dapatkan Snap Token dari Midtrans
 
         // $transaction = Transaction::create([
@@ -118,7 +161,7 @@ class PaymentController extends Controller
             return response()->json(['message' => 'Invalid signature'], 403);
         }
 
-        $transaction = Transaction::where('id', $request->order_id)->first();
+        $transaction = Transaction::where('transaction_code', $request->order_id)->first();
 
         if (!$transaction) {
             return response()->json(['message' => 'Transaction not found'], 404);
@@ -194,5 +237,59 @@ class PaymentController extends Controller
         $transaction->update(['status' => 'Dibatalkan']);
 
         return response()->json(['message' => 'Order berhasil dibatalkan']);
+    }
+
+    public function webhook_biteship(Request $request, BiteshipService $biteship)
+    {
+        // ambil semua payload dari biteship
+        $payload = $request->all();
+
+        // log semua request (WAJIB buat debug)
+        Log::info('Biteship Webhook Masuk', $payload);
+
+        try {
+            // ambil data penting dari payload
+            $orderId = $payload['order_id'] ?? null;
+            $status = $payload['status'] ?? null;
+
+            if (!$orderId) {
+                Log::error('Webhook gagal: order_id kosong', $payload);
+                return response()->json(['message' => 'order_id kosong'], 400);
+            }
+
+            // 🔍 cari transaksi berdasarkan biteship_order_id
+            $transaction = Transaction::where('biteship_order_id', $orderId)->first();
+
+            if (!$transaction) {
+                Log::error('Transaksi tidak ditemukan', [
+                    'order_id' => $orderId
+                ]);
+                return response()->json(['message' => 'Transaksi tidak ditemukan'], 404);
+            }
+
+            // mapping status biteship ke status app kamu
+            $mappedStatus = $biteship->mapBiteshipStatus($status);
+
+            // 🔄 update transaksi
+            $transaction->update([
+                'status' => $mappedStatus
+            ]);
+
+            Log::info('Status berhasil diupdate', [
+                'transaction_id' => $transaction->id,
+                'biteship_status' => $status,
+                'mapped_status' => $mappedStatus
+            ]);
+
+            return response()->json(['message' => 'OK'], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Webhook Error', [
+                'message' => $e->getMessage(),
+                'payload' => $payload
+            ]);
+
+            return response()->json(['message' => 'Error'], 500);
+        }
     }
 }
