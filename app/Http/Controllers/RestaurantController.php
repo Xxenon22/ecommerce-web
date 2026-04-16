@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Restaurant;
+use App\Models\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class RestaurantController extends Controller
 {
@@ -13,7 +15,9 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        //
+        $restaurants = Restaurant::all();
+        $cartCount = Auth::check() ? Cart::where('user_id', Auth::user()->id)->count() : 0;
+        return view('restaurants', compact('restaurants', 'cartCount'));
     }
 
     /**
@@ -37,7 +41,9 @@ class RestaurantController extends Controller
      */
     public function show(Restaurant $restaurant)
     {
-        //
+        $products = $restaurant->products;
+        $cartCount = Auth::check() ? Cart::where('user_id', Auth::user()->id)->count() : 0;
+        return view('restaurant', compact('restaurant', 'products', 'cartCount'));
     }
 
     /**

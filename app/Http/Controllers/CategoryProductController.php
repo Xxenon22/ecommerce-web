@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\CategoryProduct;
+use App\Models\Product;
+use App\Models\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryProductController extends Controller
 {
@@ -22,8 +25,9 @@ class CategoryProductController extends Controller
     public function index_user()
     {
         $categories = CategoryProduct::all();
-        $products = collect(); // kosong tapi aman
-        return view('category', compact('categories', 'products'));
+        $products = Product::all();
+        $cartCount = Auth::check() ? Cart::where('user_id', Auth::user()->id)->count() : 0;
+        return view('category', compact('categories', 'products', 'cartCount'));
     }
 
     /**
@@ -56,8 +60,10 @@ class CategoryProductController extends Controller
     // Halaman User Category
     public function show_user(CategoryProduct $category)
     {
+        $categories = CategoryProduct::all();
         $products = $category->products;
-        return view('category', compact('category', 'products'));
+        $cartCount = Auth::check() ? Cart::where('user_id', Auth::user()->id)->count() : 0;
+        return view('category', compact('categories', 'category', 'products', 'cartCount'));
     }
 
     public function show()

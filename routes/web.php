@@ -227,34 +227,7 @@ Route::middleware('auth')->group(function () {
         return view('product', compact('product'));
     })->name('produk');
 
-    // Dynamic Restaurant
-    Route::get('/restaurant/{name}', function ($name) {
-        $restaurants = [
-            'Layar Seafood 99' => [
-                'name' => 'Layar Seafood 99',
-                'image' => 'assets/resto1.jpg',
-                'address' => 'Jalan Pesanggrahan Raya No.80',
-                'products' => [
-                    ['name' => 'Cumi Krispy', 'price' => 'Rp15.000', 'image' => 'assets/cumi-krispy.jpg'],
-                    ['name' => 'Tuna Steak', 'price' => 'Rp25.000', 'image' => 'assets/cumi-krispy.jpg']
-                ]
-            ],
-            'Tepian Rasa' => [
-                'name' => 'Tepian Rasa',
-                'image' => 'assets/resto2.jpg',
-                'address' => 'Jalan Lombok 45, Bandung',
-                'products' => [
-                    ['name' => 'Salmon Fillet', 'price' => 'Rp30.000', 'image' => 'assets/cumi-krispy.jpg'],
-                    ['name' => 'Blue Crab', 'price' => 'Rp35.000', 'image' => 'assets/cumi-krispy.jpg']
-                ]
-            ]
-        ];
 
-        $restaurant = $restaurants[$name] ?? null;
-        abort_if(!$restaurant, 404);
-
-        return view('restaurant', compact('restaurant'));
-    })->name('restaurant');
 
     // Route::put('/restaurant.update', [RestaurantController::class, 'update'])->name('restaurant.update');
     Route::resource('/restaurant', RestaurantController::class);

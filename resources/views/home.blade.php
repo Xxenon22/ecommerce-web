@@ -602,7 +602,7 @@
 
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     @foreach ($restaurants as $resto)
-                    <a href="{{ route('restaurant', $resto->id) }}"
+                    <a href="{{ route('restaurant.show', $resto->id) }}"
                         class="resto-card bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                         <div class="relative h-36 overflow-hidden">
                             <img src="{{ $resto->photo != NULL ? 'assets/' . $resto->photo : asset('assets/pasar-ikan.png') }}"

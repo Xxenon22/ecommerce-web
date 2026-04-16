@@ -60,7 +60,7 @@
                             <p class="text-gray-600 text-sm md:text-base">{{ $product['restaurant']['address'] }}</p>
                         </div>
                     </div>
-                    <a href="{{ route('restaurant', 'Layar Seafood 99') }}"
+                    <a href="{{ route('restaurant.show', 'Layar Seafood 99') }}"
                         class="bg-cyan-600 text-white text-lg px-6 py-3 rounded w-full hover:bg-cyan-700 transition">
                         Kunjungi Toko
                     </a>
