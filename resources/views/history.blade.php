@@ -212,7 +212,7 @@
                     @endphp
 
                     <div class="order-card bg-white rounded-2xl border border-gray-100 shadow-sm p-4 mb-3"
-                        data-order-id="{{ $order['id'] ?? $order->id }}">
+                        data-order-id="{{ $order['id'] ?? $order->id }}" data-order-link="{{ $order->courier_link }}">
 
                         {{-- Header kartu --}}
                         <div class="flex justify-between items-start mb-3">
@@ -492,7 +492,11 @@
                             break;
                         }
                         case 'track':
-                            alert('Fitur tracking sedang dalam pengembangan');
+                            if (card.dataset.orderLink) {
+                                window.open(card.dataset.orderLink, '_blank');
+                            } else {
+                                alert('Link pelacakan belum tersedia');
+                            }
                             break;
                         case 'review':
                             alert('Fitur ulasan sedang dalam pengembangan');

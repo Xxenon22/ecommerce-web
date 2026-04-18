@@ -252,6 +252,11 @@ class PaymentController extends Controller
             $orderId = $payload['order_id'] ?? null;
             $status = $payload['status'] ?? null;
 
+            if ($payload['courier_link']) {
+                $courier_link = $payload['courier_link'];
+                Log::info('Courier Link:', ['courier_link' => $courier_link]);
+            }
+
             if (!$orderId) {
                 Log::error('Webhook gagal: order_id kosong', $payload);
                 return response()->json(['message' => 'order_id kosong'], 400);
@@ -271,9 +276,16 @@ class PaymentController extends Controller
             $mappedStatus = $biteship->mapBiteshipStatus($status);
 
             // 🔄 update transaksi
-            $transaction->update([
-                'status' => $mappedStatus
-            ]);
+            if (isset($courier_link)) {
+                $transaction->update([
+                    'status' => $mappedStatus,
+                    'courier_link' => $courier_link,
+                ]);
+            } else {
+                $transaction->update([
+                    'status' => $mappedStatus,
+                ]);
+            }
 
             Log::info('Status berhasil diupdate', [
                 'transaction_id' => $transaction->id,

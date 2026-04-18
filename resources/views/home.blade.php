@@ -414,7 +414,7 @@
                     </a>
                 </div>
 
-                <div class="flex gap-3 overflow-x-auto scrollbar-hide pb-2">
+                <div class="flex gap-3 scrollbar-hide pb-2">
                     @foreach ($categories as $category)
                     <a href="/category/{{ $category->id }}"
                         class="cat-pill flex-shrink-0 flex flex-col items-center gap-2 bg-white border border-gray-100 rounded-2xl px-4 py-3 shadow-sm w-25">
