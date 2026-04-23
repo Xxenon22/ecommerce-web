@@ -9,7 +9,7 @@ use Carbon\Carbon;
 class Transaction extends Model
 {
     protected $table = 'transactions';
-    protected $fillable = ['user_id', 'restaurant_id', 'total_price', 'status', 'payment_method_id', 'snap_token', 'address_id', 'transaction_code', 'biteship_order_id', 'courier_link'];
+    protected $fillable = ['user_id', 'restaurant_id', 'total_price', 'status', 'payment_method_id', 'snap_token', 'address_id', 'transaction_code', 'address_id', 'courier_link'];
     public function restaurant()
     {
         return $this->belongsTo(Restaurant::class);
@@ -67,7 +67,6 @@ class Transaction extends Model
                 $model->transaction_code = $today . $sequence;
 
                 DB::commit();
-
             } catch (\Exception $e) {
                 DB::rollBack();
                 throw $e;

@@ -105,10 +105,10 @@
             {{-- RESTO HERO --}}
             <section class="max-w-7xl mx-auto rounded-none md:rounded-3xl overflow-hidden shadow-xl mb-8 border border-gray-100 bg-white">
                 <div class="relative h-48 md:h-72">
-                    <img src="{{ asset(file_exists(public_path('storage/' . $restaurant->photo)) ? 'storage/' . $restaurant->photo : 'assets/pasar-ikan.png') }}"
+                    <img src="{{ !is_null($restaurant->photo) ? 'assets/'. $restaurant->photo : '/assets/pasar-ikan.png' }}"
                         alt="{{ $restaurant->name }}" class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-                    
+
                     <div class="absolute bottom-0 left-0 right-0 p-6 md:p-10 flex items-end justify-between">
                         <div>
                             <div class="flex items-center gap-2 mb-2">
@@ -129,7 +129,7 @@
                                 {{ $restaurant->address }}
                             </p>
                         </div>
-                        
+
                         <div class="hidden md:flex gap-3">
                             <button class="bg-white/20 hover:bg-white/30 backdrop-blur-md text-white w-12 h-12 rounded-xl flex items-center justify-center transition">
                                 <span class="iconify" data-icon="mdi:share-variant-outline" data-width="24"></span>
@@ -140,7 +140,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 {{-- Resto Info Banner --}}
                 <div class="px-6 py-4 flex flex-wrap gap-6 bg-white shrink-0 border-t border-gray-100">
                     <div class="flex items-center gap-3">
@@ -152,7 +152,7 @@
                             <p class="text-sm font-semibold text-gray-900">{{ $restaurant->open_time ?? '08:00' }} - {{ $restaurant->close_time ?? '22:00' }}</p>
                         </div>
                     </div>
-                    
+
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 bg-cyan-50 rounded-xl flex items-center justify-center">
                             <span class="iconify text-cyan-600" data-icon="mdi:phone-outline" data-width="20"></span>
@@ -162,7 +162,7 @@
                             <p class="text-sm font-semibold text-gray-900">{{ $restaurant->phone ?? '-' }}</p>
                         </div>
                     </div>
-                    
+
                     @if($restaurant->description)
                     <div class="flex-1 min-w-[200px]">
                         <p class="text-xs text-gray-500 mb-1">Tentang Restoran</p>
@@ -178,7 +178,7 @@
                     <span class="iconify text-cyan-600" data-icon="mdi:silverware-fork-knife" data-width="24"></span>
                     Produk Tersedia
                 </h2>
-                
+
                 @if($products->isEmpty())
                 <div class="text-center py-12 bg-white rounded-3xl border border-gray-100 shadow-sm mx-4 md:mx-0">
                     <span class="iconify mx-auto text-gray-300 mb-4" data-icon="mdi:flask-empty-outline" data-width="64"></span>
@@ -197,7 +197,7 @@
                             <h3 class="font-semibold text-gray-900 text-sm md:text-base truncate mb-1">{{ $product->name }}</h3>
                             <p class="text-gray-400 text-xs line-clamp-2 mb-3 flex-1">{{ $product->description }}</p>
                             <p class="text-cyan-600 font-bold text-sm md:text-base mb-3">Rp{{ number_format($product->price, 0, ',', '.') }}</p>
-                            
+
                             <div class="flex gap-2 mt-auto">
                                 <form action="{{ route('checkout') }}" method="POST" class="flex-1">
                                     @csrf

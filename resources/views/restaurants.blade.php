@@ -116,51 +116,51 @@
             </div>
 
             @if($restaurants->isEmpty())
-                <div class="text-center py-16 bg-white rounded-3xl border border-gray-100 shadow-sm">
-                    <span class="iconify mx-auto text-gray-300 mb-4" data-icon="mdi:store-off-outline" data-width="64"></span>
-                    <h3 class="text-lg font-semibold text-gray-900">Belum ada restoran</h3>
-                    <p class="text-gray-500 mt-2">Daftar restoran belum tersedia saat ini.</p>
-                </div>
+            <div class="text-center py-16 bg-white rounded-3xl border border-gray-100 shadow-sm">
+                <span class="iconify mx-auto text-gray-300 mb-4" data-icon="mdi:store-off-outline" data-width="64"></span>
+                <h3 class="text-lg font-semibold text-gray-900">Belum ada restoran</h3>
+                <p class="text-gray-500 mt-2">Daftar restoran belum tersedia saat ini.</p>
+            </div>
             @else
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    @foreach ($restaurants as $resto)
-                    <a href="{{ route('restaurant.show', $resto->id) }}" class="resto-card bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
-                        <div class="relative h-48 overflow-hidden flex-shrink-0">
-                            <img src="{{ asset(file_exists(public_path('storage/' . $resto->photo)) ? 'storage/' . $resto->photo : 'assets/pasar-ikan.png') }}"
-                                alt="{{ $resto->name }}" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                            <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between">
-                                <span class="bg-white/90 backdrop-blur-sm text-gray-900 text-xs font-bold px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm">
-                                    <span class="iconify text-yellow-500" data-icon="mdi:star" data-width="14"></span>
-                                    5.0
-                                </span>
-                                <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg flex items-center gap-1">
-                                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
-                                    Buka
-                                </span>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                @foreach ($restaurants as $resto)
+                <a href="{{ route('restaurant.show', $resto->id) }}" class="resto-card bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+                    <div class="relative h-48 overflow-hidden flex-shrink-0">
+                        <img src="{{ !is_null($resto->photo) ? 'assets/'. $resto->photo : 'assets/pasar-ikan.png' }}"
+                            alt="{{ $resto->name }}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+                            <span class="bg-white/90 backdrop-blur-sm text-gray-900 text-xs font-bold px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm">
+                                <span class="iconify text-yellow-500" data-icon="mdi:star" data-width="14"></span>
+                                5.0
+                            </span>
+                            <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+                                Buka
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-5 flex flex-col flex-1">
+                        <h2 class="font-bold text-gray-900 text-lg mb-1">{{ $resto->name }}</h2>
+                        <p class="text-gray-500 text-sm flex items-start gap-1 mb-4 flex-1">
+                            <span class="iconify text-gray-400 flex-shrink-0 mt-0.5" data-icon="mdi:map-marker-outline" data-width="16"></span>
+                            <span class="line-clamp-2">{{ $resto->address }}</span>
+                        </p>
+
+                        <div class="flex gap-4 pt-4 border-t border-gray-100 mt-auto">
+                            <div class="text-center flex-1 border-r border-gray-100">
+                                <p class="text-gray-400 text-xs">Buka</p>
+                                <p class="text-gray-900 text-sm font-semibold mt-0.5">{{ $resto->open_time ?? '08:00' }}</p>
+                            </div>
+                            <div class="text-center flex-1">
+                                <p class="text-gray-400 text-xs">Tutup</p>
+                                <p class="text-gray-900 text-sm font-semibold mt-0.5">{{ $resto->close_time ?? '22:00' }}</p>
                             </div>
                         </div>
-                        <div class="p-5 flex flex-col flex-1">
-                            <h2 class="font-bold text-gray-900 text-lg mb-1">{{ $resto->name }}</h2>
-                            <p class="text-gray-500 text-sm flex items-start gap-1 mb-4 flex-1">
-                                <span class="iconify text-gray-400 flex-shrink-0 mt-0.5" data-icon="mdi:map-marker-outline" data-width="16"></span>
-                                <span class="line-clamp-2">{{ $resto->address }}</span>
-                            </p>
-                            
-                            <div class="flex gap-4 pt-4 border-t border-gray-100 mt-auto">
-                                <div class="text-center flex-1 border-r border-gray-100">
-                                    <p class="text-gray-400 text-xs">Buka</p>
-                                    <p class="text-gray-900 text-sm font-semibold mt-0.5">{{ $resto->open_time ?? '08:00' }}</p>
-                                </div>
-                                <div class="text-center flex-1">
-                                    <p class="text-gray-400 text-xs">Tutup</p>
-                                    <p class="text-gray-900 text-sm font-semibold mt-0.5">{{ $resto->close_time ?? '22:00' }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    @endforeach
-                </div>
+                    </div>
+                </a>
+                @endforeach
+            </div>
             @endif
         </main>
 
