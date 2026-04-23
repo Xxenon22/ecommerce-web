@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Edukasi extends Model
 {
-    protected $fillable = ['judul', 'content', 'image',];
+    protected $fillable = ['judul', 'content', 'image', 'user_id',];
 }

@@ -193,6 +193,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/cart-checkout', [TransactionController::class, 'cart_checkout'])->name('cart_checkout');
 
+    Route::get('/education/{id}', [EdukasiController::class, 'showUser'])->name('education.show');
 
     // Dynamic Produk
     Route::get('/produk/{name}', function ($name) {
