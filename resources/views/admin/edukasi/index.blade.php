@@ -1,3 +1,10 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}"> <!-- WAJIB -->
+    <title>Admin</title>
+</head>
+
 @extends('admin.layout')
 
 @section('content')
@@ -6,37 +13,212 @@
 
         <div class="mt-6 flex gap-6 items-start">
 
-            <div class="w-1/4 flex flex-col bg-white rounded-xl shadow-md p-6">
-                <form action="/admin/edukasi" method="POST" enctype="multipart/form-data" class="space-y-5">
+            <!-- FORM -->
+            <div class="w-1/4 bg-white rounded-xl shadow-md p-6 space-y-4">
+                <form action="{{ route('education.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="img">
-                        <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Image</label>
-                        <input type="file" name="image" id="image"
-                            class="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#0A2540] file:text-white hover:file:bg-[#081c33]">
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Image</label>
+                        <input type="file" name="image" class="w-full px-2 py-2 border border-gray-300 rounded-lg">
                     </div>
 
-                    <div class="judul">
-                        <label for="judul" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
-                        <input type="text" id="judul" name="judul" placeholder="Enter Your Content Title"
-                            class=" px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A2540] focus:border-transparent transition"
-                            required />
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                        <input type="text" name="judul"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A2540]"
+                            required>
                     </div>
 
-                    <div class="content">
-                        <label for="content" class="block text-sm font-medium text-gray-700 mb-1">Content</label>
-                        <textarea type="text" id="content" name="content" placeholder="Enter Your Content"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A2540] focus:border-transparent transition"
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+                        <textarea name="content"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A2540]"
                             required></textarea>
                     </div>
 
-                    <div class="">
-                        <button button type="submit"
-                            class=" bg-[#0A2540] text-white py-2 my-2 px-4 rounded-lg hover:bg-opacity-90 transition duration-200 font-medium">Upload</button>
-                    </div>
+                    <button class="w-full bg-[#0A2540] text-white py-2 px-4 rounded-lg hover:bg-opacity-90">
+                        Upload
+                    </button>
                 </form>
             </div>
 
-            <div class=""></div>
+            <!-- TABLE -->
+            <div class="flex-1 bg-white rounded-xl shadow-md overflow-hidden">
+
+                <!-- SEARCH -->
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <input type="text" id="searchEdukasi" placeholder="Search edukasi..."
+                        class="w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A2540]">
+                </div>
+
+                <table id="edukasiTable" class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-xs text-gray-500">#</th>
+                            <th class="px-6 py-3 text-xs text-gray-500">Image</th>
+                            <th class="px-6 py-3 text-xs text-gray-500">Title</th>
+                            <th class="px-6 py-3 text-xs text-gray-500">Content</th>
+                            <th class="px-6 py-3 text-xs text-gray-500">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @forelse ($education as $item)
+
+                            <!-- SHOW ROW -->
+                            <tr class="show" data-id="{{ $item->id }}">
+                                <td class="px-6 py-4 text-sm">{{ $loop->iteration }}</td>
+
+                                <td class="px-6 py-4">
+                                    <img src="{{ asset('storage/' . $item->image) }}" class="w-16 h-12 object-cover rounded">
+                                </td>
+
+                                <td class="px-6 py-4 text-sm">{{ $item->judul }}</td>
+
+                                <td class="px-6 py-4 text-sm">
+                                    {{ \Illuminate\Support\Str::limit($item->content, 40) }}
+                                </td>
+
+                                <td class="px-6 py-4 space-x-2">
+                                    <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded btn-edit">
+                                        Edit
+                                    </button>
+
+                                    <button class="bg-red-500 text-white px-3 py-1 rounded btn-delete"
+                                        data-id="{{ $item->id }}">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- EDIT ROW -->
+                            <tr class="edit hidden" data-id="{{ $item->id }}">
+                                <td class="px-6 py-4 text-sm">{{ $loop->iteration }}</td>
+
+                                <td class="px-6 py-4 text-xs text-gray-400">
+                                    (tidak edit gambar)
+                                </td>
+
+                                <td class="px-6 py-4">
+                                    <input type="text" name="judul" value="{{ $item->judul }}"
+                                        class="w-full px-2 py-1 border rounded">
+                                </td>
+
+                                <td class="px-6 py-4">
+                                    <textarea name="content"
+                                        class="w-full px-2 py-1 border rounded">{{ $item->content }}</textarea>
+                                </td>
+
+                                <td class="px-6 py-4 space-x-2">
+                                    <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded btn-update">
+                                        Update
+                                    </button>
+                                    <button class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded btn-cancel">
+                                        Cancel
+                                    </button>
+                                </td>
+                            </tr>
+
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-gray-500">
+                                    No data found
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+
+            </div>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            // 🔥 CSRF FIX GLOBAL
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            });
+
+            // EDIT
+            $(document).on('click', '.btn-edit', function () {
+                let row = $(this).closest('tr');
+                row.hide();
+                row.next('.edit').show();
+            });
+
+            // CANCEL
+            $(document).on('click', '.btn-cancel', function () {
+                let row = $(this).closest('tr');
+                row.hide();
+                row.prev('.show').show();
+            });
+
+            // UPDATE
+            $(document).on('click', '.btn-update', function () {
+
+                let row = $(this).closest('tr');
+                let id = row.data('id');
+
+                let judul = row.find('input[name="judul"]').val();
+                let content = row.find('textarea[name="content"]').val();
+
+                $.ajax({
+                    url: '/admin/education/' + id,
+                    type: 'PUT',
+                    data: { judul, content },
+                    success: function () {
+
+                        let showRow = row.prev('.show');
+
+                        showRow.find('td:eq(2)').text(judul);
+                        showRow.find('td:eq(3)').text(content.substring(0, 40));
+
+                        row.hide();
+                        showRow.show();
+                    },
+                    error: function (e) {
+                        console.log(e.responseText);
+                        alert('Update gagal');
+                    }
+                });
+            });
+
+            // DELETE
+            $(document).on('click', '.btn-delete', function (e) {
+                e.preventDefault();
+
+                const id = $(this).data('id');
+
+                // KONFIRMASI
+                const confirmDelete = confirm('Yakin ingin menghapus data ini?');
+
+                if (!confirmDelete) return;
+
+                $.ajax({
+                    url: `/admin/education/${id}`,
+                    type: 'DELETE',
+                    success: function () {
+
+                        alert('Data berhasil dihapus');
+
+                        // hapus row tanpa reload (opsional)
+                        $(`tr[data-id="${id}"]`).remove();
+                        $(`tr.edit[data-id="${id}"]`).remove();
+
+                    },
+                    error: function (xhr) {
+                        console.log(xhr.responseText);
+                        alert('Data gagal dihapus');
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

@@ -7,6 +7,8 @@ use App\Models\Product;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
 use App\Models\CategoryProduct;
+use App\Models\Edukasi;
+
 
 class HomeController extends Controller
 {
@@ -19,7 +21,16 @@ class HomeController extends Controller
         $restaurants = Restaurant::all();
         $categories = CategoryProduct::all();
         $cartCount = Cart::where('user_id', auth()->user()->id)->count();
-        return view('home', compact('products', 'restaurants', 'categories', 'cartCount'));
+
+        $edukasis = Edukasi::latest()->take(4)->get();
+
+        return view('home', compact(
+            'products',
+            'restaurants',
+            'categories',
+            'cartCount',
+            'edukasis'
+        ));
     }
 
     /**
