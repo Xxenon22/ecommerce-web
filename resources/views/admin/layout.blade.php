@@ -81,13 +81,13 @@
             const overlay = document.getElementById('overlay');
 
             function openSidebar() {
-                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.remove('translate-x-full');
                 overlay.classList.remove('hidden');
                 document.body.classList.add('overflow-hidden'); // biar tidak bisa scroll
             }
 
             function closeSidebar() {
-                sidebar.classList.add('-translate-x-full');
+                sidebar.classList.add('translate-x-full');
                 overlay.classList.add('hidden');
                 document.body.classList.remove('overflow-hidden');
             }
@@ -103,7 +103,7 @@
     <div class="w-full mx-auto">
         <!-- Sidebar -->
         <div id="sidebar"
-            class="fixed top-0 left-0 h-full bg-[#0A2540] text-white w-4/5 md:w-1/5 transform -translate-x-full transition-transform duration-300 z-50 flex flex-col justify-between">
+            class="fixed top-0 right-0 h-full bg-[#0A2540] text-white w-4/5 md:w-1/5 transform translate-x-full transition-transform duration-300 z-50 flex flex-col justify-between">
             <div class="p-6 relative h-full flex flex-col justify-between">
                 <!-- Header -->
                 <div>
@@ -186,15 +186,22 @@
 
         <!-- Header -->
         <header class="flex items-center justify-between p-4 bg-white shadow-md sticky top-0 z-20">
-            <button id="open-sidebar">
-                <span class="iconify" data-icon="mdi:menu" data-width="32" data-height="32"></span>
-            </button>
+            <a href="{{ route('home') }}" class="flex items-center space-x-2 text-gray-700 hover:text-gray-900">
+                <span class="iconify text-gray-700" data-icon="weui:back-outlined" data-width="18"></span>
+                <span>Kembali</span>
+            </a>
 
-            <div class="relative flex-1 max-w-md mx-4">
-                <input type="text" placeholder="Cari produk segar disini..."
-                    class="w-full px-4 py-2 pl-10 pr-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                <span class="iconify absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                    data-icon="mdi:magnify" data-width="20" data-height="20"></span>
+            <div class="flex items-center space-x-4">
+                <div class="relative flex-1 max-w-md mx-4">
+                    <input type="text" placeholder="Cari produk segar disini..."
+                        class="w-full px-4 py-2 pl-10 pr-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <span class="iconify absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                        data-icon="mdi:magnify" data-width="20" data-height="20"></span>
+                </div>
+
+                <button id="open-sidebar">
+                    <span class="iconify" data-icon="mdi:menu" data-width="32" data-height="32"></span>
+                </button>
             </div>
         </header>
 
