@@ -75,8 +75,6 @@ class RestaurantController extends Controller
             'close' => 'required|string|max:255',
         ]);
 
-        dd($request->all());
-
         $data = $request->except(['logo', 'photo']);
 
         if ($request->hasFile('logo')) {
@@ -96,7 +94,7 @@ class RestaurantController extends Controller
 
             $data['photo'] = $request->file('photo')->store('restaurants/photo', 'public');
         }
-
+        // dd($data);
         $restaurant->update($data);
 
         return redirect()->route('account')->with('success', 'Restaurant updated successfully');

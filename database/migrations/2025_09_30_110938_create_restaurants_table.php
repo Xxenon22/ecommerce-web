@@ -25,6 +25,8 @@ return new class extends Migration {
             $table->text('email')->nullable();
             $table->time('open')->nullable();
             $table->time('close')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
             $table->timestamps();
         });
     }

@@ -9,8 +9,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
     <style>
-        .font-display { font-family: 'Fraunces', serif; }
-
+        .font-display {
+            font-family: 'Fraunces', serif;
+        }
     </style>
 </head>
 
@@ -108,12 +109,12 @@
                             <div class="flex items-center space-x-6">
                                 <div class="relative">
                                     @if (Auth::user()->photo)
-                                        <img id="profile-img" src="{{ asset('storage/' . Auth::user()->photo) }}"
-                                            alt="Profile Photo" class="w-24 h-24 rounded-full object-cover">
+                                    <img id="profile-img" src="{{ asset('storage/' . Auth::user()->photo) }}"
+                                        alt="Profile Photo" class="w-24 h-24 rounded-full object-cover">
                                     @else
-                                        <img id="profile-img"
-                                            src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=cyan&color=fff"
-                                            alt="Profile Photo" class="w-24 h-24 rounded-full object-cover">
+                                    <img id="profile-img"
+                                        src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=cyan&color=fff"
+                                        alt="Profile Photo" class="w-24 h-24 rounded-full object-cover">
                                     @endif
                                     <label for="photo"
                                         class="absolute bottom-0 right-0 bg-cyan-600 text-white rounded-full p-2 cursor-pointer hover:bg-cyan-700">
@@ -159,20 +160,20 @@
                     </div>
                 </div>
 
-            {{-- Addresses Tab --}}
-            <div id="content-addresses" class="tab-content hidden">
-                <div class="bg-white rounded-xl shadow p-6 space-y-6">
+                {{-- Addresses Tab --}}
+                <div id="content-addresses" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow p-6 space-y-6">
 
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-xl font-semibold text-gray-800">My Addresses</h2>
-                        <button onclick="document.getElementById('add-address-form').classList.remove('hidden')"
-                            class="px-4 py-2 rounded-lg bg-cyan-600 text-white hover:bg-cyan-700">
-                            + Add Address
-                        </button>
-                    </div>
+                        <div class="flex justify-between items-center">
+                            <h2 class="text-xl font-semibold text-gray-800">My Addresses</h2>
+                            <button onclick="document.getElementById('add-address-form').classList.remove('hidden')"
+                                class="px-4 py-2 rounded-lg bg-cyan-600 text-white hover:bg-cyan-700">
+                                + Add Address
+                            </button>
+                        </div>
 
-                    {{-- Address List --}}
-                    @if ($addresses->count())
+                        {{-- Address List --}}
+                        @if ($addresses->count())
                         <div class="space-y-4">
                             @foreach ($addresses as $address)
                             <div class="border rounded-lg p-4 space-y-3">
@@ -185,12 +186,12 @@
                                             {{ $address->district }},
                                             {{ $address->city }},
                                             {{ $address->province }},
-                                            {{ $address->postal_code }},    
+                                            {{ $address->postal_code }},
                                         </p>
                                     </div>
 
                                     @if ($address->is_default)
-                                        <span class="text-xs bg-cyan-100 text-cyan-700 px-2 py-1 rounded-full">Default</span>
+                                    <span class="text-xs bg-cyan-100 text-cyan-700 px-2 py-1 rounded-full">Default</span>
                                     @endif
                                 </div>
 
@@ -234,10 +235,10 @@
                                         <input type="text" name="province" value="{{ $address->province }}" class="px-3 py-2 border rounded-lg">
                                         <input type="text" name="postal_code" value="{{ $address->postal_code }}" class="px-3 py-2 border rounded-lg">
                                     </div>
-    
+
                                     <div class="grid grid-cols-2 gap-2">
                                         <input type="text" name="latitude" value="{{ $address->latitude }}" class="px-3 py-2 border rounded-lg">
-                                        <input type="text"  name="longitude" value="{{ $address->longitude }}" class="px-3 py-2 border rounded-lg">
+                                        <input type="text" name="longitude" value="{{ $address->longitude }}" class="px-3 py-2 border rounded-lg">
                                     </div>
 
                                     <div class="flex justify-end gap-2">
@@ -256,14 +257,14 @@
                             @endforeach
 
                         </div>
-                    @else
+                        @else
                         <p class="text-gray-500 text-center">No addresses added yet.</p>
-                    @endif
+                        @endif
 
-                    {{-- Add Address Form --}}
-                    @include('account.partials.add-address-form')
+                        {{-- Add Address Form --}}
+                        @include('account.partials.add-address-form')
+                    </div>
                 </div>
-            </div>
 
                 {{-- Restaurant Tab --}}
                 <div id="content-restaurant" class="tab-content hidden">
@@ -271,219 +272,223 @@
                         <div class="flex items-center justify-between mb-6">
                             <h2 class="text-xl font-semibold text-gray-800">My Restaurant</h2>
                             @if (Auth::user()->restaurant)
-                                <button id="edit-restaurant-btn"
-                                    class="text-sm text-cyan-600 hover:underline">Edit</button>
+                            <button id="edit-restaurant-btn"
+                                class="text-sm text-cyan-600 hover:underline">Edit</button>
                             @else
-                                <button class="text-sm text-cyan-600 hover:underline">Register Restaurant</button>
+                            <button class="text-sm text-cyan-600 hover:underline">Register Restaurant</button>
                             @endif
                         </div>
 
                         @if (Auth::user()->restaurant)
-                            {{-- View Mode --}}
-                            <div id="restaurant-view" class="space-y-6">
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    <div class="md:col-span-1">
-                                         <img src="{{ asset('restaurants/photo/' . Auth::user()->restaurant->photo) }}" alt="Restaurant Logo" class="w-full h-40 object-cover rounded-lg">
+                        {{-- View Mode --}}
+                        <div id="restaurant-view" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="md:col-span-1">
+                                    <img src="{{ !is_null(Auth::user()->restaurant->photo) ? asset('storage/' . Auth::user()->restaurant->photo) : '/assets/pasar-ikan.jpg' }}" alt="Restaurant Logo" class="w-full h-40 object-cover rounded-lg">
+                                </div>
+                                <div class="md:col-span-2 space-y-3">
+                                    <p class="text-lg font-semibold text-gray-800">
+                                        {{ Auth::user()->restaurant->name }}
+                                    </p>
+                                    <p class="text-sm text-gray-600">{{ Auth::user()->restaurant->description }}
+                                    </p>
+                                    <div class="flex items-center space-x-2 text-sm text-gray-600">
+                                        <span class="iconify" data-icon="mdi:map-marker" data-width="16"
+                                            data-height="16"></span>
+                                        <span>{{ Auth::user()->restaurant->address }}, {{ Auth::user()->restaurant->district }},{{ Auth::user()->restaurant->city }}, {{ Auth::user()->restaurant->province }}, {{ Auth::user()->restaurant->postal_code }}</span>
                                     </div>
-                                    <div class="md:col-span-2 space-y-3">
-                                        <p class="text-lg font-semibold text-gray-800">
-                                            {{ Auth::user()->restaurant->name }}</p>
-                                        <p class="text-sm text-gray-600">{{ Auth::user()->restaurant->description }}
+                                    <div class="flex items-center space-x-2 text-sm text-gray-600">
+                                        <span class="iconify" data-icon="mdi:phone" data-width="16"
+                                            data-height="16"></span>
+                                        <span>{{ Auth::user()->restaurant->phone }}</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2 text-sm text-gray-600">
+                                        <span class="iconify" data-icon="mdi:clock" data-width="16"
+                                            data-height="16"></span>
+                                        <span>{{ Auth::user()->restaurant->open }} -
+                                            {{ Auth::user()->restaurant->close }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <p class="text-2xl font-bold text-gray-800">
+                                        {{ Auth::user()->restaurant->products()->count() }}
+                                    </p>
+                                    <p class="text-xs text-gray-500">Products</p>
+                                </div>
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <p class="text-2xl font-bold text-gray-800">{{ Auth::user()->restaurant->transactions()->count() }}</p>
+                                    <p class="text-xs text-gray-500">Orders</p>
+                                </div>
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <p class="text-2xl font-bold text-gray-800">4.8</p>
+                                    <p class="text-xs text-gray-500">Rating</p>
+                                </div>
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    {{-- <p class="text-2xl font-bold text-gray-800">{{ Auth::user()->restaurant->balance }}</p> --}}
+                                    <p class="text-2xl font-bold text-gray-800">Rp {{ number_format(Auth::user()->restaurant->balance, 0, ',', '.') }}</p>
+                                    <p class="text-xs text-gray-500">Balance</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Edit Mode --}}
+                        <form id="restaurant-form"
+                            action="{{ url('/restaurant/' . Auth::user()->restaurant->id) }}" method="POST"
+                            enctype="multipart/form-data" class="hidden space-y-4">
+                            @csrf
+                            @method('PUT')
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="md:col-span-1">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Photo</label>
+                                    <input type="file" name="photo" accept="image/*" class="w-full">
+                                </div>
+                                <div class="md:col-span-2 space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Restaurant
+                                            Name</label>
+                                        <input type="text" name="name"
+                                            value="{{ old('name', Auth::user()->restaurant->name) }}"
+                                            class="w-full px-4 py-2 border border-gray-300" required>
+                                    </div>
+                                    <div>
+                                        <label
+                                            class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                                        <textarea name="description" rows="3" class="w-full px-4 py-2 border border-gray-300">{{ old('description', Auth::user()->restaurant->description) }}</textarea>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">District</label>
+                                            <input type="text" name="district" value="{{ Auth::user()->restaurant->district }}" class="px-3 py-2 border rounded-lg">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                                            <input type="text" name="city" value="{{ Auth::user()->restaurant->city }}" class="px-3 py-2 border rounded-lg">
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Province</label>
+                                            <input type="text" name="province" value="{{ Auth::user()->restaurant->province }}" class="px-3 py-2 border rounded-lg">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Postal Code</label>
+                                            <input type="text" name="postal_code" value="{{ Auth::user()->restaurant->postal_code }}" class="px-3 py-2 border rounded-lg">
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                                        <input type="text" name="address"
+                                            value="{{ old('address', Auth::user()->restaurant->address) }}"
+                                            class="w-full px-4 py-2 border border-gray-300" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                                        <input type="text" name="phone"
+                                            value="{{ old('phone', Auth::user()->restaurant->phone) }}"
+                                            class="w-full px-4 py-2 border border-gray-300" required>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Open
+                                                Time</label>
+                                            <input type="time" name="open"
+                                                value="{{ old('open', Auth::user()->restaurant->open) }}"
+                                                class="w-full px-4 py-2 border border-gray-300" required>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Close
+                                                Time</label>
+                                            <input type="time" name="close"
+                                                value="{{ old('close', Auth::user()->restaurant->close) }}"
+                                                class="w-full px-4 py-2 border border-gray-300" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex justify-end space-x-3">
+                                <button type="button" id="cancel-restaurant"
+                                    class="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50">Cancel</button>
+                                <button type="submit"
+                                    class="px-4 py-2 rounded-lg bg-cyan-600 text-white hover:bg-cyan-700">Save
+                                    Changes</button>
+                            </div>
+                        </form>
+                        {{-- Products Section --}}
+                        <div class="bg-white rounded-xl shadow p-6 mt-8">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-xl font-semibold text-gray-800">My Products</h2>
+                                <a href="{{ route('tambah-menu') }}"
+                                    class="text-sm text-cyan-600 hover:underline">
+                                    + Add New Product
+                                </a>
+                            </div>
+
+                            @if (Auth::user()->restaurant && Auth::user()->restaurant->products->count())
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                @foreach (Auth::user()->restaurant->products as $product)
+                                <div
+                                    class="border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow">
+                                    <img src="{{ asset(file_exists(public_path($product->photo)) ? $product->photo : '/assets/pasar-ikan.png') }}" alt="{{ $product->name }}"
+                                        class="w-full h-40 object-cover rounded-lg mb-3">
+                                    <div class="space-y-2">
+                                        <h3 class="font-semibold text-gray-800 truncate">
+                                            {{ $product->name }}
+                                        </h3>
+                                        <p class="text-sm text-gray-600 line-clamp-2">
+                                            {{ $product->description }}
                                         </p>
-                                        <div class="flex items-center space-x-2 text-sm text-gray-600">
-                                            <span class="iconify" data-icon="mdi:map-marker" data-width="16"
-                                                data-height="16"></span>
-                                            <span>{{ Auth::user()->restaurant->address }}, {{ Auth::user()->restaurant->district }},{{ Auth::user()->restaurant->city }}, {{ Auth::user()->restaurant->province }}, {{ Auth::user()->restaurant->postal_code }}</span>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-cyan-600 font-bold">Rp
+                                                {{ number_format($product->price, 0, ',', '.') }}</span>
+                                            <span
+                                                class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">{{ $product->stock }}
+                                                left</span>
                                         </div>
-                                        <div class="flex items-center space-x-2 text-sm text-gray-600">
-                                            <span class="iconify" data-icon="mdi:phone" data-width="16"
-                                                data-height="16"></span>
-                                            <span>{{ Auth::user()->restaurant->phone }}</span>
-                                        </div>
-                                        <div class="flex items-center space-x-2 text-sm text-gray-600">
-                                            <span class="iconify" data-icon="mdi:clock" data-width="16"
-                                                data-height="16"></span>
-                                            <span>{{ Auth::user()->restaurant->open }} -
-                                                {{ Auth::user()->restaurant->close }}</span>
+                                        <div class="flex items-center justify-between mt-3">
+                                            <span
+                                                class="text-xs text-gray-500">{{ $product->category->name ?? 'Uncategorized' }}</span>
+                                            <div class="flex space-x-2">
+                                                <button class="text-gray-400 hover:text-cyan-600">
+                                                    <span class="iconify" data-icon="mdi:pencil"
+                                                        data-width="18" data-height="18"></span>
+                                                </button>
+                                                <button class="text-gray-400 hover:text-red-600">
+                                                    <span class="iconify" data-icon="mdi:delete"
+                                                        data-width="18" data-height="18"></span>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                                    <div class="bg-gray-50 rounded-lg p-4">
-                                        <p class="text-2xl font-bold text-gray-800">
-                                            {{ Auth::user()->restaurant->products()->count() }}</p>
-                                        <p class="text-xs text-gray-500">Products</p>
-                                    </div>
-                                    <div class="bg-gray-50 rounded-lg p-4">
-                                        <p class="text-2xl font-bold text-gray-800">{{ Auth::user()->restaurant->transactions()->count() }}</p>
-                                        <p class="text-xs text-gray-500">Orders</p>
-                                    </div>
-                                    <div class="bg-gray-50 rounded-lg p-4">
-                                        <p class="text-2xl font-bold text-gray-800">4.8</p>
-                                        <p class="text-xs text-gray-500">Rating</p>
-                                    </div>
-                                    <div class="bg-gray-50 rounded-lg p-4">
-                                        {{-- <p class="text-2xl font-bold text-gray-800">{{ Auth::user()->restaurant->balance }}</p> --}}
-                                        <p class="text-2xl font-bold text-gray-800">Rp {{ number_format(Auth::user()->restaurant->balance, 0, ',', '.') }}</p>
-                                        <p class="text-xs text-gray-500">Balance</p>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
-
-                            {{-- Edit Mode --}}
-                            <form id="restaurant-form"
-                                action="{{ url('/restaurant/' . Auth::user()->restaurant->id) }}" method="POST"
-                                enctype="multipart/form-data" class="hidden space-y-4">
-                                @csrf
-                                @method('PUT')
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    <div class="md:col-span-1">
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Logo</label>
-                                        <input type="file" name="logo" accept="image/*" class="w-full">
-                                    </div>
-                                    <div class="md:col-span-2 space-y-4">
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Restaurant
-                                                Name</label>
-                                            <input type="text" name="name"
-                                                value="{{ old('name', Auth::user()->restaurant->name) }}"
-                                                class="w-full px-4 py-2 border border-gray-300" required>
-                                        </div>
-                                        <div>
-                                            <label
-                                                class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                                            <textarea name="description" rows="3" class="w-full px-4 py-2 border border-gray-300">{{ old('description', Auth::user()->restaurant->description) }}</textarea>
-                                        </div>
-                                        
-                                        <div class="grid grid-cols-2 gap-2">
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-1">District</label>
-                                                <input type="text" name="district" value="{{ Auth::user()->restaurant->district }}" class="px-3 py-2 border rounded-lg">
-                                            </div>
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
-                                                <input type="text" name="city" value="{{ Auth::user()->restaurant->city }}" class="px-3 py-2 border rounded-lg">
-                                            </div>
-                                        </div>
-
-                                        <div class="grid grid-cols-2 gap-2">
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-1">Province</label>
-                                                <input type="text" name="province" value="{{ Auth::user()->restaurant->province }}" class="px-3 py-2 border rounded-lg">
-                                            </div>
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-1">Postal Code</label>
-                                                <input type="text" name="postal_code" value="{{ Auth::user()->restaurant->postal_code }}" class="px-3 py-2 border rounded-lg">
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                                            <input type="text" name="address"
-                                                value="{{ old('address', Auth::user()->restaurant->address) }}"
-                                                class="w-full px-4 py-2 border border-gray-300" required>
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                                            <input type="text" name="phone"
-                                                value="{{ old('phone', Auth::user()->restaurant->phone) }}"
-                                                class="w-full px-4 py-2 border border-gray-300" required>
-                                        </div>
-                                        <div class="grid grid-cols-2 gap-4">
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-1">Open
-                                                    Time</label>
-                                                <input type="time" name="open"
-                                                    value="{{ old('open', Auth::user()->restaurant->open) }}"
-                                                    class="w-full px-4 py-2 border border-gray-300" required>
-                                            </div>
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-1">Close
-                                                    Time</label>
-                                                <input type="time" name="close"
-                                                    value="{{ old('close', Auth::user()->restaurant->close) }}"
-                                                    class="w-full px-4 py-2 border border-gray-300" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex justify-end space-x-3">
-                                    <button type="button" id="cancel-restaurant"
-                                        class="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50">Cancel</button>
-                                    <button type="submit"
-                                        class="px-4 py-2 rounded-lg bg-cyan-600 text-white hover:bg-cyan-700">Save
-                                        Changes</button>
-                                </div>
-                            </form>
-                            {{-- Products Section --}}
-                            <div class="bg-white rounded-xl shadow p-6 mt-8">
-                                <div class="flex items-center justify-between mb-6">
-                                    <h2 class="text-xl font-semibold text-gray-800">My Products</h2>
-                                        <a href="{{ route('tambah-menu') }}"
-                                        class="text-sm text-cyan-600 hover:underline">
-                                        + Add New Product
-                                        </a>
-                                </div>
-
-                                @if (Auth::user()->restaurant && Auth::user()->restaurant->products->count())
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                                        @foreach (Auth::user()->restaurant->products as $product)
-                                            <div
-                                                class="border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow">
-                                                <img src="{{ asset(file_exists(public_path($product->photo)) ? $product->photo : '/assets/pasar-ikan.png') }}" alt="{{ $product->name }}"
-                                                    class="w-full h-40 object-cover rounded-lg mb-3">
-                                                <div class="space-y-2">
-                                                    <h3 class="font-semibold text-gray-800 truncate">
-                                                        {{ $product->name }}</h3>
-                                                    <p class="text-sm text-gray-600 line-clamp-2">
-                                                        {{ $product->description }}</p>
-                                                    <div class="flex items-center justify-between">
-                                                        <span class="text-cyan-600 font-bold">Rp
-                                                            {{ number_format($product->price, 0, ',', '.') }}</span>
-                                                        <span
-                                                            class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">{{ $product->stock }}
-                                                            left</span>
-                                                    </div>
-                                                    <div class="flex items-center justify-between mt-3">
-                                                        <span
-                                                            class="text-xs text-gray-500">{{ $product->category->name ?? 'Uncategorized' }}</span>
-                                                        <div class="flex space-x-2">
-                                                            <button class="text-gray-400 hover:text-cyan-600">
-                                                                <span class="iconify" data-icon="mdi:pencil"
-                                                                    data-width="18" data-height="18"></span>
-                                                            </button>
-                                                            <button class="text-gray-400 hover:text-red-600">
-                                                                <span class="iconify" data-icon="mdi:delete"
-                                                                    data-width="18" data-height="18"></span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                @else
-                                    <div class="text-center py-10">
-                                        <span class="iconify text-gray-300" data-icon="mdi:package-variant"
-                                            data-width="64" data-height="64"></span>
-                                        <p class="mt-4 text-gray-600">No products added yet.</p>
-                                        <a href="{{ route('tambah-menu') }}"
-                                        class="mt-4 px-4 py-2 rounded-lg bg-cyan-600 text-white hover:bg-cyan-700">
-                                        Add Your First Product
-                                        </a>
-
-                                    </div>
-                                @endif
-                            </div>
-                        @else
+                            @else
                             <div class="text-center py-10">
-                                <span class="iconify text-gray-300" data-icon="mdi:store-off" data-width="64"
-                                    data-height="64"></span>
-                                <p class="mt-4 text-gray-600">You haven't registered a restaurant yet.</p>
-                                <button
-                                    class="mt-4 px-4 py-2 rounded-lg bg-cyan-600 text-white hover:bg-cyan-700">Register
-                                    Now</button>
+                                <span class="iconify text-gray-300" data-icon="mdi:package-variant"
+                                    data-width="64" data-height="64"></span>
+                                <p class="mt-4 text-gray-600">No products added yet.</p>
+                                <a href="{{ route('tambah-menu') }}"
+                                    class="mt-4 px-4 py-2 rounded-lg bg-cyan-600 text-white hover:bg-cyan-700">
+                                    Add Your First Product
+                                </a>
+
                             </div>
+                            @endif
+                        </div>
+                        @else
+                        <div class="text-center py-10">
+                            <span class="iconify text-gray-300" data-icon="mdi:store-off" data-width="64"
+                                data-height="64"></span>
+                            <p class="mt-4 text-gray-600">You haven't registered a restaurant yet.</p>
+                            <button
+                                class="mt-4 px-4 py-2 rounded-lg bg-cyan-600 text-white hover:bg-cyan-700">Register
+                                Now</button>
+                        </div>
                         @endif
                     </div>
                 </div>
@@ -557,107 +562,107 @@
     </style>
 
     <script>
-document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
 
-    // ======================
-    // TAB SWITCHING
-    // ======================
-    window.showTab = function (tab) {
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            // ======================
+            // TAB SWITCHING
+            // ======================
+            window.showTab = function(tab) {
+                document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
 
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.classList.remove('bg-cyan-50', 'text-cyan-700', 'font-semibold');
-            btn.classList.add('hover:bg-gray-100', 'text-gray-700');
-        });
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('bg-cyan-50', 'text-cyan-700', 'font-semibold');
+                    btn.classList.add('hover:bg-gray-100', 'text-gray-700');
+                });
 
-        const content = document.getElementById('content-' + tab);
-        const button = document.getElementById('tab-' + tab);
+                const content = document.getElementById('content-' + tab);
+                const button = document.getElementById('tab-' + tab);
 
-        if (content) content.classList.remove('hidden');
-        if (button) {
-            button.classList.add('bg-cyan-50', 'text-cyan-700', 'font-semibold');
-            button.classList.remove('hover:bg-gray-100', 'text-gray-700');
-        }
-    };
+                if (content) content.classList.remove('hidden');
+                if (button) {
+                    button.classList.add('bg-cyan-50', 'text-cyan-700', 'font-semibold');
+                    button.classList.remove('hover:bg-gray-100', 'text-gray-700');
+                }
+            };
 
-    // ======================
-    // PREVIEW IMAGE PROFILE
-    // ======================
-    window.previewImage = function (event) {
-        const file = event.target.files[0];
-        if (!file) return;
+            // ======================
+            // PREVIEW IMAGE PROFILE
+            // ======================
+            window.previewImage = function(event) {
+                const file = event.target.files[0];
+                if (!file) return;
 
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            const img = document.getElementById('profile-img');
-            if (img) img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    };
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('profile-img');
+                    if (img) img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            };
 
-    // ======================
-    // PROFILE CANCEL BUTTON
-    // ======================
-    const cancelProfile = document.getElementById('cancel-profile');
-    if (cancelProfile) {
-        cancelProfile.addEventListener('click', () => {
-            document.querySelectorAll('#profile-form input, #profile-form textarea')
-                .forEach(el => el.disabled = true);
+            // ======================
+            // PROFILE CANCEL BUTTON
+            // ======================
+            const cancelProfile = document.getElementById('cancel-profile');
+            if (cancelProfile) {
+                cancelProfile.addEventListener('click', () => {
+                    document.querySelectorAll('#profile-form input, #profile-form textarea')
+                        .forEach(el => el.disabled = true);
 
-            cancelProfile.classList.add('hidden');
-        });
-    }
-
-    // ======================
-    // RESTAURANT EDIT TOGGLE
-    // ======================
-    const editRestaurantBtn = document.getElementById('edit-restaurant-btn');
-    const cancelRestaurantBtn = document.getElementById('cancel-restaurant');
-
-    if (editRestaurantBtn) {
-        editRestaurantBtn.addEventListener('click', () => {
-            document.getElementById('restaurant-view')?.classList.add('hidden');
-            document.getElementById('restaurant-form')?.classList.remove('hidden');
-        });
-    }
-
-    if (cancelRestaurantBtn) {
-        cancelRestaurantBtn.addEventListener('click', () => {
-            document.getElementById('restaurant-form')?.classList.add('hidden');
-            document.getElementById('restaurant-view')?.classList.remove('hidden');
-        });
-    }
-
-    // ======================
-    // GET LOCATION (GLOBAL)
-    // ======================
-    window.getLocation = function () {
-        if (!navigator.geolocation) {
-            alert("Browser tidak mendukung geolocation");
-            return;
-        }
-
-        navigator.geolocation.getCurrentPosition(
-            function (position) {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-
-                const latInput = document.getElementById("latitude");
-                const lngInput = document.getElementById("longitude");
-
-                if (latInput) latInput.value = lat;
-                if (lngInput) lngInput.value = lng;
-
-                alert("Lokasi berhasil diambil!\nLat: " + lat + "\nLng: " + lng);
-            },
-            function (error) {
-                alert("Gagal mengambil lokasi: " + error.message);
+                    cancelProfile.classList.add('hidden');
+                });
             }
-        );
-    };
 
-});
-</script>
+            // ======================
+            // RESTAURANT EDIT TOGGLE
+            // ======================
+            const editRestaurantBtn = document.getElementById('edit-restaurant-btn');
+            const cancelRestaurantBtn = document.getElementById('cancel-restaurant');
+
+            if (editRestaurantBtn) {
+                editRestaurantBtn.addEventListener('click', () => {
+                    document.getElementById('restaurant-view')?.classList.add('hidden');
+                    document.getElementById('restaurant-form')?.classList.remove('hidden');
+                });
+            }
+
+            if (cancelRestaurantBtn) {
+                cancelRestaurantBtn.addEventListener('click', () => {
+                    document.getElementById('restaurant-form')?.classList.add('hidden');
+                    document.getElementById('restaurant-view')?.classList.remove('hidden');
+                });
+            }
+
+            // ======================
+            // GET LOCATION (GLOBAL)
+            // ======================
+            window.getLocation = function() {
+                if (!navigator.geolocation) {
+                    alert("Browser tidak mendukung geolocation");
+                    return;
+                }
+
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+
+                        const latInput = document.getElementById("latitude");
+                        const lngInput = document.getElementById("longitude");
+
+                        if (latInput) latInput.value = lat;
+                        if (lngInput) lngInput.value = lng;
+
+                        alert("Lokasi berhasil diambil!\nLat: " + lat + "\nLng: " + lng);
+                    },
+                    function(error) {
+                        alert("Gagal mengambil lokasi: " + error.message);
+                    }
+                );
+            };
+
+        });
+    </script>
 </body>
 
 </html>
