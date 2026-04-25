@@ -75,7 +75,11 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        abort_if($product->restaurant_id !== auth()->user()->restaurant->id, 403);
+
+        $categories = \App\Models\CategoryProduct::all();
+
+        return view('editMenu', compact('product', 'categories'));
     }
 
     /**

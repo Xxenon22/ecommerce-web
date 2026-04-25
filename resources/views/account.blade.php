@@ -418,6 +418,7 @@
                                     Changes</button>
                             </div>
                         </form>
+                        
                         {{-- Products Section --}}
                         <div class="bg-white rounded-xl shadow p-6 mt-8">
                             <div class="flex items-center justify-between mb-6">
@@ -453,14 +454,20 @@
                                             <span
                                                 class="text-xs text-gray-500">{{ $product->category->name ?? 'Uncategorized' }}</span>
                                             <div class="flex space-x-2">
-                                                <button class="text-gray-400 hover:text-cyan-600">
-                                                    <span class="iconify" data-icon="mdi:pencil"
-                                                        data-width="18" data-height="18"></span>
-                                                </button>
-                                                <button class="text-gray-400 hover:text-red-600">
-                                                    <span class="iconify" data-icon="mdi:delete"
-                                                        data-width="18" data-height="18"></span>
-                                                </button>
+                                                <a href="{{ route('product.edit', $product->id) }}"
+                                                    class="text-gray-400 hover:text-cyan-600">
+                                                    <span class="iconify" data-icon="mdi:pencil" data-width="18"></span>
+                                                </a>
+                                                <form action="{{ route('product.destroy', $product->id) }}" method="POST"
+                                                    onsubmit="return confirm('Yakin mau hapus produk ini?')">
+                                                    
+                                                    @csrf
+                                                    @method('DELETE')
+
+                                                    <button type="submit" class="text-gray-400 hover:text-red-600">
+                                                        <span class="iconify" data-icon="mdi:delete" data-width="18"></span>
+                                                    </button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
