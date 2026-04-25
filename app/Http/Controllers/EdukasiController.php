@@ -50,58 +50,29 @@ class EdukasiController extends Controller
     {
         return view('admin.edukasi.edit', compact('edukasi'));
     }
-
-    public function update(Request $request, Edukasi $edukasi)
+    public function update(Request $request, Edukasi $education)
     {
         $request->validate([
             'judul' => 'required',
             'content' => 'required',
-            'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
         ]);
 
-        // $data = $request->only(['judul', 'content']);
-        // $data['user_id'] = Auth::id();
-        $data = $request->all();
-        // upload gambar baru
-        if ($request->hasFile('image')) {
+        $education->update([
+            'judul' => $request->input('judul'),
+            'content' => $request->input('content'),
+        ]);
 
-            // hapus gambar lama
-            if ($edukasi->image && Storage::disk('public')->exists($edukasi->image)) {
-                Storage::disk('public')->delete($edukasi->image);
-            }
-
-            $data['image'] = $request->file('image')->store('edukasi', 'public');
-        }
-        dd($data);
-        $edukasi->update($data);
-
-        // 🔥 FIX: return JSON kalau AJAX
-        if ($request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Data berhasil diupdate'
-            ]);
-        }
-
-        return redirect()->back()->with('success', 'Data berhasil diupdate');
+        return response()->json([
+            'success' => true
+        ]);
     }
 
-    public function destroy(Request $request, Edukasi $edukasi)
+    public function destroy(Edukasi $education)
     {
-        if ($edukasi->image && Storage::disk('public')->exists($edukasi->image)) {
-            Storage::disk('public')->delete($edukasi->image);
-        }
+        $education->delete();
 
-        $edukasi->delete();
-
-        // 🔥 FIX: return JSON kalau AJAX
-        if ($request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Data berhasil dihapus'
-            ]);
-        }
-
-        return redirect()->back()->with('success', 'Data berhasil dihapus');
+        return response()->json([
+            'success' => true
+        ]);
     }
 }

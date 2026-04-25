@@ -1,3 +1,10 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}"> <!-- WAJIB -->
+    <title>Admin</title>
+</head>
+
 @extends('admin.layout')
 
 @section('content')
@@ -78,15 +85,10 @@
                                         Edit
                                     </button>
 
-                                    <form action="{{ route('education.destroy', $item->id) }}" method="POST" class="inline"
-                                        onsubmit="return confirm('Yakin hapus?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="bg-red-500 text-white px-3 py-1 rounded btn-delete"
-                                            data-id="{{ $item->id }}">
-                                            Delete
-                                        </button>
-                                    </form>
+                                    <button class="bg-red-500 text-white px-3 py-1 rounded btn-delete"
+                                        data-id="{{ $item->id }}">
+                                        Delete
+                                    </button>
                                 </td>
                             </tr>
 
@@ -132,22 +134,28 @@
         </div>
     </div>
 
-    <!-- SCRIPT -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
     <script>
         $(document).ready(function () {
 
+            // 🔥 CSRF FIX GLOBAL
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            });
+
             // EDIT
             $(document).on('click', '.btn-edit', function () {
-                const row = $(this).closest('tr');
+                let row = $(this).closest('tr');
                 row.hide();
                 row.next('.edit').show();
             });
 
             // CANCEL
             $(document).on('click', '.btn-cancel', function () {
-                const row = $(this).closest('tr');
+                let row = $(this).closest('tr');
                 row.hide();
                 row.prev('.show').show();
             });
@@ -155,27 +163,19 @@
             // UPDATE
             $(document).on('click', '.btn-update', function () {
 
-                const row = $(this).closest('tr.edit');
-                const id = row.data('id');
+                let row = $(this).closest('tr');
+                let id = row.data('id');
 
-                console.log('UPDATE CLICKED ID:', id);
-
-                const judul = row.find('input[name="judul"]').val();
-                const content = row.find('textarea[name="content"]').val();
+                let judul = row.find('input[name="judul"]').val();
+                let content = row.find('textarea[name="content"]').val();
 
                 $.ajax({
-                    url: `/admin/education/${id}`,
-                    type: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        _method: 'PUT',
-                        judul: judul,
-                        content: content
-                    },
-                    success: function (res) {
-                        console.log(res);
+                    url: '/admin/education/' + id,
+                    type: 'PUT',
+                    data: { judul, content },
+                    success: function () {
 
-                        const showRow = row.prev('.show');
+                        let showRow = row.prev('.show');
 
                         showRow.find('td:eq(2)').text(judul);
                         showRow.find('td:eq(3)').text(content.substring(0, 40));
@@ -183,54 +183,42 @@
                         row.hide();
                         showRow.show();
                     },
-                    error: function (xhr) {
-                        console.log(xhr.responseText);
+                    error: function (e) {
+                        console.log(e.responseText);
                         alert('Update gagal');
                     }
                 });
             });
 
-            $(document).on('click', '.btn-delete', function () {
-
-                if (!confirm('Yakin hapus?')) return;
+            // DELETE
+            $(document).on('click', '.btn-delete', function (e) {
+                e.preventDefault();
 
                 const id = $(this).data('id');
 
+                // KONFIRMASI
+                const confirmDelete = confirm('Yakin ingin menghapus data ini?');
+
+                if (!confirmDelete) return;
+
                 $.ajax({
                     url: `/admin/education/${id}`,
-                    type: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        _method: 'DELETE'
-                    },
+                    type: 'DELETE',
                     success: function () {
-                        location.reload();
+
+                        alert('Data berhasil dihapus');
+
+                        // hapus row tanpa reload (opsional)
+                        $(`tr[data-id="${id}"]`).remove();
+                        $(`tr.edit[data-id="${id}"]`).remove();
+
                     },
                     error: function (xhr) {
                         console.log(xhr.responseText);
-                        alert('Delete gagal');
+                        alert('Data gagal dihapus');
                     }
                 });
             });
-
         });
     </script>
-
-    <script>
-        document.getElementById('searchEdukasi').addEventListener('input', function () {
-            const filter = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#edukasiTable tbody tr');
-
-            rows.forEach(row => {
-                if (row.classList.contains('edit')) {
-                    row.style.display = 'none';
-                    return;
-                }
-
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(filter) ? '' : 'none';
-            });
-        });
-    </script>
-
 @endsection
