@@ -581,7 +581,7 @@
                                     </h2>
 
                                     <p class="text-gray-400 text-xs mt-0.5">
-                                        {{ Str::limit($item->content, 60) }}
+                                        {!!  \Illuminate\Support\Str::limit(strip_tags($item->content), 60) !!}
                                     </p>
                                 </div>
 

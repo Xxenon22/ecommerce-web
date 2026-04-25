@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $edukasi->judul }} - Fishery Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@tailwindcss/typography/dist/typography.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
 </head>
@@ -50,8 +51,8 @@
                     </p>
 
                     <!-- CONTENT -->
-                    <div class="text-gray-700 leading-relaxed space-y-4">
-                        {!! nl2br(e($edukasi->content)) !!}
+                    <div class="prose max-w-none text-gray-700">
+                        {!! $edukasi->content !!}
                     </div>
 
                 </div>
