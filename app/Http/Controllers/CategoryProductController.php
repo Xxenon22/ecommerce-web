@@ -22,12 +22,26 @@ class CategoryProductController extends Controller
         return view('admin.category.index', compact('categories'));
     }
     // Halaman User Category
-    public function index_user()
+    public function index_user(Request $request)
     {
         $categories = CategoryProduct::all();
-        $products = Product::all();
         $cartCount = Auth::check() ? Cart::where('user_id', Auth::user()->id)->count() : 0;
-        return view('category', compact('categories', 'products', 'cartCount'));
+
+        $query = $request->q;
+
+        $products = Product::query();
+
+        // 🔍 SEARCH
+        if ($query) {
+            $products->where(function ($q) use ($query) {
+                $q->where('name', 'like', "%$query%")
+                    ->orWhere('description', 'like', "%$query%");
+            });
+        }
+
+        $products = $products->get();
+
+        return view('category', compact('categories', 'products', 'cartCount', 'query'));
     }
 
     /**
@@ -58,12 +72,26 @@ class CategoryProductController extends Controller
      */
 
     // Halaman User Category
-    public function show_user(CategoryProduct $category)
+    public function show_user(CategoryProduct $category, Request $request)
     {
         $categories = CategoryProduct::all();
-        $products = $category->products;
         $cartCount = Auth::check() ? Cart::where('user_id', Auth::user()->id)->count() : 0;
-        return view('category', compact('categories', 'category', 'products', 'cartCount'));
+
+        $query = $request->q;
+
+        $products = $category->products(); // penting: pakai query, bukan ->products langsung
+
+        // 🔍 SEARCH DALAM KATEGORI
+        if ($query) {
+            $products->where(function ($q) use ($query) {
+                $q->where('name', 'like', "%$query%")
+                    ->orWhere('description', 'like', "%$query%");
+            });
+        }
+
+        $products = $products->get();
+
+        return view('category', compact('categories', 'category', 'products', 'cartCount', 'query'));
     }
 
     public function show()

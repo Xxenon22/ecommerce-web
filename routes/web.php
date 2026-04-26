@@ -3,7 +3,7 @@
 use App\Http\Controllers\NutrisiController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{AdminDashboardController, CategoryProductController, TransactionController, AuthController, HomeController, UserController, ProductController, RestaurantController, CartController, AddressController, PaymentController, EdukasiController};
+use App\Http\Controllers\{AdminDashboardController, CategoryProductController, TransactionController, AuthController, HomeController, UserController, ProductController, RestaurantController, CartController, AddressController, PaymentController, EdukasiController, SearchController};
 
 
 /*
@@ -62,7 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/tambah-menu', [ProductController::class, 'create'])->name('tambah-menu');
     Route::post('/tambah-menu', [ProductController::class, 'store'])->name('tambah-menu.store');
 
-    
+
     Route::get('/category/', [CategoryProductController::class, 'index_user'])->name('category');
     Route::get('/category/{category}', [CategoryProductController::class, 'show_user'])->name('category.products');
 
@@ -208,6 +208,7 @@ Route::middleware('auth')->group(function () {
 
     // Route::put('/restaurant.update', [RestaurantController::class, 'update'])->name('restaurant.update');
     Route::resource('/restaurant', RestaurantController::class);
+    Route::view('/search', 'components.search')->name('search');
 
     // Edukasi
     Route::view('/education/cara-menangkap-ikan', 'education')->name('education');
@@ -223,6 +224,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
     Route::put('/product/{product}', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/product/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
+
+    // SEARCH
+    Route::get('/search', [SearchController::class, 'index'])->name('search');
+    Route::get('/search-page', [App\Http\Controllers\SearchController::class, 'searchPage'])
+        ->name('search.page');
 });
 
 

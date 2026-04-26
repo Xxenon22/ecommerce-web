@@ -74,7 +74,8 @@
                             @forelse ($education as $item)
 
                                 <!-- SHOW ROW -->
-                                <tr class="show" data-id="{{ $item->id }}">
+                                <tr class="show" data-id="{{ $item->id }}" data-title="{{ strtolower($item->judul) }}"
+                                    data-content="{{ strtolower(strip_tags($item->content)) }}">
                                     <td class="px-6 py-4 text-sm">{{ $loop->iteration }}</td>
 
                                     <td class="px-6 py-4">
@@ -240,6 +241,25 @@
                     }
                 });
 
+                // SEARCH EDUKASI
+                $('#searchEdukasi').on('keyup', function () {
+                    let keyword = $(this).val().toLowerCase();
+
+                    $('#edukasiTable tbody tr.show').each(function () {
+                        let title = $(this).data('title');
+                        let content = $(this).data('content');
+
+                        if (title.includes(keyword) || content.includes(keyword)) {
+                            $(this).show();
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+
+                    // sembunyikan juga edit row kalau show disembunyikan
+                    $('#edukasiTable tbody tr.edit').hide();
+                });
+                
             });
         </script>
 

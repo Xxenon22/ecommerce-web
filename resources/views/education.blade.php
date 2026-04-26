@@ -12,6 +12,13 @@
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
 </head>
 
+<style>
+    .font-display {
+        font-family: 'Fraunces', serif;
+        font-weight: 800;
+    }
+</style>
+
 <body class="bg-gray-100 min-h-screen pb-20">
     <div class="max-w-7xl mx-auto">
 
@@ -22,12 +29,7 @@
                     data-height="32"></span>
             </a>
 
-            <div class="relative flex-1 max-w-md mx-4">
-                <input type="text" placeholder="Cari edukasi..."
-                    class="w-full px-4 py-2 pl-10 pr-4 text-gray-700 bg-gray-50 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <span class="iconify absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                    data-icon="mdi:magnify"></span>
-            </div>
+            <span class="font-display text-2xl text-cyan-600 italic">FisheryHub</span>
         </header>
 
         <!-- Education Content -->

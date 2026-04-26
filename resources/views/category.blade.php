@@ -111,11 +111,15 @@
                     <span class="iconify text-gray-700" data-icon="weui:back-outlined" data-width="22"></span>
                 </a>
 
-                <div class="search-bar flex items-center flex-1 px-4 py-2 gap-2">
+                <form action="{{ isset($category) ? route('category.products', $category->id) : route('category') }}"
+                    method="GET" class="search-bar flex items-center flex-1 px-4 py-2 gap-2">
+
                     <span class="iconify text-gray-400" data-icon="mdi:magnify" data-width="18"></span>
-                    <input type="text" placeholder="Cari kategori..."
+
+                    <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari produk..."
                         class="bg-transparent text-sm text-gray-700 placeholder-gray-400 outline-none flex-1">
-                </div>
+
+                </form>
 
                 <a href="{{ route('cart') }}"
                     class="relative w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100 transition flex-shrink-0">
@@ -141,11 +145,15 @@
             </div>
 
             <div class="flex items-center gap-4">
-                <div class="search-bar flex items-center w-72 px-4 py-2 gap-2">
+                <form action="{{ isset($category) ? route('category.products', $category->id) : route('category') }}"
+                    method="GET" class="search-bar flex items-center w-72 px-4 py-2 gap-2">
+
                     <span class="iconify text-gray-400" data-icon="mdi:magnify" data-width="18"></span>
-                    <input type="text" placeholder="Cari kategori..."
+
+                    <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari produk..."
                         class="bg-transparent text-sm text-gray-700 placeholder-gray-400 outline-none flex-1">
-                </div>
+
+                </form>
 
                 <a href="{{ route('cart') }}"
                     class="relative w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 transition">
@@ -178,7 +186,8 @@
                                 <span class="iconify text-cyan-600" data-icon="{{ $cat->icon }}" data-width="20"></span>
                             </div>
                             <h3 class="text-gray-700 text-xs font-semibold text-center leading-tight transition-colors">
-                                {{ $cat->name }}</h3>
+                                {{ $cat->name }}
+                            </h3>
                         </a>
                     @endforeach
                 </div>
@@ -187,14 +196,24 @@
             {{-- PRODUCT GRID --}}
             <section class="mb-10">
                 <h2 class="text-xl font-bold text-gray-900 mb-4">
-                    {{ isset($category) ? 'Produk ' . $category->name : 'Semua Produk' }}
+                    @if(request('q'))
+                        Hasil pencarian "{{ request('q') }}"
+                    @elseif(isset($category))
+                        Produk {{ $category->name }}
+                    @else
+                        Semua Produk
+                    @endif
                 </h2>
 
                 @if($products->isEmpty())
                     <div class="text-center py-10 bg-white rounded-3xl border border-gray-100 shadow-sm">
                         <span class="iconify mx-auto text-gray-300 mb-3" data-icon="mdi:fish-off" data-width="64"></span>
                         <h3 class="text-lg font-semibold text-gray-900">Belum ada produk</h3>
-                        <p class="text-gray-500 text-sm mt-1">Belum ada produk di kategori ini.</p>
+                        <p class="text-gray-500 text-sm mt-1">@if(request('q'))
+    Tidak ditemukan hasil untuk "{{ request('q') }}"
+@else
+    Belum ada produk di kategori ini.
+@endif</p>
                     </div>
                 @else
                     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
@@ -213,7 +232,8 @@
                                 </div>
                                 <div class="p-4 flex flex-col flex-1">
                                     <h3 class="font-semibold text-gray-900 text-sm md:text-base truncate mb-1">
-                                        {{ $product->name }}</h3>
+                                        {{ $product->name }}
+                                    </h3>
                                     <p class="text-gray-400 text-xs line-clamp-2 mb-3 flex-1">{{ $product->description }}</p>
                                     <p class="text-cyan-600 font-bold text-sm md:text-base mb-3">
                                         Rp{{ number_format($product->price, 0, ',', '.') }}</p>

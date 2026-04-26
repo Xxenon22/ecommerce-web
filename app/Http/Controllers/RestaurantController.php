@@ -13,11 +13,27 @@ class RestaurantController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $restaurants = Restaurant::all();
-        $cartCount = Auth::check() ? Cart::where('user_id', Auth::user()->id)->count() : 0;
-        return view('restaurants', compact('restaurants', 'cartCount'));
+        $query = $request->q;
+
+        $restaurants = Restaurant::query();
+
+        // 🔍 SEARCH
+        if ($query) {
+            $restaurants->where(function ($q) use ($query) {
+                $q->where('name', 'like', "%$query%")
+                    ->orWhere('address', 'like', "%$query%");
+            });
+        }
+
+        $restaurants = $restaurants->get();
+
+        $cartCount = Auth::check()
+            ? Cart::where('user_id', Auth::user()->id)->count()
+            : 0;
+
+        return view('restaurants', compact('restaurants', 'cartCount', 'query'));
     }
 
     /**
