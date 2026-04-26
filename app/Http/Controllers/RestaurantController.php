@@ -55,11 +55,27 @@ class RestaurantController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Restaurant $restaurant)
+    public function show(Request $request, Restaurant $restaurant)
     {
-        $products = $restaurant->products;
-        $cartCount = Auth::check() ? Cart::where('user_id', Auth::user()->id)->count() : 0;
-        return view('restaurant', compact('restaurant', 'products', 'cartCount'));
+        $query = $request->q;
+
+        $products = $restaurant->products();
+
+        // 🔍 SEARCH PRODUK DI RESTO INI
+        if ($query) {
+            $products->where(function ($q2) use ($query) {
+                $q2->where('name', 'like', "%$query%")
+                    ->orWhere('description', 'like', "%$query%");
+            });
+        }
+
+        $products = $products->get();
+
+        $cartCount = Auth::check()
+            ? Cart::where('user_id', Auth::user()->id)->count()
+            : 0;
+
+        return view('restaurant', compact('restaurant', 'products', 'cartCount', 'query'));
     }
 
     /**

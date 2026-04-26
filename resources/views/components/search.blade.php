@@ -19,8 +19,9 @@
         <!-- HEADER -->
         <header>
             <div class="flex items-center justify-between p-4 bg-white shadow-md sticky top-0 z-20">
-                <a href="{{ route('home') }}">
-                    <span class="iconify cursor-pointer" data-icon="weui:back-outlined" data-width="32"></span>
+                <a href="{{ route('home') }}" class="flex items-center space-x-2 text-gray-700 hover:text-gray-900">
+                    <span class="iconify text-gray-700" data-icon="weui:back-outlined" data-width="18"></span>
+                    <span>Kembali</span>
                 </a>
 
                 <!-- SEARCH -->
