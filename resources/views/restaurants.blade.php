@@ -126,7 +126,7 @@
                 @foreach ($restaurants as $resto)
                 <a href="{{ route('restaurant.show', $resto->id) }}" class="resto-card bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
                     <div class="relative h-48 overflow-hidden flex-shrink-0">
-                        <img src="{{ !is_null($resto->photo) ? 'assets/'. $resto->photo : 'assets/pasar-ikan.png' }}"
+                        <img src="{{ !is_null($resto->photo) ? asset('storage/'. $resto->photo) : 'assets/pasar-ikan.png' }}"
                             alt="{{ $resto->name }}" class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                         <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between">

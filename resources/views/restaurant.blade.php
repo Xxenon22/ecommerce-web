@@ -105,7 +105,7 @@
             {{-- RESTO HERO --}}
             <section class="max-w-7xl mx-auto rounded-none md:rounded-3xl overflow-hidden shadow-xl mb-8 border border-gray-100 bg-white">
                 <div class="relative h-48 md:h-72">
-                    <img src="{{ !is_null($restaurant->photo) ? 'assets/'. $restaurant->photo : '/assets/pasar-ikan.png' }}"
+                    <img src="{{ !is_null($restaurant->photo) ? asset('storage/'. $restaurant->photo) : '/assets/pasar-ikan.png' }}"
                         alt="{{ $restaurant->name }}" class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
 

@@ -28,7 +28,7 @@
                 <div class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-700">
                     <a href="/home" class="hover:text-cyan-600">Home</a>
                     {{-- <a href="" class="hover:text-cyan-600">Products</a> --}}
-                    <a href="/history" class="hover:text-cyan-600">History Transaction</a>
+                    <a href="/history-transaction" class="hover:text-cyan-600">History Transaction</a>
                     <a href="/cart" class="relative hover:text-cyan-600">
                         <span class="iconify" data-icon="mdi:cart-outline" data-width="24" data-height="24"></span>
                         <span
@@ -418,7 +418,7 @@
                                     Changes</button>
                             </div>
                         </form>
-                        
+
                         {{-- Products Section --}}
                         <div class="bg-white rounded-xl shadow p-6 mt-8">
                             <div class="flex items-center justify-between mb-6">
@@ -434,7 +434,7 @@
                                 @foreach (Auth::user()->restaurant->products as $product)
                                 <div
                                     class="border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow">
-                                    <img src="{{ asset(file_exists(public_path($product->photo)) ? $product->photo : '/assets/pasar-ikan.png') }}" alt="{{ $product->name }}"
+                                    <img src="{{ $product->photo != NULL ? asset('storage/'. $product->photo) : 'assets/pasar-ikan.png' }}" alt="{{ $product->name }}"
                                         class="w-full h-40 object-cover rounded-lg mb-3">
                                     <div class="space-y-2">
                                         <h3 class="font-semibold text-gray-800 truncate">
@@ -460,7 +460,7 @@
                                                 </a>
                                                 <form action="{{ route('product.destroy', $product->id) }}" method="POST"
                                                     onsubmit="return confirm('Yakin mau hapus produk ini?')">
-                                                    
+
                                                     @csrf
                                                     @method('DELETE')
 

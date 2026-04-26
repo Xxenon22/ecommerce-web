@@ -323,13 +323,9 @@
                             <label class="label-sm">Pilih Kurir</label>
                             <select name="courier" id="courier" class="custom-select">
                                 <option value="">-- Pilih Kurir --</option>
-                                @foreach ($couriers as $courier)
-                                    <option value="{{ $courier['courier_code'] }}">
-                                        {{ $courier['courier_name'] }} {{ $courier['courier_service_name'] }}
-                                        {{ $courier['shipment_duration_range'] }}
-                                        {{ $courier['shipment_duration_unit'] }}
-                                    </option>
-                                @endforeach
+                                    <option value="gojek">Gojek</option>
+                                    <option value="grab">Grab</option>
+                                    <option value="deliveree">Kiat Ananda Express</option>
                             </select>
                         </div>
 
@@ -499,33 +495,24 @@
 
                 let options = '<option value="">-- Pilih Service --</option>';
 
-                // 🔥 SORTING LOGIC
-                response.pricing.sort((a, b) => {
-
-                    const aFrozen = isFrozenService(a.courier_service_name);
-                    const bFrozen = isFrozenService(b.courier_service_name);
-
-                    // 1. Prioritas frozen
-                    if (aFrozen && !bFrozen) return -1;
-                    if (!aFrozen && bFrozen) return 1;
-
-                    // 2. Kalau sama → sort harga termurah
-                    return (a.price || 0) - (b.price || 0);
-                });
 
                 // 🔥 RENDER TANPA FILTER APAPUN
                 response.pricing.forEach(function (rate) {
 
                     const price = Number(rate.price) || 0;
                     const duration = rate.duration || '-';
-
                     const isFrozen = isFrozenService(rate.courier_service_name);
+
+                    let courierName = rate.courier_name;
+                    if (courierName.toLowerCase() === 'deliveree') {
+                        courierName = 'Kiat Ananda Express';
+                    }
 
                     options += `
         <option value="${rate.courier_service_code}" 
                 data-price="${price}">
             ${isFrozen ? '❄️ ' : ''}
-            ${rate.courier_name} - ${rate.courier_service_name} (${duration}) - Rp ${price.toLocaleString('id-ID')}
+            ${courierName} - ${rate.courier_service_name} (${duration}) - Rp ${price.toLocaleString('id-ID')}
         </option>
     `;
                 });

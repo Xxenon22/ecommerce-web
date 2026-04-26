@@ -197,12 +197,12 @@
                 {{-- User --}}
                 <div class="flex items-center gap-4 mb-8 p-4 bg-white/5 rounded-2xl">
                     @if (Auth::check() && Auth::user()->photo)
-                        <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User"
-                            class="w-12 h-12 rounded-full border-2 border-cyan-400 object-cover">
+                    <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User"
+                        class="w-12 h-12 rounded-full border-2 border-cyan-400 object-cover">
                     @else
-                        <div class="w-12 h-12 rounded-full bg-cyan-500/20 flex items-center justify-center">
-                            <span class="iconify text-cyan-400" data-icon="mdi:account" data-width="28"></span>
-                        </div>
+                    <div class="w-12 h-12 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                        <span class="iconify text-cyan-400" data-icon="mdi:account" data-width="28"></span>
+                    </div>
                     @endif
                     <div>
                         <p class="text-xs text-gray-400">Selamat datang</p>
@@ -213,27 +213,27 @@
                 {{-- Nav --}}
                 <nav class="flex-1 space-y-1">
                     @php
-                        $navItems = [
-                            ['href' => route('home'), 'icon' => 'mdi:home-outline', 'label' => 'Home'],
-                            ['href' => '#', 'icon' => 'mdi:bell-outline', 'label' => 'Notifikasi'],
-                            ['href' => '#', 'icon' => 'mdi:star-outline', 'label' => 'Beri Rating'],
-                            ['href' => '#', 'icon' => 'mdi:ticket-percent-outline', 'label' => 'Kupon'],
-                            ['href' => '#', 'icon' => 'mdi:help-circle-outline', 'label' => 'Pusat Bantuan'],
-                        ];
+                    $navItems = [
+                    ['href' => route('home'), 'icon' => 'mdi:home-outline', 'label' => 'Home'],
+                    ['href' => '#', 'icon' => 'mdi:bell-outline', 'label' => 'Notifikasi'],
+                    ['href' => '#', 'icon' => 'mdi:star-outline', 'label' => 'Beri Rating'],
+                    ['href' => '#', 'icon' => 'mdi:ticket-percent-outline', 'label' => 'Kupon'],
+                    ['href' => '#', 'icon' => 'mdi:help-circle-outline', 'label' => 'Pusat Bantuan'],
+                    ];
                     @endphp
                     @if (Auth::check() && Auth::user()->role === 'Admin')
-                        <a href="{{ route('admin.dashboard') }}"
-                            class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition text-sm font-medium">
-                            <span class="iconify text-cyan-400" data-icon="mdi:office-building" data-width="20"></span>
-                            Admin Page
-                        </a>
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition text-sm font-medium">
+                        <span class="iconify text-cyan-400" data-icon="mdi:office-building" data-width="20"></span>
+                        Admin Page
+                    </a>
                     @endif
                     @foreach ($navItems as $item)
-                        <a href="{{ $item['href'] }}"
-                            class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition text-sm font-medium">
-                            <span class="iconify text-cyan-400" data-icon="{{ $item['icon'] }}" data-width="20"></span>
-                            {{ $item['label'] }}
-                        </a>
+                    <a href="{{ $item['href'] }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition text-sm font-medium">
+                        <span class="iconify text-cyan-400" data-icon="{{ $item['icon'] }}" data-width="20"></span>
+                        {{ $item['label'] }}
+                    </a>
                     @endforeach
                 </nav>
 
@@ -295,8 +295,8 @@
                     <a href="{{ route('home-resto') }}"
                         class="text-sm font-medium text-gray-500 hover:text-gray-800 transition">Restoran</a>
                     @if(Auth::check() && Auth::user()->role === 'Admin')
-                        <a href="{{ route('admin.dashboard') }}"
-                            class="text-sm font-medium text-gray-500 hover:text-gray-800 transition">Admin Page</a>
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="text-sm font-medium text-gray-500 hover:text-gray-800 transition">Admin Page</a>
                     @endif
                 </nav>
             </div>
@@ -319,12 +319,12 @@
                 </a>
                 <a href="{{ route('account') }}" class="flex items-center gap-2">
                     @if (Auth::user()->photo)
-                        <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User"
-                            class="w-8 h-8 rounded-full object-cover border-2 border-cyan-200">
+                    <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User"
+                        class="w-8 h-8 rounded-full object-cover border-2 border-cyan-200">
                     @else
-                        <div class="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center">
-                            <span class="iconify text-cyan-600" data-icon="mdi:account" data-width="18"></span>
-                        </div>
+                    <div class="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center">
+                        <span class="iconify text-cyan-600" data-icon="mdi:account" data-width="18"></span>
+                    </div>
                     @endif
                     <span class="text-sm font-semibold text-gray-700">{{ Auth::user()->name ?? 'User' }}</span>
                 </a>
@@ -421,15 +421,15 @@
 
                 <div class="flex gap-3 scrollbar-hide pb-2">
                     @foreach ($categories as $category)
-                        <a href="/category/{{ $category->id }}"
-                            class="cat-pill flex-shrink-0 flex flex-col items-center gap-2 bg-white border border-gray-100 rounded-2xl px-4 py-3 shadow-sm w-25">
-                            <div class="w-10 h-10 bg-cyan-50 rounded-xl flex items-center justify-center">
-                                <span class="iconify text-cyan-600" data-icon="{{ $category->icon }}"
-                                    data-width="20"></span>
-                            </div>
-                            <span
-                                class="text-gray-700 text-xs font-semibold text-center leading-tight">{{ $category->name }}</span>
-                        </a>
+                    <a href="/category/{{ $category->id }}"
+                        class="cat-pill flex-shrink-0 flex flex-col items-center gap-2 bg-white border border-gray-100 rounded-2xl px-4 py-3 shadow-sm w-25">
+                        <div class="w-10 h-10 bg-cyan-50 rounded-xl flex items-center justify-center">
+                            <span class="iconify text-cyan-600" data-icon="{{ $category->icon }}"
+                                data-width="20"></span>
+                        </div>
+                        <span
+                            class="text-gray-700 text-xs font-semibold text-center leading-tight">{{ $category->name }}</span>
+                    </a>
                     @endforeach
                 </div>
             </section>
@@ -452,50 +452,50 @@
 
                 <div class="flex gap-4 overflow-x-auto scrollbar-hide pb-4">
                     @foreach ($products as $product)
-                        <div
-                            class="product-card flex-shrink-0 w-52 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden fade-up">
-                            <div class="relative">
-                                <img src="{{ asset(file_exists(public_path('storage/' . $product->photo)) ? 'storage/' . $product->photo : 'assets/pasar-ikan.png') }}"
-                                    alt="{{ $product->name }}" class="w-full h-36 object-cover">
-                                <div class="absolute top-2 right-2">
-                                    <span
-                                        class="bg-white/90 backdrop-blur-sm text-cyan-700 text-xs font-bold px-2 py-1 rounded-full shadow-sm">
-                                        Segar
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="p-3">
-                                <h3 class="font-semibold text-gray-900 text-sm truncate mb-0.5">{{ $product->name }}</h3>
-                                <p class="text-gray-400 text-xs truncate mb-2">{{ $product->description }}</p>
-                                <p class="text-cyan-600 font-bold text-sm mb-3">
-                                    Rp{{ number_format($product->price, 0, ',', '.') }}</p>
-                                <div class="flex gap-2">
-
-                                    <form action="{{ route('checkout') }}" method="POST" class="flex-1">
-                                        @csrf
-                                        <input type="hidden" name="selected_products[{{ $product->id}}]"
-                                            value="{{ $product->id }}">
-                                        <input type="hidden" name="quantity[{{ $product->id }}]" value="1">
-                                        <input type="hidden" name="restaurant_id" value="{{ $product->restaurant_id }}">
-                                        <button type="submit"
-                                            class="w-full bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-semibold py-2 rounded-xl transition">
-                                            Pesan
-                                        </button>
-                                    </form>
-
-                                    <form action="{{ route('cart.store') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                        <input type="hidden" name="quantity" value="1">
-                                        <input type="hidden" name="restaurant_id" value="{{ $product->restaurant_id }}">
-                                        <button type="submit"
-                                            class="cart-btn w-9 h-9 bg-amber-400 hover:bg-amber-500 text-white rounded-xl flex items-center justify-center transition">
-                                            <span class="iconify" data-icon="mdi:cart-plus" data-width="16"></span>
-                                        </button>
-                                    </form>
-                                </div>
+                    <div
+                        class="product-card flex-shrink-0 w-52 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden fade-up">
+                        <div class="relative">
+                            <img src="{{ asset(file_exists(public_path('storage/' . $product->photo)) ? 'storage/' . $product->photo : 'assets/pasar-ikan.png') }}"
+                                alt="{{ $product->name }}" class="w-full h-36 object-cover">
+                            <div class="absolute top-2 right-2">
+                                <span
+                                    class="bg-white/90 backdrop-blur-sm text-cyan-700 text-xs font-bold px-2 py-1 rounded-full shadow-sm">
+                                    Segar
+                                </span>
                             </div>
                         </div>
+                        <div class="p-3">
+                            <h3 class="font-semibold text-gray-900 text-sm truncate mb-0.5">{{ $product->name }}</h3>
+                            <p class="text-gray-400 text-xs truncate mb-2">{{ $product->description }}</p>
+                            <p class="text-cyan-600 font-bold text-sm mb-3">
+                                Rp{{ number_format($product->price, 0, ',', '.') }}</p>
+                            <div class="flex gap-2">
+
+                                <form action="{{ route('checkout') }}" method="POST" class="flex-1">
+                                    @csrf
+                                    <input type="hidden" name="selected_products[{{ $product->id}}]"
+                                        value="{{ $product->id }}">
+                                    <input type="hidden" name="quantity[{{ $product->id }}]" value="1">
+                                    <input type="hidden" name="restaurant_id" value="{{ $product->restaurant_id }}">
+                                    <button type="submit"
+                                        class="w-full bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-semibold py-2 rounded-xl transition">
+                                        Pesan
+                                    </button>
+                                </form>
+
+                                <form action="{{ route('cart.store') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <input type="hidden" name="restaurant_id" value="{{ $product->restaurant_id }}">
+                                    <button type="submit"
+                                        class="cart-btn w-9 h-9 bg-amber-400 hover:bg-amber-500 text-white rounded-xl flex items-center justify-center transition">
+                                        <span class="iconify" data-icon="mdi:cart-plus" data-width="16"></span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     @endforeach
                 </div>
             </section>
@@ -503,7 +503,7 @@
             {{-- ═══════════════════════════════════════
             SPESIAL HARI INI
             ═══════════════════════════════════════ --}}
-            <section class="mt-8 px-4 md:px-8">
+            <!-- <section class="mt-8 px-4 md:px-8">
                 <div class="flex justify-between items-center mb-4">
                     <div>
                         <p class="section-label">Promo</p>
@@ -541,7 +541,7 @@
                         </a>
                     </div>
                 </div>
-            </section>
+            </section> -->
 
             {{-- ═══════════════════════════════════════
             EDUKASI & RESEP
@@ -562,38 +562,38 @@
                 <div class="grid md:grid-cols-2 gap-3">
 
                     @forelse ($edukasis as $item)
-                        <a href="{{ route('education.show', $item->id) }}"
-                            class="edu-card flex bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                    <a href="{{ route('education.show', $item->id) }}"
+                        class="edu-card flex bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
 
-                            <!-- IMAGE -->
-                            <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->judul }}"
-                                class="w-28 h-full object-cover flex-shrink-0">
+                        <!-- IMAGE -->
+                        <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->judul }}"
+                            class="w-28 h-full object-cover flex-shrink-0">
 
-                            <!-- CONTENT -->
-                            <div class="p-4 flex flex-col justify-between flex-1">
-                                <div>
-                                    <span class="text-xs font-bold text-cyan-600 bg-cyan-50 px-2 py-0.5 rounded-full">
-                                        Edukasi
-                                    </span>
-
-                                    <h2 class="font-semibold text-gray-900 text-sm mt-1 leading-tight">
-                                        {{ $item->judul }}
-                                    </h2>
-
-                                    <p class="text-gray-400 text-xs mt-0.5">
-                                        {!!  \Illuminate\Support\Str::limit(strip_tags($item->content), 60) !!}
-                                    </p>
-                                </div>
-
-                                <span class="text-xs font-semibold text-cyan-600 flex items-center gap-1 mt-2">
-                                    Baca selengkapnya
-                                    <span class="iconify" data-icon="mdi:arrow-right"></span>
+                        <!-- CONTENT -->
+                        <div class="p-4 flex flex-col justify-between flex-1">
+                            <div>
+                                <span class="text-xs font-bold text-cyan-600 bg-cyan-50 px-2 py-0.5 rounded-full">
+                                    Edukasi
                                 </span>
+
+                                <h2 class="font-semibold text-gray-900 text-sm mt-1 leading-tight">
+                                    {{ $item->judul }}
+                                </h2>
+
+                                <p class="text-gray-400 text-xs mt-0.5">
+                                    {!! \Illuminate\Support\Str::limit(strip_tags($item->content), 60) !!}
+                                </p>
                             </div>
-                        </a>
+
+                            <span class="text-xs font-semibold text-cyan-600 flex items-center gap-1 mt-2">
+                                Baca selengkapnya
+                                <span class="iconify" data-icon="mdi:arrow-right"></span>
+                            </span>
+                        </div>
+                    </a>
 
                     @empty
-                        <p class="text-gray-400">Belum ada data edukasi</p>
+                    <p class="text-gray-400">Belum ada data edukasi</p>
                     @endforelse
 
                 </div>
@@ -610,32 +610,32 @@
 
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     @foreach ($restaurants as $resto)
-                        <a href="{{ route('restaurant.show', $resto->id) }}"
-                            class="resto-card bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                            <div class="relative h-36 overflow-hidden">
-                                <img src="{{ $resto->photo != NULL ? 'assets/' . $resto->photo : asset('assets/pasar-ikan.png') }}"
-                                    alt="{{ $resto->name }}" class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                    <a href="{{ route('restaurant.show', $resto->id) }}"
+                        class="resto-card bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                        <div class="relative h-36 overflow-hidden">
+                            <img src="{{ $resto->photo != NULL ? asset('storage/' . $resto->photo) : asset('assets/pasar-ikan.png') }}"
+                                alt="{{ $resto->name }}" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                        </div>
+                        <div class="p-4">
+                            <h2 class="font-bold text-gray-900 text-base mb-1">{{ $resto->name }}</h2>
+                            <p class="text-gray-500 text-xs flex items-start gap-1 mb-3">
+                                <span class="iconify text-gray-400 flex-shrink-0 mt-0.5"
+                                    data-icon="mdi:map-marker-outline" data-width="14"></span>
+                                {{ $resto->address }}
+                            </p>
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+                                    Buka
+                                </span>
+                                <span class="text-xs font-semibold text-cyan-600 flex items-center gap-1">
+                                    Kunjungi <span class="iconify" data-icon="mdi:arrow-right" data-width="14"></span>
+                                </span>
                             </div>
-                            <div class="p-4">
-                                <h2 class="font-bold text-gray-900 text-base mb-1">{{ $resto->name }}</h2>
-                                <p class="text-gray-500 text-xs flex items-start gap-1 mb-3">
-                                    <span class="iconify text-gray-400 flex-shrink-0 mt-0.5"
-                                        data-icon="mdi:map-marker-outline" data-width="14"></span>
-                                    {{ $resto->address }}
-                                </p>
-                                <div class="flex items-center justify-between">
-                                    <span
-                                        class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full flex items-center gap-1">
-                                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
-                                        Buka
-                                    </span>
-                                    <span class="text-xs font-semibold text-cyan-600 flex items-center gap-1">
-                                        Kunjungi <span class="iconify" data-icon="mdi:arrow-right" data-width="14"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </a>
+                        </div>
+                    </a>
                     @endforeach
                 </div>
             </section>

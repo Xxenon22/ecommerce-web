@@ -86,7 +86,7 @@ class TransactionController extends Controller
 
         $couriers = collect($courierResponse['couriers'] ?? [])
             ->filter(function ($c) {
-                return in_array($c['courier_code'], ['jne', 'sicepat', 'anteraja']);
+                return in_array($c['courier_code'], ['gojek', 'grab', 'deliveree']);
             })
             ->values();
 
