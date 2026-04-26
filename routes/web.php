@@ -62,31 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/tambah-menu', [ProductController::class, 'create'])->name('tambah-menu');
     Route::post('/tambah-menu', [ProductController::class, 'store'])->name('tambah-menu.store');
 
-    // Category Page
-    // Route::get('/category/{category?}', function ($category = null) {
-    //     $products = [
-    //         'Ikan segar' => [
-    //             ['name' => 'Tuna Steak', 'price' => 'Rp25.000', 'image' => 'assets/cumi-krispy.jpg'],
-    //             ['name' => 'Salmon Fillet', 'price' => 'Rp30.000', 'image' => 'assets/cumi-krispy.jpg'],
-    //             ['name' => 'Cod Fish', 'price' => 'Rp20.000', 'image' => 'assets/cumi-krispy.jpg'],
-    //             ['name' => 'Mackerel', 'price' => 'Rp18.000', 'image' => 'assets/cumi-krispy.jpg'],
-    //         ],
-    //         'Kepiting' => [
-    //             ['name' => 'Blue Crab', 'price' => 'Rp35.000', 'image' => 'assets/cumi-krispy.jpg'],
-    //         ],
-    //         'Cumi - Cumi' => [
-    //             ['name' => 'Cumi Krispy', 'price' => 'Rp15.000', 'image' => 'assets/cumi-krispy.jpg'],
-    //         ],
-    //         'Udang' => [
-    //             ['name' => 'Shrimp Large', 'price' => 'Rp22.000', 'image' => 'assets/cumi-krispy.jpg'],
-    //         ],
-    //         'Kerang' => [
-    //             ['name' => 'Clam Shell', 'price' => 'Rp12.000', 'image' => 'assets/cumi-krispy.jpg'],
-    //         ],
-    //     ];
-    //     return view('category', compact('products', 'category'));
-    // })->name('category');
-
+    
     Route::get('/category/', [CategoryProductController::class, 'index_user'])->name('category');
     Route::get('/category/{category}', [CategoryProductController::class, 'show_user'])->name('category.products');
 

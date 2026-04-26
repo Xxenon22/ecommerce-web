@@ -40,8 +40,8 @@
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
-                            <textarea name="content" class="tinymce w-full px-4 py-2 border border-gray-300 rounded-lg"
-                                required></textarea>
+                            <textarea name="content"
+                                class="tinymce w-full px-4 py-2 border border-gray-300 rounded-lg"></textarea>
                         </div>
 
                         <button class="w-full bg-[#0A2540] text-white py-2 px-4 rounded-lg hover:bg-opacity-90">
@@ -226,6 +226,18 @@
                             showRow.show();
                         }
                     });
+                });
+
+                // REQUIERED
+                $('form').on('submit', function (e) {
+                    tinymce.triggerSave(); // 🔥 penting
+
+                    let content = $('textarea[name="content"]').val();
+
+                    if (!content.trim()) {
+                        e.preventDefault();
+                        alert('Content wajib diisi!');
+                    }
                 });
 
             });
