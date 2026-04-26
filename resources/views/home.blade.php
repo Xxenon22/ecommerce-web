@@ -228,7 +228,6 @@
                             Admin Page
                         </a>
                     @endif
-<<<<<<< Updated upstream
                     <!-- @foreach ($navItems as $item)
                     <a href="{{ $item['href'] }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition text-sm font-medium">
@@ -236,7 +235,6 @@
                         {{ $item['label'] }}
                     </a>
                     @endforeach -->
-=======
                     @foreach ($navItems as $item)
                         <a href="{{ $item['href'] }}"
                             class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition text-sm font-medium">
@@ -244,7 +242,6 @@
                             {{ $item['label'] }}
                         </a>
                     @endforeach
->>>>>>> Stashed changes
                 </nav>
 
                 {{-- Logout --}}
@@ -433,22 +430,19 @@
                 <div class="flex gap-3 overflow-x-auto scrollbar-hide pb-2
                             md:flex-wrap md:overflow-visible">
                     @foreach ($categories as $category)
-<<<<<<< Updated upstream
-                    <a href="/category/{{ $category->id }}"
-                        class="cat-pill flex-shrink-0 flex flex-col items-center gap-2
-                                bg-white border border-gray-100 rounded-2xl px-2 py-3 shadow-sm
-                                w-24
-                                hover:border-cyan-200 hover:shadow-md hover:-translate-y-0.5
-                                transition-all duration-200">
-                        <div class="w-10 h-10 bg-cyan-50 rounded-xl flex items-center justify-center">
-                            <span class="iconify text-cyan-600" data-icon="{{ $category->icon }}"
-                                data-width="20"></span>
-                        </div>
-                        <span class="text-gray-700 text-xs font-semibold text-center leading-tight">
-                            {{ $category->name }}
-                        </span>
-                    </a>
-=======
+                        <a href="/category/{{ $category->id }}" class="cat-pill flex-shrink-0 flex flex-col items-center gap-2
+                                        bg-white border border-gray-100 rounded-2xl px-2 py-3 shadow-sm
+                                        w-24
+                                        hover:border-cyan-200 hover:shadow-md hover:-translate-y-0.5
+                                        transition-all duration-200">
+                            <div class="w-10 h-10 bg-cyan-50 rounded-xl flex items-center justify-center">
+                                <span class="iconify text-cyan-600" data-icon="{{ $category->icon }}"
+                                    data-width="20"></span>
+                            </div>
+                            <span class="text-gray-700 text-xs font-semibold text-center leading-tight">
+                                {{ $category->name }}
+                            </span>
+                        </a>
                         <a href="/category/{{ $category->id }}"
                             class="cat-pill flex-shrink-0 flex flex-col items-center gap-2 bg-white border border-gray-100 rounded-2xl px-4 py-3 shadow-sm w-25">
                             <div class="w-10 h-10 bg-cyan-50 rounded-xl flex items-center justify-center">
@@ -458,7 +452,6 @@
                             <span
                                 class="text-gray-700 text-xs font-semibold text-center leading-tight">{{ $category->name }}</span>
                         </a>
->>>>>>> Stashed changes
                     @endforeach
                 </div>
             </section>
