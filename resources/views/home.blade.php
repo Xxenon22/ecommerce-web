@@ -228,13 +228,13 @@
                         Admin Page
                     </a>
                     @endif
-                    @foreach ($navItems as $item)
+                    <!-- @foreach ($navItems as $item)
                     <a href="{{ $item['href'] }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition text-sm font-medium">
                         <span class="iconify text-cyan-400" data-icon="{{ $item['icon'] }}" data-width="20"></span>
                         {{ $item['label'] }}
                     </a>
-                    @endforeach
+                    @endforeach -->
                 </nav>
 
                 {{-- Logout --}}
@@ -292,7 +292,7 @@
                         class="text-sm font-semibold text-cyan-600 border-b-2 border-cyan-600 pb-0.5">Home</a>
                     <a href="{{ route('category') }}"
                         class="text-sm font-medium text-gray-500 hover:text-gray-800 transition">Kategori</a>
-                    <a href="{{ route('home-resto') }}"
+                    <a href="{{ url('/restaurant') }}"
                         class="text-sm font-medium text-gray-500 hover:text-gray-800 transition">Restoran</a>
                     @if(Auth::check() && Auth::user()->role === 'Admin')
                     <a href="{{ route('admin.dashboard') }}"
@@ -419,16 +419,23 @@
                     </a>
                 </div>
 
-                <div class="flex gap-3 scrollbar-hide pb-2">
+                {{-- Mobile: horizontal scroll | Tablet+: wrap seperti flex namun responsive --}}
+                <div class="flex gap-3 overflow-x-auto scrollbar-hide pb-2
+                            md:flex-wrap md:overflow-visible">
                     @foreach ($categories as $category)
                     <a href="/category/{{ $category->id }}"
-                        class="cat-pill flex-shrink-0 flex flex-col items-center gap-2 bg-white border border-gray-100 rounded-2xl px-4 py-3 shadow-sm w-25">
+                        class="cat-pill flex-shrink-0 flex flex-col items-center gap-2
+                                bg-white border border-gray-100 rounded-2xl px-2 py-3 shadow-sm
+                                w-24
+                                hover:border-cyan-200 hover:shadow-md hover:-translate-y-0.5
+                                transition-all duration-200">
                         <div class="w-10 h-10 bg-cyan-50 rounded-xl flex items-center justify-center">
                             <span class="iconify text-cyan-600" data-icon="{{ $category->icon }}"
                                 data-width="20"></span>
                         </div>
-                        <span
-                            class="text-gray-700 text-xs font-semibold text-center leading-tight">{{ $category->name }}</span>
+                        <span class="text-gray-700 text-xs font-semibold text-center leading-tight">
+                            {{ $category->name }}
+                        </span>
                     </a>
                     @endforeach
                 </div>

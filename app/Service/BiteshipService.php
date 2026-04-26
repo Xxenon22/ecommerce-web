@@ -59,7 +59,7 @@ class BiteshipService
             'allocated' => 'Diproses',
             'picking_up' => 'Kurir Menuju Pickup',
             'picked' => 'Dikirim',
-            'dropping_off' => 'Dikirim',
+            'dropping_off' => 'Diperjalanan',
             'on_hold' => 'Ditahan',
             'courier_not_found' => 'Kurir Tidak Ditemukan',
             'return_in_transit' => 'Retur',

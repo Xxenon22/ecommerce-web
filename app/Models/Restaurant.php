@@ -22,6 +22,8 @@ class Restaurant extends Model
         'open',
         'close',
         'photo',
+        'latitude',
+        'longitude',
     ];
     public function user()
     {

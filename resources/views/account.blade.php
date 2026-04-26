@@ -4,8 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ asset('/logo.jpeg') }}" type="image/png">
     <title>My Account | Fishery Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
     <style>
@@ -310,7 +313,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                            <!-- <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                                 <div class="bg-gray-50 rounded-lg p-4">
                                     <p class="text-2xl font-bold text-gray-800">
                                         {{ Auth::user()->restaurant->products()->count() }}
@@ -330,7 +333,7 @@
                                     <p class="text-2xl font-bold text-gray-800">Rp {{ number_format(Auth::user()->restaurant->balance, 0, ',', '.') }}</p>
                                     <p class="text-xs text-gray-500">Balance</p>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                         {{-- Edit Mode --}}
@@ -339,6 +342,7 @@
                             enctype="multipart/form-data" class="hidden space-y-4">
                             @csrf
                             @method('PUT')
+
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div class="md:col-span-1">
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Photo</label>
@@ -346,37 +350,44 @@
                                 </div>
                                 <div class="md:col-span-2 space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Restaurant
-                                            Name</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Restaurant Name</label>
                                         <input type="text" name="name"
                                             value="{{ old('name', Auth::user()->restaurant->name) }}"
                                             class="w-full px-4 py-2 border border-gray-300" required>
                                     </div>
                                     <div>
-                                        <label
-                                            class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                                        <textarea name="description" rows="3" class="w-full px-4 py-2 border border-gray-300">{{ old('description', Auth::user()->restaurant->description) }}</textarea>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                                        <textarea name="description" rows="3"
+                                            class="w-full px-4 py-2 border border-gray-300">{{ old('description', Auth::user()->restaurant->description) }}</textarea>
                                     </div>
 
                                     <div class="grid grid-cols-2 gap-2">
                                         <div>
                                             <label class="block text-sm font-medium text-gray-700 mb-1">District</label>
-                                            <input type="text" name="district" value="{{ Auth::user()->restaurant->district }}" class="px-3 py-2 border rounded-lg">
+                                            <input type="text" name="district"
+                                                value="{{ Auth::user()->restaurant->district }}"
+                                                class="w-full px-3 py-2 border rounded-lg">
                                         </div>
                                         <div>
                                             <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
-                                            <input type="text" name="city" value="{{ Auth::user()->restaurant->city }}" class="px-3 py-2 border rounded-lg">
+                                            <input type="text" name="city"
+                                                value="{{ Auth::user()->restaurant->city }}"
+                                                class="w-full px-3 py-2 border rounded-lg">
                                         </div>
                                     </div>
 
                                     <div class="grid grid-cols-2 gap-2">
                                         <div>
                                             <label class="block text-sm font-medium text-gray-700 mb-1">Province</label>
-                                            <input type="text" name="province" value="{{ Auth::user()->restaurant->province }}" class="px-3 py-2 border rounded-lg">
+                                            <input type="text" name="province"
+                                                value="{{ Auth::user()->restaurant->province }}"
+                                                class="w-full px-3 py-2 border rounded-lg">
                                         </div>
                                         <div>
                                             <label class="block text-sm font-medium text-gray-700 mb-1">Postal Code</label>
-                                            <input type="text" name="postal_code" value="{{ Auth::user()->restaurant->postal_code }}" class="px-3 py-2 border rounded-lg">
+                                            <input type="text" name="postal_code"
+                                                value="{{ Auth::user()->restaurant->postal_code }}"
+                                                class="w-full px-3 py-2 border rounded-lg">
                                         </div>
                                     </div>
 
@@ -394,28 +405,82 @@
                                     </div>
                                     <div class="grid grid-cols-2 gap-4">
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Open
-                                                Time</label>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Open Time</label>
                                             <input type="time" name="open"
                                                 value="{{ old('open', Auth::user()->restaurant->open) }}"
                                                 class="w-full px-4 py-2 border border-gray-300" required>
                                         </div>
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Close
-                                                Time</label>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Close Time</label>
                                             <input type="time" name="close"
                                                 value="{{ old('close', Auth::user()->restaurant->close) }}"
                                                 class="w-full px-4 py-2 border border-gray-300" required>
                                         </div>
                                     </div>
+
+                                    {{-- ============================================================ --}}
+                                    {{-- LOKASI: Latitude & Longitude                                  --}}
+                                    {{-- ============================================================ --}}
+                                    <div class="border border-gray-200 rounded-xl overflow-hidden">
+
+                                        {{-- Header --}}
+                                        <div class="flex items-center justify-between bg-gray-50 px-4 py-3 border-b border-gray-200">
+                                            <div class="flex items-center gap-2">
+                                                <span class="iconify text-cyan-600" data-icon="mdi:map-marker" data-width="18"></span>
+                                                <span class="text-sm font-semibold text-gray-700">Lokasi Toko</span>
+                                            </div>
+                                            <button type="button" id="btn-detect-location"
+                                                class="flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700
+                               bg-cyan-50 hover:bg-cyan-100 px-3 py-1.5 rounded-lg transition">
+                                                <span class="iconify" data-icon="mdi:crosshairs-gps" data-width="14"></span>
+                                                Deteksi Otomatis
+                                            </button>
+                                        </div>
+
+                                        {{-- Map --}}
+                                        <div id="location-map" class="w-full" style="height: 280px; z-index: 0;"></div>
+                                        <p class="text-xs text-gray-400 text-center py-1.5 bg-gray-50 border-t border-gray-100">
+                                            <span class="iconify inline" data-icon="mdi:gesture-tap" data-width="13"></span>
+                                            Klik pada peta untuk menentukan titik lokasi
+                                        </p>
+
+                                        {{-- Input Manual --}}
+                                        <div class="grid grid-cols-2 gap-3 p-4 border-t border-gray-200">
+                                            <div>
+                                                <label class="block text-xs font-medium text-gray-600 mb-1">Latitude</label>
+                                                <input type="text" id="input-lat" name="latitude"
+                                                    value="{{ old('latitude', Auth::user()->restaurant->latitude) }}"
+                                                    placeholder="-6.200000"
+                                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm
+                                   focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-cyan-400
+                                   font-mono">
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-medium text-gray-600 mb-1">Longitude</label>
+                                                <input type="text" id="input-lng" name="longitude"
+                                                    value="{{ old('longitude', Auth::user()->restaurant->longitude) }}"
+                                                    placeholder="106.816666"
+                                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm
+                                   focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-cyan-400
+                                   font-mono">
+                                            </div>
+                                        </div>
+
+                                        {{-- Status bar --}}
+                                        <div id="location-status"
+                                            class="hidden mx-4 mb-4 px-3 py-2 rounded-lg text-xs font-medium flex items-center gap-2">
+                                        </div>
+                                    </div>
+                                    {{-- ============================================================ --}}
+
                                 </div>
                             </div>
+
                             <div class="flex justify-end space-x-3">
                                 <button type="button" id="cancel-restaurant"
                                     class="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50">Cancel</button>
                                 <button type="submit"
-                                    class="px-4 py-2 rounded-lg bg-cyan-600 text-white hover:bg-cyan-700">Save
-                                    Changes</button>
+                                    class="px-4 py-2 rounded-lg bg-cyan-600 text-white hover:bg-cyan-700">Save Changes</button>
                             </div>
                         </form>
 
@@ -496,6 +561,11 @@
                                 class="mt-4 px-4 py-2 rounded-lg bg-cyan-600 text-white hover:bg-cyan-700">Register
                                 Now</button>
                         </div>
+                        <script>
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 2000);
+                        </script>
                         @endif
                     </div>
                 </div>
@@ -669,6 +739,225 @@
             };
 
         });
+    </script>
+    <script>
+        (function() {
+            // Tunggu sampai form tidak hidden (bisa juga dipanggil manual via initMap())
+            // Kita inisialisasi saat form pertama kali ditampilkan
+            let mapInstance = null;
+            let marker = null;
+
+            // Koordinat awal: ambil dari value input jika ada, fallback ke Jakarta
+            const savedLat = parseFloat('{{ Auth::user()->restaurant->latitude ?? "" }}') || -6.2;
+            const savedLng = parseFloat('{{ Auth::user()->restaurant->longitude ?? "" }}') || 106.8166;
+
+            function initMap() {
+                if (mapInstance) return; // sudah diinisialisasi
+
+                mapInstance = L.map('location-map').setView([savedLat, savedLng], 15);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© <a href="https://www.openstreetmap.org/">OpenStreetMap</a>',
+                    maxZoom: 19,
+                }).addTo(mapInstance);
+
+                // Custom icon
+                const pinIcon = L.divIcon({
+                    className: '',
+                    html: `<div style="
+                width:32px;height:32px;
+                background:#0891b2;
+                border:3px solid white;
+                border-radius:50% 50% 50% 0;
+                transform:rotate(-45deg);
+                box-shadow:0 2px 8px rgba(0,0,0,0.3);
+            "></div>`,
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32],
+                });
+
+                // Pasang marker jika ada koordinat tersimpan
+                if ('{{ Auth::user()->restaurant->latitude ?? "" }}') {
+                    marker = L.marker([savedLat, savedLng], {
+                        icon: pinIcon,
+                        draggable: true
+                    }).addTo(mapInstance);
+                    bindMarkerEvents(marker);
+                }
+
+                // Klik peta → pindahkan / buat marker
+                mapInstance.on('click', function(e) {
+                    const {
+                        lat,
+                        lng
+                    } = e.latlng;
+                    setCoords(lat, lng);
+
+                    if (marker) {
+                        marker.setLatLng([lat, lng]);
+                    } else {
+                        marker = L.marker([lat, lng], {
+                            icon: pinIcon,
+                            draggable: true
+                        }).addTo(mapInstance);
+                        bindMarkerEvents(marker);
+                    }
+                    showStatus('success', 'Titik lokasi berhasil ditentukan');
+                });
+            }
+
+            function bindMarkerEvents(m) {
+                m.on('dragend', function() {
+                    const pos = m.getLatLng();
+                    setCoords(pos.lat, pos.lng);
+                    showStatus('success', 'Titik lokasi diperbarui');
+                });
+            }
+
+            function setCoords(lat, lng) {
+                document.getElementById('input-lat').value = lat.toFixed(7);
+                document.getElementById('input-lng').value = lng.toFixed(7);
+                if (mapInstance) mapInstance.setView([lat, lng], mapInstance.getZoom());
+            }
+
+            function showStatus(type, msg) {
+                const el = document.getElementById('location-status');
+                el.classList.remove('hidden', 'bg-green-50', 'text-green-700', 'bg-red-50', 'text-red-600', 'bg-blue-50', 'text-blue-700');
+                const styles = {
+                    success: ['bg-green-50', 'text-green-700', 'mdi:check-circle', '#16a34a'],
+                    error: ['bg-red-50', 'text-red-600', 'mdi:alert-circle', '#dc2626'],
+                    loading: ['bg-blue-50', 'text-blue-700', 'mdi:loading', '#0891b2'],
+                };
+                const [bg, text, icon, color] = styles[type];
+                el.classList.add(bg, text);
+                el.innerHTML = `<span class="iconify ${type === 'loading' ? 'animate-spin' : ''}"
+            data-icon="${icon}" data-width="14" style="color:${color}"></span> ${msg}`;
+                el.classList.remove('hidden');
+                if (type === 'success') setTimeout(() => el.classList.add('hidden'), 3000);
+            }
+
+            // Sync input manual → peta
+            function syncFromInput() {
+                const lat = parseFloat(document.getElementById('input-lat').value);
+                const lng = parseFloat(document.getElementById('input-lng').value);
+                if (!isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+                    setCoords(lat, lng);
+
+                    const pinIcon = L.divIcon({
+                        className: '',
+                        html: `<div style="
+                    width:32px;height:32px;
+                    background:#0891b2;
+                    border:3px solid white;
+                    border-radius:50% 50% 50% 0;
+                    transform:rotate(-45deg);
+                    box-shadow:0 2px 8px rgba(0,0,0,0.3);
+                "></div>`,
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 32],
+                    });
+
+                    if (marker) {
+                        marker.setLatLng([lat, lng]);
+                    } else if (mapInstance) {
+                        marker = L.marker([lat, lng], {
+                            icon: pinIcon,
+                            draggable: true
+                        }).addTo(mapInstance);
+                        bindMarkerEvents(marker);
+                    }
+                    showStatus('success', 'Koordinat diperbarui dari input');
+                }
+            }
+
+            // Deteksi lokasi GPS
+            document.getElementById('btn-detect-location').addEventListener('click', function() {
+                if (!navigator.geolocation) {
+                    showStatus('error', 'Browser tidak mendukung geolocation');
+                    return;
+                }
+                showStatus('loading', 'Mendeteksi lokasi...');
+                navigator.geolocation.getCurrentPosition(
+                    function(pos) {
+                        const lat = pos.coords.latitude;
+                        const lng = pos.coords.longitude;
+                        setCoords(lat, lng);
+                        if (mapInstance) mapInstance.setView([lat, lng], 17);
+
+                        const pinIcon = L.divIcon({
+                            className: '',
+                            html: `<div style="
+                        width:32px;height:32px;
+                        background:#0891b2;
+                        border:3px solid white;
+                        border-radius:50% 50% 50% 0;
+                        transform:rotate(-45deg);
+                        box-shadow:0 2px 8px rgba(0,0,0,0.3);
+                    "></div>`,
+                            iconSize: [32, 32],
+                            iconAnchor: [16, 32],
+                        });
+
+                        if (marker) {
+                            marker.setLatLng([lat, lng]);
+                        } else if (mapInstance) {
+                            marker = L.marker([lat, lng], {
+                                icon: pinIcon,
+                                draggable: true
+                            }).addTo(mapInstance);
+                            bindMarkerEvents(marker);
+                        }
+                        showStatus('success', 'Lokasi berhasil terdeteksi');
+                    },
+                    function(err) {
+                        const msgs = {
+                            1: 'Izin lokasi ditolak',
+                            2: 'Lokasi tidak tersedia',
+                            3: 'Waktu deteksi habis',
+                        };
+                        showStatus('error', msgs[err.code] || 'Gagal mendeteksi lokasi');
+                    }, {
+                        enableHighAccuracy: true,
+                        timeout: 10000
+                    }
+                );
+            });
+
+            // Input manual: update peta saat blur / Enter
+            ['input-lat', 'input-lng'].forEach(id => {
+                const el = document.getElementById(id);
+                el.addEventListener('blur', syncFromInput);
+                el.addEventListener('keydown', e => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        syncFromInput();
+                    }
+                });
+            });
+
+            // Inisialisasi peta:
+            // Jika form langsung visible, init sekarang.
+            // Jika form awalnya hidden (toggle), init saat ditampilkan.
+            const form = document.getElementById('restaurant-form');
+
+            function tryInit() {
+                if (!form.classList.contains('hidden')) {
+                    initMap();
+                    // Invalidate ukuran peta agar tile muncul sempurna
+                    setTimeout(() => mapInstance && mapInstance.invalidateSize(), 200);
+                }
+            }
+
+            // Observer untuk mendeteksi saat form muncul (hidden dihapus)
+            const observer = new MutationObserver(tryInit);
+            observer.observe(form, {
+                attributes: true,
+                attributeFilter: ['class']
+            });
+
+            // Coba langsung (jika form sudah visible)
+            tryInit();
+        })();
     </script>
 </body>
 

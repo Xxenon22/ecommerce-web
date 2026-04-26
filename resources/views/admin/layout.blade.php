@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ asset('/logo.jpeg') }}" type="image/png">
     <title>Home - FisheryHub</title>
     <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const carouselSlides = document.getElementById('carousel-slides');
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
@@ -31,17 +32,17 @@
                 }, 100);
             }
 
-            prevBtn.addEventListener('click', function () {
+            prevBtn.addEventListener('click', function() {
                 currentIndex = (currentIndex > 0) ? currentIndex - 1 : totalSlides - 1;
                 updateCarousel();
             });
 
-            nextBtn.addEventListener('click', function () {
+            nextBtn.addEventListener('click', function() {
                 currentIndex = (currentIndex < totalSlides - 1) ? currentIndex + 1 : 0;
                 updateCarousel();
             });
 
-            setInterval(function () {
+            setInterval(function() {
                 currentIndex = (currentIndex < totalSlides - 1) ? currentIndex + 1 : 0;
                 updateCarousel();
             }, 5000);
@@ -61,12 +62,12 @@
                         `translateX(-${categoriesCurrentIndex * (100 / categoriesVisibleSlides)}%)`;
                 }
 
-                categoriesPrevBtn.addEventListener('click', function () {
+                categoriesPrevBtn.addEventListener('click', function() {
                     categoriesCurrentIndex = Math.max(0, categoriesCurrentIndex - 1);
                     updateCategoriesCarousel();
                 });
 
-                categoriesNextBtn.addEventListener('click', function () {
+                categoriesNextBtn.addEventListener('click', function() {
                     const maxIndex = categoriesTotalSlides - categoriesVisibleSlides;
                     categoriesCurrentIndex = Math.min(maxIndex, categoriesCurrentIndex + 1);
                     updateCategoriesCarousel();
@@ -74,7 +75,7 @@
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const sidebar = document.getElementById('sidebar');
             const openBtn = document.getElementById('open-sidebar');
             const closeBtn = document.getElementById('close-sidebar');
@@ -110,11 +111,11 @@
                     <div class="flex items-center justify-between mb-8">
                         <div class="flex flex-col items-center space-x-3">
                             @if (Auth::user()->photo)
-                                <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User"
-                                    class="w-14 h-14 rounded-full border-2 border-white">
+                            <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User"
+                                class="w-14 h-14 rounded-full border-2 border-white">
                             @else
-                                <span class="iconify w-14 h-14 rounded-full border-2 border-white"
-                                    data-icon="mdi:account-circle" data-width="56" data-height="56"></span>
+                            <span class="iconify w-14 h-14 rounded-full border-2 border-white"
+                                data-icon="mdi:account-circle" data-width="56" data-height="56"></span>
                             @endif
                             <div>
                                 <p class="text-sm text-gray-300">Welcome-!!</p>
