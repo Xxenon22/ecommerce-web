@@ -19,6 +19,23 @@ class ProductController extends Controller
         return view('HomeResto', compact('products'));
     }
 
+    public function index_user(Request $request)
+    {
+        $query = $request->q;
+
+        $products = Product::query();
+
+        if ($query) {
+            $products->where(function ($q) use ($query) {
+                $q->where('name', 'like', "%$query%")
+                    ->orWhere('description', 'like', "%$query%");
+            });
+        }
+
+        $products = $products->latest()->get();
+
+        return view('allProduct', compact('products', 'query'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -60,6 +77,12 @@ class ProductController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Produk berhasil ditambahkan');
+    }
+
+    public function showUser($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('detailProduct', compact('product'));
     }
 
     /**

@@ -66,95 +66,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/category/', [CategoryProductController::class, 'index_user'])->name('category');
     Route::get('/category/{category}', [CategoryProductController::class, 'show_user'])->name('category.products');
 
-    // Cart, Order, Checkout
-    Route::get('/order', function () {
-        // Sample orders data - replace with actual order logic later
-        $orders = [
-            [
-                'id' => 'ORD001',
-                'date' => '15 Desember 2024, 14:30',
-                'status' => 'Diproses',
-                'total' => 'Rp98.000',
-                'items' => [
-                    [
-                        'name' => 'Tuna Steak',
-                        'image' => 'assets/cumi-krispy.jpg',
-                        'price' => 'Rp50.000',
-                        'quantity' => 2
-                    ],
-                    [
-                        'name' => 'Salmon Fillet',
-                        'image' => 'assets/cumi-krispy.jpg',
-                        'price' => 'Rp30.000',
-                        'quantity' => 1
-                    ]
-                ]
-            ],
-            [
-                'id' => 'ORD002',
-                'date' => '10 Desember 2024, 09:15',
-                'status' => 'Selesai',
-                'total' => 'Rp45.000',
-                'items' => [
-                    [
-                        'name' => 'Cumi Krispy',
-                        'image' => 'assets/cumi-krispy.jpg',
-                        'price' => 'Rp15.000',
-                        'quantity' => 3
-                    ]
-                ]
-            ]
-        ];
-        return view('order', compact('orders'));
-    })->name('order');
-
     Route::post('/get-rates', [TransactionController::class, 'getRates'])->name('get.rates');
     Route::get('/history-transaction', [TransactionController::class, 'history'])->name('history');
-
-    // Route::get('cart', function () {
-    //     // Sample cart data - replace with actual cart logic later
-    //     $cart = [
-    //         [
-    //             'name' => 'Tuna Steak',
-    //             'image' => 'assets/cumi-krispy.jpg',
-    //             'price' => 'Rp25.000',
-    //             'quantity' => 2,
-    //             'description' => 'Fresh tuna steak from the best catch'
-    //         ],
-    //         [
-    //             'name' => 'Salmon Fillet',
-    //             'image' => 'assets/cumi-krispy.jpg',
-    //             'price' => 'Rp30.000',
-    //             'quantity' => 1,
-    //             'description' => 'Premium salmon fillet'
-    //         ]
-    //     ];
-    //     return view('cart', compact('cart'));
-    // })->name('cart');
 
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
     Route::post('/cart/store', [CartController::class, 'store'])->name('cart.store');
 
-    // Route::get('/checkout', function () {
-    //     // Sample cart data for checkout - same as cart for now
-    //     $cart = [
-    //         [
-    //             'name' => 'Tuna Steak',
-    //             'image' => 'assets/cumi-krispy.jpg',
-    //             'price' => 'Rp25.000',
-    //             'quantity' => 2,
-    //             'description' => 'Fresh tuna steak from the best catch'
-    //         ],
-    //         [
-    //             'name' => 'Salmon Fillet',
-    //             'image' => 'assets/cumi-krispy.jpg',
-    //             'price' => 'Rp30.000',
-    //             'quantity' => 1,
-    //             'description' => 'Premium salmon fillet'
-    //         ]
-    //     ];
-    //     return view('checkout', compact('cart'));
-    // })->name('checkout');
 
     Route::post('/checkout', [TransactionController::class, 'checkout'])->name('checkout');
 
@@ -170,48 +87,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/cart-checkout', [TransactionController::class, 'cart_checkout'])->name('cart_checkout');
 
     Route::get('/education/{id}', [EdukasiController::class, 'showUser'])->name('education.show');
-
-    // Dynamic Produk
-    Route::get('/produk/{name}', function ($name) {
-        $products = [
-            'Cumi Krispy' => [
-                'name' => 'Cumi Krispy',
-                'price' => 'Rp15.000',
-                'image' => 'assets/cumi-krispy.jpg',
-                'description' => 'Cumi crispy...',
-                'restaurant' => [
-                    'name' => 'Layar Seafood 99',
-                    'image' => 'assets/resto1.jpg',
-                    'address' => 'Jalan Pesanggrahan Raya No.80',
-                ]
-            ],
-            'Salmon Fillet' => [
-                'name' => 'Salmon Fillet',
-                'price' => 'Rp30.000',
-                'image' => 'assets/cumi-krispy.jpg',
-                'description' => 'Premium salmon...',
-                'restaurant' => [
-                    'name' => 'Tepian Rasa',
-                    'image' => 'assets/resto2.jpg',
-                    'address' => 'Jalan Lombok 45, Bandung',
-                ]
-            ],
-        ];
-
-        $product = $products[$name] ?? null;
-        abort_if(!$product, 404);
-
-        return view('product', compact('product'));
-    })->name('produk');
-
-
+    Route::get('/allEducation', [EdukasiController::class, 'index_user'])->name('education.all');
 
     // Route::put('/restaurant.update', [RestaurantController::class, 'update'])->name('restaurant.update');
     Route::resource('/restaurant', RestaurantController::class);
     Route::view('/search', 'components.search')->name('search');
 
-    // Edukasi
-    Route::view('/education/cara-menangkap-ikan', 'education')->name('education');
+    // // Edukasi
+    // Route::view('/education/cara-menangkap-ikan', 'education')->name('education');
 
     // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -222,6 +105,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/addresses/{address}', [AddressController::class, 'destroy'])->name('addresses.destroy');
 
     Route::get('/product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
+    Route::get('/detailProduct/{id}', [ProductController::class, 'showUser'])->name('detailProduct.show');
+    Route::get('/allProduct', [ProductController::class, 'index_user'])->name('allProduct.show');
     Route::put('/product/{product}', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/product/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
 

@@ -15,6 +15,25 @@ class EdukasiController extends Controller
         return view('admin.edukasi.index', compact('education'));
     }
 
+    public function index_user(Request $request)
+    {
+        $query = $request->q;
+
+        $edukasis = Edukasi::query();
+
+        // SEARCH
+        if ($query) {
+            $edukasis->where(function ($q) use ($query) {
+                $q->where('judul', 'like', "%$query%")
+                    ->orWhere('content', 'like', "%$query%");
+            });
+        }
+
+        $edukasis = $edukasis->latest()->get();
+
+        return view('allEducation', compact('edukasis', 'query'));
+    }
+
     public function showUser($id)
     {
         $edukasi = Edukasi::findOrFail($id);

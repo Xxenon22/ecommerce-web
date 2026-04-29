@@ -453,7 +453,7 @@
                         <p class="section-label">Terlaris</p>
                         <h2 class="text-xl font-bold text-gray-900">Pilihan Produk</h2>
                     </div>
-                    <a href="#"
+                    <a href="{{ route('allProduct.show') }}"
                         class="text-sm font-semibold text-cyan-600 hover:text-cyan-700 flex items-center gap-1 transition">
                         Lihat Semua
                         <span class="iconify" data-icon="mdi:chevron-right" data-width="16"></span>
@@ -462,96 +462,56 @@
 
                 <div class="flex gap-4 overflow-x-auto scrollbar-hide pb-4">
                     @foreach ($products as $product)
-                        <div
-                            class="product-card flex-shrink-0 w-52 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden fade-up">
-                            <div class="relative">
-                                <img src="{{ asset(file_exists(public_path('storage/' . $product->photo)) ? 'storage/' . $product->photo : 'assets/pasar-ikan.png') }}"
-                                    alt="{{ $product->name }}" class="w-full h-36 object-cover">
-                                <div class="absolute top-2 right-2">
-                                    <span
-                                        class="bg-white/90 backdrop-blur-sm text-cyan-700 text-xs font-bold px-2 py-1 rounded-full shadow-sm">
-                                        Segar
-                                    </span>
+                        <a href="{{ route('detailProduct.show', $product->id) }}">
+                            <div
+                                class="product-card flex-shrink-0 w-52 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden fade-up">
+                                <div class="relative">
+                                    <img src="{{ asset(file_exists(public_path('storage/' . $product->photo)) ? 'storage/' . $product->photo : 'assets/pasar-ikan.png') }}"
+                                        alt="{{ $product->name }}" class="w-full h-36 object-cover">
+                                    <div class="absolute top-2 right-2">
+                                        <span
+                                            class="bg-white/90 backdrop-blur-sm text-cyan-700 text-xs font-bold px-2 py-1 rounded-full shadow-sm">
+                                            Segar
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="p-3">
+                                    <h3 class="font-semibold text-gray-900 text-sm truncate mb-0.5">{{ $product->name }}
+                                    </h3>
+                                    <p class="text-gray-400 text-xs truncate mb-2">{{ $product->description }}</p>
+                                    <p class="text-cyan-600 font-bold text-sm mb-3">
+                                        Rp{{ number_format($product->price, 0, ',', '.') }}</p>
+                                    <div class="flex gap-2">
+
+                                        <form action="{{ route('checkout') }}" method="POST" class="flex-1">
+                                            @csrf
+                                            <input type="hidden" name="selected_products[{{ $product->id}}]"
+                                                value="{{ $product->id }}">
+                                            <input type="hidden" name="quantity[{{ $product->id }}]" value="1">
+                                            <input type="hidden" name="restaurant_id" value="{{ $product->restaurant_id }}">
+                                            <button type="submit"
+                                                class="w-full bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-semibold py-2 rounded-xl transition">
+                                                Pesan
+                                            </button>
+                                        </form>
+
+                                        <form action="{{ route('cart.store') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <input type="hidden" name="quantity" value="1">
+                                            <input type="hidden" name="restaurant_id" value="{{ $product->restaurant_id }}">
+                                            <button type="submit"
+                                                class="cart-btn w-9 h-9 bg-amber-400 hover:bg-amber-500 text-white rounded-xl flex items-center justify-center transition">
+                                                <span class="iconify" data-icon="mdi:cart-plus" data-width="16"></span>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="p-3">
-                                <h3 class="font-semibold text-gray-900 text-sm truncate mb-0.5">{{ $product->name }}</h3>
-                                <p class="text-gray-400 text-xs truncate mb-2">{{ $product->description }}</p>
-                                <p class="text-cyan-600 font-bold text-sm mb-3">
-                                    Rp{{ number_format($product->price, 0, ',', '.') }}</p>
-                                <div class="flex gap-2">
-
-                                    <form action="{{ route('checkout') }}" method="POST" class="flex-1">
-                                        @csrf
-                                        <input type="hidden" name="selected_products[{{ $product->id}}]"
-                                            value="{{ $product->id }}">
-                                        <input type="hidden" name="quantity[{{ $product->id }}]" value="1">
-                                        <input type="hidden" name="restaurant_id" value="{{ $product->restaurant_id }}">
-                                        <button type="submit"
-                                            class="w-full bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-semibold py-2 rounded-xl transition">
-                                            Pesan
-                                        </button>
-                                    </form>
-
-                                    <form action="{{ route('cart.store') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                        <input type="hidden" name="quantity" value="1">
-                                        <input type="hidden" name="restaurant_id" value="{{ $product->restaurant_id }}">
-                                        <button type="submit"
-                                            class="cart-btn w-9 h-9 bg-amber-400 hover:bg-amber-500 text-white rounded-xl flex items-center justify-center transition">
-                                            <span class="iconify" data-icon="mdi:cart-plus" data-width="16"></span>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                        </a>
                     @endforeach
                 </div>
             </section>
-
-            {{-- ═══════════════════════════════════════
-            SPESIAL HARI INI
-            ═══════════════════════════════════════ --}}
-            <!-- <section class="mt-8 px-4 md:px-8">
-                <div class="flex justify-between items-center mb-4">
-                    <div>
-                        <p class="section-label">Promo</p>
-                        <h2 class="text-xl font-bold text-gray-900">Spesial Hari Ini</h2>
-                    </div>
-                    <span class="text-sm font-semibold text-cyan-600 cursor-pointer hover:text-cyan-700">Lihat
-                        Semua</span>
-                </div>
-
-                <div class="relative rounded-3xl overflow-hidden h-64 md:h-96 shadow-xl">
-                    <img src="{{ asset('assets/bg-pasar-ikan.jpg') }}" alt="Banner" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent"></div>
-
-                    <div class="absolute inset-0 flex items-center justify-between px-8">
-                        <div>
-                            <p class="section-label text-white/60 mb-1">Rekomendasi Chef</p>
-                            <h1 class="font-display text-white text-4xl md:text-6xl italic leading-tight mb-2">
-                                The Best<br>Dinner
-                            </h1>
-                            <p class="text-white/70 text-sm md:text-base">Hidangan laut segar terbaik</p>
-                        </div>
-
-                        <a href="{{ route('produk', 'Cumi Krispy') }}"
-                            class="bg-white rounded-2xl overflow-hidden shadow-xl w-36 md:w-48 flex-shrink-0 hover:shadow-2xl transition transform hover:-translate-y-1">
-                            <img src="{{ asset(file_exists(public_path('assets/cumi-krispy.jpg')) ? 'assets/cumi-krispy.jpg' : 'assets/pasar-ikan.png') }}"
-                                alt="Cumi Krispy" class="w-full h-24 md:h-32 object-cover">
-                            <div class="p-3">
-                                <h2 class="font-semibold text-gray-900 text-sm">Cumi Krispy</h2>
-                                <p class="text-cyan-600 font-bold text-sm">Rp15.000</p>
-                                <button
-                                    class="bg-cyan-600 text-white text-xs font-semibold mt-2 py-1.5 rounded-xl w-full hover:bg-cyan-700 transition">
-                                    Tambah
-                                </button>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </section> -->
 
             {{-- ═══════════════════════════════════════
             EDUKASI & RESEP
@@ -564,7 +524,8 @@
                         <!-- <h2 class="text-xl font-bold text-gray-900">Edukasi & Resep</h2> -->
                     </div>
 
-                    <a href="#" class="text-sm font-semibold text-cyan-600 hover:text-cyan-700 flex items-center gap-1">
+                    <a href="{{ route('education.all') }}"
+                        class="text-sm font-semibold text-cyan-600 hover:text-cyan-700 flex items-center gap-1">
                         Lihat Semua
                         <span class="iconify" data-icon="mdi:chevron-right"></span>
                     </a>
