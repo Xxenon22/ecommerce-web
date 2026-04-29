@@ -81,8 +81,20 @@ class ProductController extends Controller
 
     public function showUser($id)
     {
-        $product = Product::findOrFail($id);
-        return view('detailProduct', compact('product'));
+        $product = Product::with(['restaurant', 'category'])->findOrFail($id);
+
+        $cartCount = 0;
+        if (auth()->check()) {
+            $cartCount = \App\Models\Cart::where('user_id', auth()->id())->count();
+        }
+
+        // Get related products from the same restaurant (excluding current)
+        $relatedProducts = Product::where('restaurant_id', $product->restaurant_id)
+            ->where('id', '!=', $product->id)
+            ->limit(4)
+            ->get();
+
+        return view('detailProduct', compact('product', 'cartCount', 'relatedProducts'));
     }
 
     /**

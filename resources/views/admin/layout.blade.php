@@ -153,7 +153,7 @@
                             <span class="iconify" data-icon="boxicons:education-filled" data-width="22"></span>
                             <span>Education</span>
                         </a>
-                        <a href="#" class="flex items-center space-x-3 hover:text-cyan-400">
+                        <!-- <a href="#" class="flex items-center space-x-3 hover:text-cyan-400">
                             <span class="iconify" data-icon="mdi:star-outline" data-width="22"></span>
                             <span>Rate Us</span>
                         </a>
@@ -164,7 +164,7 @@
                         <a href="#" class="flex items-center space-x-3 hover:text-cyan-400">
                             <span class="iconify" data-icon="mdi:help-circle-outline" data-width="22"></span>
                             <span>Help Center</span>
-                        </a>
+                        </a> -->
 
                         <hr class="my-4 border-gray-600">
 
