@@ -9,7 +9,7 @@ use Carbon\Carbon;
 class Transaction extends Model
 {
     protected $table = 'transactions';
-    protected $fillable = ['user_id', 'restaurant_id', 'total_price', 'status', 'payment_method_id', 'snap_token', 'address_id', 'transaction_code', 'address_id', 'courier_link'];
+    protected $fillable = ['user_id', 'restaurant_id', 'price_ongkir', 'total_price', 'status', 'payment_method_id', 'snap_token', 'address_id', 'transaction_code', 'address_id', 'courier_link', 'biteship_order_id'];
     public function restaurant()
     {
         return $this->belongsTo(Restaurant::class);
@@ -26,6 +26,11 @@ class Transaction extends Model
     public function address()
     {
         return $this->belongsTo(Address::class);
+    }
+
+    public function shipmentTrackings()
+    {
+        return $this->hasMany(ShipmentTracking::class)->orderBy('event_time', 'asc');
     }
     protected static function boot()
     {

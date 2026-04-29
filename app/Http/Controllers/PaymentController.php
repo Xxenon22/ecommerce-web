@@ -7,10 +7,12 @@ use App\Models\Product;
 use App\Models\Cart;
 use App\Models\Transaction;
 use App\Models\TransactionProduct;
+use App\Models\ShipmentTracking;
 use Illuminate\Http\Request;
 use Midtrans\Config;
 use Midtrans\Snap;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class PaymentController extends Controller
 {
@@ -249,12 +251,13 @@ class PaymentController extends Controller
 
         try {
             // ambil data penting dari payload
-            $orderId = $payload['order_id'] ?? null;
-            $status = $payload['status'] ?? null;
+            $orderId     = $payload['order_id'] ?? null;
+            $status      = $payload['status'] ?? null;
+            $courierLink = $payload['courier_link'] ?? null;
+            $note        = $payload['note'] ?? $payload['description'] ?? null;
 
-            if ($payload['courier_link']) {
-                $courier_link = $payload['courier_link'];
-                Log::info('Courier Link:', ['courier_link' => $courier_link]);
+            if ($courierLink) {
+                Log::info('Courier Link:', ['courier_link' => $courierLink]);
             }
 
             if (!$orderId) {
@@ -266,31 +269,34 @@ class PaymentController extends Controller
             $transaction = Transaction::where('biteship_order_id', $orderId)->first();
 
             if (!$transaction) {
-                Log::error('Transaksi tidak ditemukan', [
-                    'order_id' => $orderId
-                ]);
+                Log::error('Transaksi tidak ditemukan', ['order_id' => $orderId]);
                 return response()->json(['message' => 'Transaksi tidak ditemukan'], 404);
             }
 
-            // mapping status biteship ke status app kamu
+            // mapping status biteship → status app
             $mappedStatus = $biteship->mapBiteshipStatus($status);
 
-            // 🔄 update transaksi
-            if (isset($courier_link)) {
-                $transaction->update([
-                    'status' => $mappedStatus,
-                    'courier_link' => $courier_link,
-                ]);
-            } else {
-                $transaction->update([
-                    'status' => $mappedStatus,
-                ]);
+            // 🔄 update status transaksi (dan courier_link jika ada)
+            $updateData = ['status' => $mappedStatus];
+            if ($courierLink) {
+                $updateData['courier_link'] = $courierLink;
             }
+            $transaction->update($updateData);
+
+            // 📌 simpan checkpoint tracking
+            ShipmentTracking::create([
+                'transaction_id'  => $transaction->id,
+                'biteship_status' => $status,
+                'mapped_status'   => $mappedStatus,
+                'note'            => $note,
+                'courier_link'    => $courierLink,
+                'event_time'      => Carbon::now(),
+            ]);
 
             Log::info('Status berhasil diupdate', [
                 'transaction_id' => $transaction->id,
                 'biteship_status' => $status,
-                'mapped_status' => $mappedStatus
+                'mapped_status'   => $mappedStatus,
             ]);
 
             return response()->json(['message' => 'OK'], 200);

@@ -239,10 +239,65 @@
                                         <input type="text" name="postal_code" value="{{ $address->postal_code }}" class="px-3 py-2 border rounded-lg">
                                     </div>
 
-                                    <div class="grid grid-cols-2 gap-2">
-                                        <input type="text" name="latitude" value="{{ $address->latitude }}" class="px-3 py-2 border rounded-lg">
-                                        <input type="text" name="longitude" value="{{ $address->longitude }}" class="px-3 py-2 border rounded-lg">
+                                    {{-- ======================================================== --}}
+                                    {{-- LOKASI: Leaflet Map Picker (Edit Address)               --}}
+                                    {{-- ======================================================== --}}
+                                    <div class="border border-gray-200 rounded-xl overflow-hidden">
+
+                                        {{-- Header --}}
+                                        <div class="flex items-center justify-between bg-gray-50 px-4 py-3 border-b border-gray-200">
+                                            <div class="flex items-center gap-2">
+                                                <span class="iconify text-cyan-600" data-icon="mdi:map-marker" data-width="18"></span>
+                                                <span class="text-sm font-semibold text-gray-700">Lokasi Pengiriman</span>
+                                            </div>
+                                            <button type="button"
+                                                data-detect-edit-address="{{ $address->id }}"
+                                                class="flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700
+                                                       bg-cyan-50 hover:bg-cyan-100 px-3 py-1.5 rounded-lg transition">
+                                                <span class="iconify" data-icon="mdi:crosshairs-gps" data-width="14"></span>
+                                                Deteksi Otomatis
+                                            </button>
+                                        </div>
+
+                                        {{-- Map --}}
+                                        <div id="edit-address-map-{{ $address->id }}" class="w-full" style="height: 280px; z-index: 0;"></div>
+                                        <p class="text-xs text-gray-400 text-center py-1.5 bg-gray-50 border-t border-gray-100">
+                                            <span class="iconify inline" data-icon="mdi:gesture-tap" data-width="13"></span>
+                                            Klik pada peta untuk menentukan titik lokasi
+                                        </p>
+
+                                        {{-- Input Manual --}}
+                                        <div class="grid grid-cols-2 gap-3 p-4 border-t border-gray-200">
+                                            <div>
+                                                <label class="block text-xs font-medium text-gray-600 mb-1">Latitude</label>
+                                                <input type="text"
+                                                    id="edit-addr-lat-{{ $address->id }}"
+                                                    name="latitude"
+                                                    value="{{ $address->latitude }}"
+                                                    placeholder="-6.200000"
+                                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm
+                                                           focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-cyan-400
+                                                           font-mono">
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-medium text-gray-600 mb-1">Longitude</label>
+                                                <input type="text"
+                                                    id="edit-addr-lng-{{ $address->id }}"
+                                                    name="longitude"
+                                                    value="{{ $address->longitude }}"
+                                                    placeholder="106.816666"
+                                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm
+                                                           focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-cyan-400
+                                                           font-mono">
+                                            </div>
+                                        </div>
+
+                                        {{-- Status bar --}}
+                                        <div id="edit-address-status-{{ $address->id }}"
+                                            class="hidden mx-4 mb-4 px-3 py-2 rounded-lg text-xs font-medium flex items-center gap-2">
+                                        </div>
                                     </div>
+                                    {{-- ======================================================== --}}
 
                                     <div class="flex justify-end gap-2">
                                         <button type="button"
@@ -958,6 +1013,222 @@
             // Coba langsung (jika form sudah visible)
             tryInit();
         })();
+    </script>
+
+    {{-- ============================================================ --}}
+    {{-- ADDRESS MAP SCRIPTS (Add + Edit)                             --}}
+    {{-- ============================================================ --}}
+    <script>
+    (function () {
+
+        // ── Shared helpers ──────────────────────────────────────────
+        function makePinIcon() {
+            return L.divIcon({
+                className: '',
+                html: `<div style="
+                    width:32px;height:32px;
+                    background:#0891b2;
+                    border:3px solid white;
+                    border-radius:50% 50% 50% 0;
+                    transform:rotate(-45deg);
+                    box-shadow:0 2px 8px rgba(0,0,0,0.3);
+                "></div>`,
+                iconSize: [32, 32],
+                iconAnchor: [16, 32],
+            });
+        }
+
+        function showAddrStatus(elId, type, msg) {
+            const el = document.getElementById(elId);
+            if (!el) return;
+            el.classList.remove('hidden', 'bg-green-50', 'text-green-700',
+                                'bg-red-50', 'text-red-600', 'bg-blue-50', 'text-blue-700');
+            const map = {
+                success: ['bg-green-50', 'text-green-700', 'mdi:check-circle', '#16a34a'],
+                error:   ['bg-red-50',   'text-red-600',   'mdi:alert-circle', '#dc2626'],
+                loading: ['bg-blue-50',  'text-blue-700',  'mdi:loading',      '#0891b2'],
+            };
+            const [bg, text, icon, color] = map[type];
+            el.classList.add(bg, text);
+            el.innerHTML = `<span class="iconify ${type === 'loading' ? 'animate-spin' : ''}"
+                data-icon="${icon}" data-width="14" style="color:${color}"></span> ${msg}`;
+            el.classList.remove('hidden');
+            if (type === 'success') setTimeout(() => el.classList.add('hidden'), 3000);
+        }
+
+        function initAddressMap({ mapId, latId, lngId, statusId, detectBtnSel, savedLat, savedLng }) {
+            let mapInstance = null;
+            let marker     = null;
+
+            function init() {
+                if (mapInstance) return;
+
+                const centerLat = savedLat || -6.2;
+                const centerLng = savedLng || 106.8166;
+
+                mapInstance = L.map(mapId).setView([centerLat, centerLng], 15);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© <a href="https://www.openstreetmap.org/">OpenStreetMap</a>',
+                    maxZoom: 19,
+                }).addTo(mapInstance);
+
+                if (savedLat && savedLng) {
+                    marker = L.marker([savedLat, savedLng], { icon: makePinIcon(), draggable: true }).addTo(mapInstance);
+                    bindDrag(marker);
+                }
+
+                mapInstance.on('click', function (e) {
+                    const { lat, lng } = e.latlng;
+                    setCoords(lat, lng);
+                    if (marker) {
+                        marker.setLatLng([lat, lng]);
+                    } else {
+                        marker = L.marker([lat, lng], { icon: makePinIcon(), draggable: true }).addTo(mapInstance);
+                        bindDrag(marker);
+                    }
+                    showAddrStatus(statusId, 'success', 'Titik lokasi berhasil ditentukan');
+                });
+
+                // Sync manual input → map
+                [latId, lngId].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (!el) return;
+                    el.addEventListener('blur', syncInput);
+                    el.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); syncInput(); } });
+                });
+
+                // Detect GPS button
+                const detectBtn = document.querySelector(detectBtnSel);
+                if (detectBtn) {
+                    detectBtn.addEventListener('click', function () {
+                        if (!navigator.geolocation) {
+                            showAddrStatus(statusId, 'error', 'Browser tidak mendukung geolocation');
+                            return;
+                        }
+                        showAddrStatus(statusId, 'loading', 'Mendeteksi lokasi...');
+                        navigator.geolocation.getCurrentPosition(
+                            function (pos) {
+                                const lat = pos.coords.latitude;
+                                const lng = pos.coords.longitude;
+                                setCoords(lat, lng);
+                                if (mapInstance) mapInstance.setView([lat, lng], 17);
+                                if (marker) {
+                                    marker.setLatLng([lat, lng]);
+                                } else {
+                                    marker = L.marker([lat, lng], { icon: makePinIcon(), draggable: true }).addTo(mapInstance);
+                                    bindDrag(marker);
+                                }
+                                showAddrStatus(statusId, 'success', 'Lokasi berhasil terdeteksi');
+                            },
+                            function (err) {
+                                const msgs = { 1: 'Izin lokasi ditolak', 2: 'Lokasi tidak tersedia', 3: 'Waktu deteksi habis' };
+                                showAddrStatus(statusId, 'error', msgs[err.code] || 'Gagal mendeteksi lokasi');
+                            },
+                            { enableHighAccuracy: true, timeout: 10000 }
+                        );
+                    });
+                }
+            }
+
+            function bindDrag(m) {
+                m.on('dragend', function () {
+                    const pos = m.getLatLng();
+                    setCoords(pos.lat, pos.lng);
+                    showAddrStatus(statusId, 'success', 'Titik lokasi diperbarui');
+                });
+            }
+
+            function setCoords(lat, lng) {
+                const latEl = document.getElementById(latId);
+                const lngEl = document.getElementById(lngId);
+                if (latEl) latEl.value = lat.toFixed(7);
+                if (lngEl) lngEl.value = lng.toFixed(7);
+                if (mapInstance) mapInstance.setView([lat, lng], mapInstance.getZoom());
+            }
+
+            function syncInput() {
+                const lat = parseFloat(document.getElementById(latId)?.value);
+                const lng = parseFloat(document.getElementById(lngId)?.value);
+                if (!isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+                    setCoords(lat, lng);
+                    if (!marker && mapInstance) {
+                        marker = L.marker([lat, lng], { icon: makePinIcon(), draggable: true }).addTo(mapInstance);
+                        bindDrag(marker);
+                    } else if (marker) {
+                        marker.setLatLng([lat, lng]);
+                    }
+                    showAddrStatus(statusId, 'success', 'Koordinat diperbarui dari input');
+                }
+            }
+
+            return { init };
+        }
+
+        // ── Add Address Map ──────────────────────────────────────────
+        (function () {
+            const formEl = document.getElementById('add-address-form');
+            if (!formEl) return;
+
+            const { init } = initAddressMap({
+                mapId:        'add-address-map',
+                latId:        'add-addr-lat',
+                lngId:        'add-addr-lng',
+                statusId:     'add-address-status',
+                detectBtnSel: '#btn-detect-add-address',
+                savedLat:     null,
+                savedLng:     null,
+            });
+
+            let initialized = false;
+            function tryInit() {
+                if (!formEl.classList.contains('hidden') && !initialized) {
+                    initialized = true;
+                    init();
+                    setTimeout(() => {
+                        const m = document.getElementById('add-address-map')?._leaflet_id;
+                        // invalidate via stored leaflet instance (accessed differently)
+                        // We trigger a resize event so Leaflet tiles re-render
+                        window.dispatchEvent(new Event('resize'));
+                    }, 200);
+                }
+            }
+
+            // Watch for the hidden class being removed ("+ Add Address" button click)
+            new MutationObserver(tryInit).observe(formEl, { attributes: true, attributeFilter: ['class'] });
+            tryInit();
+        })();
+
+        // ── Edit Address Maps ────────────────────────────────────────
+        // Each address edit form has a unique ID, stored in data attribute on button
+        document.querySelectorAll('[data-detect-edit-address]').forEach(function (btn) {
+            const id = btn.getAttribute('data-detect-edit-address');
+            const formEl = document.getElementById('edit-form-' + id);
+            if (!formEl) return;
+
+            const { init } = initAddressMap({
+                mapId:        'edit-address-map-' + id,
+                latId:        'edit-addr-lat-' + id,
+                lngId:        'edit-addr-lng-' + id,
+                statusId:     'edit-address-status-' + id,
+                detectBtnSel: `[data-detect-edit-address="${id}"]`,
+                savedLat:     parseFloat(document.getElementById('edit-addr-lat-' + id)?.value) || null,
+                savedLng:     parseFloat(document.getElementById('edit-addr-lng-' + id)?.value) || null,
+            });
+
+            let initialized = false;
+            function tryInit() {
+                if (!formEl.classList.contains('hidden') && !initialized) {
+                    initialized = true;
+                    init();
+                    setTimeout(() => window.dispatchEvent(new Event('resize')), 200);
+                }
+            }
+
+            new MutationObserver(tryInit).observe(formEl, { attributes: true, attributeFilter: ['class'] });
+            tryInit();
+        });
+
+    })();
     </script>
 </body>
 

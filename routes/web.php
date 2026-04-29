@@ -3,7 +3,7 @@
 use App\Http\Controllers\NutrisiController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{AdminDashboardController, CategoryProductController, TransactionController, AuthController, HomeController, UserController, ProductController, RestaurantController, CartController, AddressController, PaymentController, EdukasiController, SearchController};
+use App\Http\Controllers\{AdminDashboardController, CategoryProductController, TransactionController, AuthController, HomeController, UserController, ProductController, RestaurantController, CartController, AddressController, PaymentController, EdukasiController, SearchController, TrackingController};
 
 
 /*
@@ -229,6 +229,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/search', [SearchController::class, 'index'])->name('search');
     Route::get('/search-page', [App\Http\Controllers\SearchController::class, 'searchPage'])
         ->name('search.page');
+
+    // TRACKING
+    Route::get('/tracking/{biteshipOrderId}', [TrackingController::class, 'show'])->name('tracking.show');
 });
 
 

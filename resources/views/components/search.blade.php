@@ -50,7 +50,7 @@
                     {{-- ================== PRODUK ================== --}}
                     @forelse ($products as $product)
                         <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                            <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('logo.jpeg') }}"
+                            <img src="{{ $product->photo ? asset('storage/' . $product->photo) : asset('logo.jpeg') }}"
                                 class="w-full h-48 object-cover">
 
                             <div class="p-4">

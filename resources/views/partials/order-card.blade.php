@@ -14,7 +14,9 @@
 @endphp
 
 <div class="order-card bg-white rounded-2xl border border-gray-100 shadow-sm p-4 mb-3"
-    data-order-id="{{ $order['id'] ?? $order->id }}" data-order-link="{{ $order->courier_link }}">
+    data-order-id="{{ $order['id'] ?? $order->id }}"
+    data-order-link="{{ $order->courier_link }}"
+    data-tracking-url="{{ $order->biteship_order_id ? route('tracking.show', $order->biteship_order_id) : '' }}">
 
     {{-- Header kartu --}}
     <div class="flex justify-between items-start mb-3">
